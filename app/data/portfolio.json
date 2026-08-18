@@ -1,0 +1,1220 @@
+{
+  "brand": {
+    "name": "Zeyu Ren",
+    "role": "Product Motion Designer"
+  },
+  "socials": {
+    "linkedin": "https://www.linkedin.com/in/renzeyu/",
+    "instagram": "https://www.instagram.com/renzeyu",
+    "vimeo": "https://vimeo.com/renzeyu"
+  },
+  "covers": [
+    {
+      "slug": "2024-reel",
+      "title": "2025 Reel",
+      "asset": {
+        "kind": "video",
+        "src": "/media/da31ab72-111e-44e4-9e34-d7df12ad1480.mp4",
+        "poster": "/media/da31ab72-111e-44e4-9e34-d7df12ad1480-poster.jpg",
+        "width": 1916,
+        "height": 1080
+      }
+    },
+    {
+      "slug": "brand-refresh-launch",
+      "title": "Brand Refresh Launch",
+      "asset": {
+        "kind": "video",
+        "src": "/media/3d7e533f-a400-4cb2-abe9-b7e632fec0b4.mp4",
+        "poster": "/media/3d7e533f-a400-4cb2-abe9-b7e632fec0b4-poster.jpg",
+        "width": 1078,
+        "height": 608
+      }
+    },
+    {
+      "slug": "reddit-ipo-social-video",
+      "title": "Reddit IPO Social Video",
+      "asset": {
+        "kind": "video",
+        "src": "/media/6945a3e2-b7e9-4dad-8d50-355990ed8564.mp4",
+        "poster": "/media/6945a3e2-b7e9-4dad-8d50-355990ed8564-poster.jpg",
+        "width": 718,
+        "height": 405
+      }
+    },
+    {
+      "slug": "reddit-recap-1",
+      "title": "Reddit Recap",
+      "asset": {
+        "kind": "video",
+        "src": "/media/a89a8489-8064-4575-8ce3-6f7f68612113.mp4",
+        "poster": "/media/a89a8489-8064-4575-8ce3-6f7f68612113-poster.jpg",
+        "width": 716,
+        "height": 404
+      }
+    },
+    {
+      "slug": "collectable-avatars-launch-video",
+      "title": "Collectable Avatars Launch Video",
+      "asset": {
+        "kind": "video",
+        "src": "/media/76e56e0e-2ead-4e5f-8c9c-a191987d4844.mp4",
+        "poster": "/media/76e56e0e-2ead-4e5f-8c9c-a191987d4844-poster.jpg",
+        "width": 1078,
+        "height": 608
+      }
+    },
+    {
+      "slug": "rplace-returns-teaser",
+      "title": "r/Place Returns Teaser",
+      "asset": {
+        "kind": "video",
+        "src": "/media/59cf4a58-a42e-4f5f-9f4d-47682bab1c68.mp4",
+        "poster": "/media/59cf4a58-a42e-4f5f-9f4d-47682bab1c68-poster.jpg",
+        "width": 1916,
+        "height": 1080
+      }
+    },
+    {
+      "slug": "reddit-motion-design-system",
+      "title": "Reddit Motion Design System",
+      "asset": {
+        "kind": "video",
+        "src": "/media/7f7c5218-7b33-44f7-9f79-8c1039f67156.mp4",
+        "poster": "/media/7f7c5218-7b33-44f7-9f79-8c1039f67156-poster.jpg",
+        "width": 1916,
+        "height": 1080
+      }
+    },
+    {
+      "slug": "hatch-awards-2019",
+      "title": "HATCH AWARDS 2019",
+      "asset": {
+        "kind": "video",
+        "src": "/media/a4744850-d9e5-4f4d-aa55-8893926ed2d8.mp4",
+        "poster": "/media/a4744850-d9e5-4f4d-aa55-8893926ed2d8-poster.jpg",
+        "width": 1916,
+        "height": 1080
+      }
+    },
+    {
+      "slug": "nihonto-enter-the-swordsmith",
+      "title": "\"Nihontō - Enter the Swordsmith\"",
+      "asset": {
+        "kind": "video",
+        "src": "/media/e3135418-edf5-4a10-b62d-9e05b4997c1c.mp4",
+        "poster": "/media/e3135418-edf5-4a10-b62d-9e05b4997c1c-poster.jpg",
+        "width": 638,
+        "height": 360
+      }
+    }
+  ],
+  "projects": [
+    {
+      "slug": "2024-reel",
+      "title": "2025 Reel",
+      "cover": {
+        "kind": "video",
+        "src": "/media/da31ab72-111e-44e4-9e34-d7df12ad1480.mp4",
+        "poster": "/media/da31ab72-111e-44e4-9e34-d7df12ad1480-poster.jpg",
+        "width": 1916,
+        "height": 1080
+      },
+      "modules": [
+        {
+          "kind": "embed",
+          "provider": "vimeo",
+          "src": "https://player.vimeo.com/video/1009908576?badge=0&autopause=0&player_id=0&app_id=58479"
+        }
+      ]
+    },
+    {
+      "slug": "brand-refresh-launch",
+      "title": "Brand Refresh Launch",
+      "cover": {
+        "kind": "video",
+        "src": "/media/3d7e533f-a400-4cb2-abe9-b7e632fec0b4.mp4",
+        "poster": "/media/3d7e533f-a400-4cb2-abe9-b7e632fec0b4-poster.jpg",
+        "width": 1078,
+        "height": 608
+      },
+      "modules": [
+        {
+          "kind": "video",
+          "src": "/media/HpgoaLA8FAt.mp4",
+          "poster": "/media/HpgoaLA8FAt-poster.jpg"
+        },
+        {
+          "kind": "media",
+          "layout": "single",
+          "items": [
+            {
+              "kind": "video",
+              "src": "/media/f6b29ba1-d2e5-48e6-8736-211b4d0dce9e.mp4",
+              "poster": "/media/f6b29ba1-d2e5-48e6-8736-211b4d0dce9e-poster.jpg",
+              "width": 1080,
+              "height": 608
+            }
+          ]
+        },
+        {
+          "kind": "media",
+          "layout": "single",
+          "items": [
+            {
+              "kind": "video",
+              "src": "/media/11743ceb-b083-4d9e-81c6-1c6f02800b42.mp4",
+              "poster": "/media/11743ceb-b083-4d9e-81c6-1c6f02800b42-poster.jpg",
+              "width": 1920,
+              "height": 1080
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "reddit-ipo-social-video",
+      "title": "Reddit IPO Social Video",
+      "cover": {
+        "kind": "video",
+        "src": "/media/6945a3e2-b7e9-4dad-8d50-355990ed8564.mp4",
+        "poster": "/media/6945a3e2-b7e9-4dad-8d50-355990ed8564-poster.jpg",
+        "width": 718,
+        "height": 405
+      },
+      "modules": [
+        {
+          "kind": "video",
+          "src": "/media/4cgjZQtons5.mp4",
+          "poster": "/media/4cgjZQtons5-poster.jpg"
+        },
+        {
+          "kind": "text",
+          "html": "<div>I am responsible for the pre-production, shooting, editing, and color-grading of the Reddit IPO social video.</div>"
+        }
+      ]
+    },
+    {
+      "slug": "reddit-recap-1",
+      "title": "Reddit Recap",
+      "cover": {
+        "kind": "video",
+        "src": "/media/a89a8489-8064-4575-8ce3-6f7f68612113.mp4",
+        "poster": "/media/a89a8489-8064-4575-8ce3-6f7f68612113-poster.jpg",
+        "width": 716,
+        "height": 404
+      },
+      "modules": [
+        {
+          "kind": "text",
+          "html": "<div>Reddit recap is the end of year event where we personalize and show how users used the platform.&nbsp;</div>"
+        },
+        {
+          "kind": "media",
+          "layout": "single",
+          "items": [
+            {
+              "kind": "video",
+              "src": "/media/f691beed-c07d-4e87-8d1a-abc511a3ec02.mp4",
+              "poster": "/media/f691beed-c07d-4e87-8d1a-abc511a3ec02-poster.jpg",
+              "width": 720,
+              "height": 714
+            }
+          ]
+        },
+        {
+          "kind": "text",
+          "html": "<div>Reddit Recap began as a passion project \"Reddit Wrapped\" during Reddit's internal hackathon \"Snoosweek\". Our small team won the Hackathon that year by envisioning what Reddit Recap could become-an engaging way for users to reflect on their year on the platform.</div><div><br></div><div>In 2022, I led the motion design for the Recap cards, crafting animations that brought each card to life, from card reveals to stats displays. Additionally, I animated the marketing materials for Recap, aligning them with the year's theme, \"Piling Up,\" to reflect the accumulation of user activity throughout the year.</div>"
+        },
+        {
+          "kind": "media",
+          "layout": "grid",
+          "columns": 2,
+          "items": [
+            {
+              "kind": "video",
+              "src": "/media/f8d138b2-cda7-476e-b2b9-67b702a153cb.mp4",
+              "poster": "/media/f8d138b2-cda7-476e-b2b9-67b702a153cb-poster.jpg",
+              "width": 1080,
+              "height": 606
+            },
+            {
+              "kind": "video",
+              "src": "/media/3d736134-08f3-44f5-9c44-65445192ca71.mp4",
+              "poster": "/media/3d736134-08f3-44f5-9c44-65445192ca71-poster.jpg",
+              "width": 1080,
+              "height": 606
+            }
+          ]
+        },
+        {
+          "kind": "text",
+          "html": "<div class=\"title\">Biggest Design Challenges<br></div><div class=\"sub-title\">1. Needed to be Inclusive</div><div>Starting from Product and Design (huge shoutout to Tavish and Louise), the requirements were hard. First, we needed to be inclusive. Whether you’re a lurker or power user, there’s always value in contributing on Reddit.<br></div><div class=\"sub-title\">2. Needed alignment with Marketing and Comms Messaging and Tone</div><div>OrangeRed also had to ensure consistent branding and themes across all three Recap projects. It’s hard to be Reddity, and we were competing in an environment where a lot of other companies were doing similar things.<br></div><div class=\"sub-title\">3. Needed to get people to admit they were Redditors</div><div>Lastly Reddit has largely been an pseudo-anonymous platform. We wanted to encourage people to share, but of course also to stay safe, and so a major part of the design was to make sure users would be able to share without doxxing themselves.<br></div>"
+        },
+        {
+          "kind": "media",
+          "layout": "single",
+          "items": [
+            {
+              "kind": "image",
+              "src": "/media/a4e61db0-2628-4180-8a64-47145a46bd31.png",
+              "width": 1920,
+              "height": 770
+            }
+          ]
+        },
+        {
+          "kind": "media",
+          "layout": "grid",
+          "columns": 2,
+          "items": [
+            {
+              "kind": "image",
+              "src": "/media/557074d1-bd03-48c5-abae-d334a9eb61e6.png",
+              "width": 1768,
+              "height": 980
+            }
+          ]
+        },
+        {
+          "kind": "text",
+          "html": "<div class=\"title\">Solutions &amp; Deliverables</div><div>Animated Highlights: I developed and animated key interactive Recap moments, including transitions between cards, community highlights, and engagement statistics. These animations were designed to be fast, engaging, and consistent across all platforms.<br></div><div>User Identity Control: I designed intuitive privacy control animations for sharing features, allowing users to toggle username/avatar visibility seamlessly.<br></div><div>Cross-platform Consistency: Collaborating with product designers and engineers, I ensured that the UI animations adhered to Reddit’s OrangeRed framework and maintained visual consistency across web and mobile applications.<br></div><div>Sharing Features: I worked closely with the backend team to optimize and animate the shareable Recap cards, making them easily exportable and visually appealing for social media platforms like Twitter, Facebook, and Instagram.</div>"
+        },
+        {
+          "kind": "media",
+          "layout": "grid",
+          "columns": 2,
+          "items": [
+            {
+              "kind": "video",
+              "src": "/media/43800983-bc4c-40ba-a7ee-a459970b7d65.mp4",
+              "poster": "/media/43800983-bc4c-40ba-a7ee-a459970b7d65-poster.jpg",
+              "width": 720,
+              "height": 1560
+            },
+            {
+              "kind": "video",
+              "src": "/media/081f7a52-a722-4d88-ae8a-5bb3c38aa385.mp4",
+              "poster": "/media/081f7a52-a722-4d88-ae8a-5bb3c38aa385-poster.jpg",
+              "width": 720,
+              "height": 1560
+            }
+          ]
+        },
+        {
+          "kind": "media",
+          "layout": "grid",
+          "columns": 2,
+          "items": [
+            {
+              "kind": "video",
+              "src": "/media/8fe42694-ba26-4df0-94f1-9ba3b5649851.mp4",
+              "poster": "/media/8fe42694-ba26-4df0-94f1-9ba3b5649851-poster.jpg",
+              "width": 1125,
+              "height": 2439
+            },
+            {
+              "kind": "video",
+              "src": "/media/3b3d37b0-7eae-4e52-93cb-3a80beaf176b.mp4",
+              "poster": "/media/3b3d37b0-7eae-4e52-93cb-3a80beaf176b-poster.jpg",
+              "width": 1125,
+              "height": 2448
+            },
+            {
+              "kind": "video",
+              "src": "/media/20014e75-5cd7-4af1-97bc-cc9974a34b03.mp4",
+              "poster": "/media/20014e75-5cd7-4af1-97bc-cc9974a34b03-poster.jpg",
+              "width": 1125,
+              "height": 2448
+            },
+            {
+              "kind": "video",
+              "src": "/media/cc8f4e05-e792-4b3f-90f1-0db0a51d6f18.mp4",
+              "poster": "/media/cc8f4e05-e792-4b3f-90f1-0db0a51d6f18-poster.jpg",
+              "width": 1125,
+              "height": 2448
+            },
+            {
+              "kind": "video",
+              "src": "/media/8eaf0298-c581-4fcc-87a4-7639709914e8.mp4",
+              "poster": "/media/8eaf0298-c581-4fcc-87a4-7639709914e8-poster.jpg",
+              "width": 1125,
+              "height": 2448
+            }
+          ]
+        },
+        {
+          "kind": "media",
+          "layout": "single",
+          "items": [
+            {
+              "kind": "video",
+              "src": "/media/6c16fec9-d3d5-4903-8629-e93c95b45dee.mp4",
+              "poster": "/media/6c16fec9-d3d5-4903-8629-e93c95b45dee-poster.jpg",
+              "width": 720,
+              "height": 405
+            }
+          ]
+        },
+        {
+          "kind": "text",
+          "html": "<div>Recap 2022 has improved brand recognition, encouraged user engagement and resurrected dormant users. We surpassed our initial goal of 12M viewers and reached an overwhelming<span> 21 million</span> Recap viewers this year.<br></div><div><div>Beyond impressions, Recap also drove:</div><div>A total of <span>1.3M </span>user resurrections, and more than half of these users were previously dormant for over a month.</div><div>Days active increases, which are most prominent among unengaged users (prior-week 0 days active); Recap increased their days active from 0 to 2 days the week after viewing Recap.</div><div>Increases in long-term (28-day) retention - Recap viewers returned to Reddit more often over the next 28 days; low-usage users (&lt; 3 days active) saw <span>10-20% </span>higher user retention.</div><div>Increases in contribution - low-usage (&lt; 3 days active) users also contributed <span>2-4x </span>more comments, votes and posts immediately after viewing Recap.</div><div><br>The DAUq impact from Recap is <span>300-430k</span> Daily Active Uniques over a time period of Dec 8, 2022 (Recap launch) to Jan 11, 2023 (report end date).</div></div>"
+        }
+      ]
+    },
+    {
+      "slug": "collectable-avatars-launch-video",
+      "title": "Collectable Avatars Launch Video",
+      "cover": {
+        "kind": "video",
+        "src": "/media/76e56e0e-2ead-4e5f-8c9c-a191987d4844.mp4",
+        "poster": "/media/76e56e0e-2ead-4e5f-8c9c-a191987d4844-poster.jpg",
+        "width": 1078,
+        "height": 608
+      },
+      "modules": [
+        {
+          "kind": "video",
+          "src": "/media/PJPfa_qJ-kY.mp4",
+          "poster": "/media/PJPfa_qJ-kY-poster.jpg"
+        },
+        {
+          "kind": "text",
+          "html": "<div>I animated the Collectible Avatars advertisement that was displayed in Times Square. It was inspired by the 80’s theme gaming commercial.&nbsp;</div>"
+        },
+        {
+          "kind": "media",
+          "layout": "grid",
+          "columns": 2,
+          "items": [
+            {
+              "kind": "image",
+              "src": "/media/9f5e405e-b40e-4dc8-ae72-9c941f2e568e.png",
+              "width": 960,
+              "height": 540
+            },
+            {
+              "kind": "image",
+              "src": "/media/a6a1e517-bde9-4f4a-8c9a-9fa65c03629f.png",
+              "width": 960,
+              "height": 540
+            },
+            {
+              "kind": "image",
+              "src": "/media/82e59c0c-5ebb-4ab8-9c14-8280702c1101.png",
+              "width": 960,
+              "height": 540
+            },
+            {
+              "kind": "image",
+              "src": "/media/5ca5639a-534c-42b8-8625-ad355f40a1b0.png",
+              "width": 960,
+              "height": 540
+            }
+          ]
+        },
+        {
+          "kind": "media",
+          "layout": "single",
+          "items": [
+            {
+              "kind": "image",
+              "src": "/media/80b99043-0fc4-40fd-b52d-f7225fde4ac4.png",
+              "width": 960,
+              "height": 540
+            }
+          ]
+        },
+        {
+          "kind": "media",
+          "layout": "single",
+          "items": [
+            {
+              "kind": "image",
+              "src": "/media/f6ae94c6-9782-47af-b958-3b5c92351171.png",
+              "width": 960,
+              "height": 540
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "rplace-returns-teaser",
+      "title": "r/Place Returns Teaser",
+      "cover": {
+        "kind": "video",
+        "src": "/media/59cf4a58-a42e-4f5f-9f4d-47682bab1c68.mp4",
+        "poster": "/media/59cf4a58-a42e-4f5f-9f4d-47682bab1c68-poster.jpg",
+        "width": 1916,
+        "height": 1080
+      },
+      "modules": [
+        {
+          "kind": "media",
+          "layout": "single",
+          "items": [
+            {
+              "kind": "video",
+              "src": "/media/adb2d89b-3a56-4273-8d3c-18367b7118b9.mp4",
+              "poster": "/media/adb2d89b-3a56-4273-8d3c-18367b7118b9-poster.jpg",
+              "width": 1920,
+              "height": 1080
+            }
+          ]
+        },
+        {
+          "kind": "text",
+          "html": "<div>r/place is a collaborative digital canvas on which a single redditor can only place a single tile every five minutes.</div><div>I led the motion design for several key elements of r/Place, including the UX motion, return teaser, and internal tech review video.</div><div class=\"sub-title\">Return Teaser</div><div class=\"main-text\">I was responsible for the art direction, storyboarding, and animation of the teaser video. I delivered three social media exports optimized for different platforms: 4:5 (Instagram feed), 9:16 (Instagram Story/Reels), and 720x1280 (Twitter). The teaser zooms out from a pixelated canvas, revealing the self-aware phrase \"r/Place was better\" before displaying the date 4.1, signaling r/Place's return after 5 years. The teaser received <span>46.2k</span> upvotes on Reddit.</div>"
+        },
+        {
+          "kind": "video",
+          "src": "/media/QX3Ny_zv8Wj.mp4",
+          "poster": "/media/QX3Ny_zv8Wj-poster.jpg"
+        },
+        {
+          "kind": "text",
+          "html": "<div class=\"sub-title\">UX Motion</div><div class=\"main-text\">I created multiple versions of spinners that integrated the r/Place logo and pixel theme, enhancing the visual interaction and user experience.</div>"
+        },
+        {
+          "kind": "media",
+          "layout": "grid",
+          "columns": 2,
+          "items": [
+            {
+              "kind": "video",
+              "src": "/media/b149d01a-88e9-4c65-8b3c-aee82018066b.mp4",
+              "poster": "/media/b149d01a-88e9-4c65-8b3c-aee82018066b-poster.jpg",
+              "width": 500,
+              "height": 500
+            },
+            {
+              "kind": "video",
+              "src": "/media/23fd22c9-2c49-4ec8-8015-9e158ca21cf4.mp4",
+              "poster": "/media/23fd22c9-2c49-4ec8-8015-9e158ca21cf4-poster.jpg",
+              "width": 500,
+              "height": 500
+            },
+            {
+              "kind": "video",
+              "src": "/media/4d7c2a38-76a8-467a-b1b5-c43f5884e90e.mp4",
+              "poster": "/media/4d7c2a38-76a8-467a-b1b5-c43f5884e90e-poster.jpg",
+              "width": 500,
+              "height": 500
+            },
+            {
+              "kind": "video",
+              "src": "/media/0a0def4e-0678-4417-8538-795efc824b86.mp4",
+              "poster": "/media/0a0def4e-0678-4417-8538-795efc824b86-poster.jpg",
+              "width": 500,
+              "height": 500
+            }
+          ]
+        },
+        {
+          "kind": "text",
+          "html": "<div class=\"sub-title\">Tech Review Video</div><div class=\"main-text\">I shot and edited the internal deep dive into the technical innovations behind r/Place. The video was met with widespread acclaim for its clarity and production quality.</div>"
+        },
+        {
+          "kind": "media",
+          "layout": "single",
+          "items": [
+            {
+              "kind": "video",
+              "src": "/media/f96f3aeb-e6f8-4592-9fb3-170a2f00c6cc.mp4",
+              "poster": "/media/f96f3aeb-e6f8-4592-9fb3-170a2f00c6cc-poster.jpg",
+              "width": 720,
+              "height": 404
+            }
+          ]
+        },
+        {
+          "kind": "text",
+          "html": "<div class=\"sub-title\">Review</div><div>In this year’s 87-hour run of the project, Redditors from 236 countries and territories contributed&nbsp;<a href=\"https://www.reddit.com/r/place/comments/txufad/the_complete_rplace_timelapse/\" target=\"_blank\" rel=\"noreferrer\">160+ million tiles</a>-adding all kinds of art, memes, and memorable moments. Though it was only a four-day event, r/place was the #16 most-viewed subreddit, and&nbsp;<a href=\"https://www.reddit.com/r/place/comments/twft1q/full_screenshot_of_rplace_2022/\" target=\"_blank\" rel=\"noreferrer\">the most upvoted post in all of 2022</a>. Here’s a look at some of the numbers that reflect Reddit’s awesome community:</div><div><br></div><div>Views: 1.1+ billion</div><div>Place total canvas views: 157+ million</div><div>Total redditors who placed a tile: 10.4+ million</div><div>Height of r/place activity: 5.9+ million tiles placed per hour</div>"
+        }
+      ]
+    },
+    {
+      "slug": "reddit-motion-design-system",
+      "title": "Reddit Motion Design System",
+      "cover": {
+        "kind": "video",
+        "src": "/media/7f7c5218-7b33-44f7-9f79-8c1039f67156.mp4",
+        "poster": "/media/7f7c5218-7b33-44f7-9f79-8c1039f67156-poster.jpg",
+        "width": 1916,
+        "height": 1080
+      },
+      "modules": [
+        {
+          "kind": "text",
+          "html": "<div>I led the development of Reddit’s UX motion design system as part of the Reddit Product Language (RPL) initiative. My goal was to define a cohesive motion framework that enhanced user interactions across the platform. This involved establishing motion principles that reflected Reddit’s brand values while improving the usability and engagement of the product.</div>"
+        },
+        {
+          "kind": "media",
+          "layout": "grid",
+          "columns": 2,
+          "items": [
+            {
+              "kind": "video",
+              "src": "/media/df4782fd-ba03-4432-8d90-475ba825465c.mp4",
+              "poster": "/media/df4782fd-ba03-4432-8d90-475ba825465c-poster.jpg",
+              "width": 400,
+              "height": 400
+            },
+            {
+              "kind": "video",
+              "src": "/media/3af86fc6-96a4-4a5a-8da8-c2812777d326.mp4",
+              "poster": "/media/3af86fc6-96a4-4a5a-8da8-c2812777d326-poster.jpg",
+              "width": 400,
+              "height": 400
+            },
+            {
+              "kind": "video",
+              "src": "/media/58290bcf-c80c-474c-ad5b-73d4f857a2de.mp4",
+              "poster": "/media/58290bcf-c80c-474c-ad5b-73d4f857a2de-poster.jpg",
+              "width": 400,
+              "height": 400
+            },
+            {
+              "kind": "video",
+              "src": "/media/05643b27-36dc-450c-8e8e-710f7a35357f.mp4",
+              "poster": "/media/05643b27-36dc-450c-8e8e-710f7a35357f-poster.jpg",
+              "width": 400,
+              "height": 400
+            },
+            {
+              "kind": "video",
+              "src": "/media/06f049ad-1bc7-4441-a8d8-8cfaf844fe0a.mp4",
+              "poster": "/media/06f049ad-1bc7-4441-a8d8-8cfaf844fe0a-poster.jpg",
+              "width": 400,
+              "height": 400
+            },
+            {
+              "kind": "video",
+              "src": "/media/5cc60ad9-4f6c-43e4-8990-44e674176528.mp4",
+              "poster": "/media/5cc60ad9-4f6c-43e4-8990-44e674176528-poster.jpg",
+              "width": 400,
+              "height": 400
+            },
+            {
+              "kind": "video",
+              "src": "/media/5abdc295-0eb8-407b-a0f8-19d99140881e.mp4",
+              "poster": "/media/5abdc295-0eb8-407b-a0f8-19d99140881e-poster.jpg",
+              "width": 400,
+              "height": 400
+            },
+            {
+              "kind": "video",
+              "src": "/media/c0d31355-028d-4588-911e-fdd693e34ff4.mp4",
+              "poster": "/media/c0d31355-028d-4588-911e-fdd693e34ff4-poster.jpg",
+              "width": 400,
+              "height": 400
+            },
+            {
+              "kind": "video",
+              "src": "/media/2278717d-c82c-4ade-a56e-79df42586723.mp4",
+              "poster": "/media/2278717d-c82c-4ade-a56e-79df42586723-poster.jpg",
+              "width": 400,
+              "height": 400
+            },
+            {
+              "kind": "video",
+              "src": "/media/87eadc4c-8c74-4072-a727-b9419d09dd0f.mp4",
+              "poster": "/media/87eadc4c-8c74-4072-a727-b9419d09dd0f-poster.jpg",
+              "width": 400,
+              "height": 400
+            },
+            {
+              "kind": "video",
+              "src": "/media/b0257a88-f849-4662-8dbe-224990f5dd5f.mp4",
+              "poster": "/media/b0257a88-f849-4662-8dbe-224990f5dd5f-poster.jpg",
+              "width": 400,
+              "height": 400
+            },
+            {
+              "kind": "video",
+              "src": "/media/ecc044ff-e2b8-48e3-971b-be479ad4ef87.mp4",
+              "poster": "/media/ecc044ff-e2b8-48e3-971b-be479ad4ef87-poster.jpg",
+              "width": 400,
+              "height": 400
+            },
+            {
+              "kind": "video",
+              "src": "/media/d12dc453-8414-4c60-b395-9fdcd2e8b6e7.mp4",
+              "poster": "/media/d12dc453-8414-4c60-b395-9fdcd2e8b6e7-poster.jpg",
+              "width": 400,
+              "height": 400
+            },
+            {
+              "kind": "video",
+              "src": "/media/cf310766-e169-43ae-97e9-796d76335787.mp4",
+              "poster": "/media/cf310766-e169-43ae-97e9-796d76335787-poster.jpg",
+              "width": 400,
+              "height": 400
+            },
+            {
+              "kind": "video",
+              "src": "/media/5cc232bf-f404-4091-9559-479f22d58811.mp4",
+              "poster": "/media/5cc232bf-f404-4091-9559-479f22d58811-poster.jpg",
+              "width": 400,
+              "height": 400
+            },
+            {
+              "kind": "video",
+              "src": "/media/52bf92c4-ba4c-4a9e-b89c-b5a8a66b2b95.mp4",
+              "poster": "/media/52bf92c4-ba4c-4a9e-b89c-b5a8a66b2b95-poster.jpg",
+              "width": 400,
+              "height": 400
+            },
+            {
+              "kind": "video",
+              "src": "/media/9c122bee-be9c-4fa7-9e7e-710f63e72764.mp4",
+              "poster": "/media/9c122bee-be9c-4fa7-9e7e-710f63e72764-poster.jpg",
+              "width": 400,
+              "height": 400
+            },
+            {
+              "kind": "video",
+              "src": "/media/e1f28c90-0a8f-415b-84be-a285d9782108.mp4",
+              "poster": "/media/e1f28c90-0a8f-415b-84be-a285d9782108-poster.jpg",
+              "width": 400,
+              "height": 400
+            },
+            {
+              "kind": "video",
+              "src": "/media/a13cd428-2a0b-4401-b12c-94248944c933.mp4",
+              "poster": "/media/a13cd428-2a0b-4401-b12c-94248944c933-poster.jpg",
+              "width": 400,
+              "height": 400
+            },
+            {
+              "kind": "video",
+              "src": "/media/d1a03715-c18d-4094-8913-10bfe792d278.mp4",
+              "poster": "/media/d1a03715-c18d-4094-8913-10bfe792d278-poster.jpg",
+              "width": 400,
+              "height": 400
+            },
+            {
+              "kind": "video",
+              "src": "/media/8e8a2432-5ee1-40bf-95cc-2e90ed3290ff.mp4",
+              "poster": "/media/8e8a2432-5ee1-40bf-95cc-2e90ed3290ff-poster.jpg",
+              "width": 400,
+              "height": 400
+            }
+          ]
+        },
+        {
+          "kind": "text",
+          "html": "<div class=\"title\"><span>Motion Pillars</span><br></div><div class=\"title\">Motion increases comprehension<br></div><div>Meaningful motion helps users understand the environment that the software is a part of. At Reddit this can be as simple as reinforcing certain actions like joining a subreddit - that deserves some motion to create a memory. Joining a subreddit has wide-ranging effects on the user’s future interactions with the product as a whole.</div>"
+        },
+        {
+          "kind": "text",
+          "html": "<div class=\"sub-title\">Motion conveys a tone<br></div><div>Enhancing a positive outcome like gifting/awarding sets a tone for future interactions with that feature. Warning of a potentially destructive one is a high-impact message that isn’t soon forgotten. Motion can be a huge part of these reinforcements across the app.</div>"
+        },
+        {
+          "kind": "text",
+          "html": "<div class=\"sub-title\">Motion enhances perceived speed and effort<br></div><div>The classic example here is the <a href=\"https://www.kayak.com\" target=\"_blank\" rel=\"noreferrer\">kayak.com</a> results. They have them nearly instantly, but presenting a loader and lazy-loading them in the interface increases conversions instantly. This same notion applies to motion as well. Long drawn out loading animations seem tedious, but short, snappy animations can make interactions feel even faster than they are.</div>"
+        },
+        {
+          "kind": "text",
+          "html": "<div class=\"sub-title\">Motion directs the user<br></div><div>A big part of graphic design is hierarchy, but in the digital world hierarchy is tougher to convey and directing a user is even harder. Motion can enhance hierarchy by giving directionality and place meaning.</div>"
+        },
+        {
+          "kind": "media",
+          "layout": "grid",
+          "columns": 2,
+          "items": [
+            {
+              "kind": "video",
+              "src": "/media/260d2cea-9518-423f-a40f-fc4e567d976c.mp4",
+              "poster": "/media/260d2cea-9518-423f-a40f-fc4e567d976c-poster.jpg",
+              "width": 1920,
+              "height": 1080
+            }
+          ]
+        },
+        {
+          "kind": "text",
+          "html": "<div class=\"title\">Timing</div><div>We want Reddit to feel fast. Speed is one of the primary ways that users define quality software. We’ve defined some baseline timings for our general UI to adhere to.</div>"
+        },
+        {
+          "kind": "media",
+          "layout": "single",
+          "items": [
+            {
+              "kind": "video",
+              "src": "/media/1373daaf-3cb5-4429-b142-447ff2c18a96.mp4",
+              "poster": "/media/1373daaf-3cb5-4429-b142-447ff2c18a96-poster.jpg",
+              "width": 3840,
+              "height": 2160
+            }
+          ]
+        },
+        {
+          "kind": "text",
+          "html": "<div class=\"sub-title\">In-Out</div><div class=\"main-text\">Ease-in-out is great when something is animating from a direct interaction, like hovering a button or something is coming onto the canvas for just a moment. This can feel snappy.</div><div>✅️ Use when translating an existing on-screen element to a different on-screen location.<br></div><div class=\"caption\">cubic-bezier(0.65, 0, 0.35, 1)</div><div class=\"caption\">cubic-bezier(0.87, 0, 0.13, 1)<br></div><div class=\"sub-title\">In</div><div>Ease-in is used for bringing something permanent or semi-permanent onto the screen from out of view. This should be a short, non-blocking animation to alert the user to the presence of the new UI.</div><div>✅️ Use when introducing a new element entering the screen.<br></div><div class=\"caption\">cubic-bezier(0.32, 0, 0.67, 0)</div><div class=\"caption\">cubic-bezier(0.7, 0, 0.84, 0)<br></div><div class=\"sub-title\">Out</div><div>Ease-out is used to remove something from the screen. Ideally it returns to where it came from or to the place it might be “going”. A great example of this is an email app’s send animation going up and away from the user.</div><div>✅️ Use when dismissing an element exiting the screen.<br></div><div class=\"caption\">cubic-bezier(0.33, 1, 0.68, 1)</div><div class=\"caption\">cubic-bezier(0.16, 1, 0.3, 1)</div>"
+        },
+        {
+          "kind": "media",
+          "layout": "grid",
+          "columns": 2,
+          "items": [
+            {
+              "kind": "video",
+              "src": "/media/6f7dd2d9-b46c-4969-8bc1-d60a8390916b.mp4",
+              "poster": "/media/6f7dd2d9-b46c-4969-8bc1-d60a8390916b-poster.jpg",
+              "width": 1080,
+              "height": 1080
+            },
+            {
+              "kind": "video",
+              "src": "/media/d356758d-cf6d-48cc-96ba-17766b09e763.mp4",
+              "poster": "/media/d356758d-cf6d-48cc-96ba-17766b09e763-poster.jpg",
+              "width": 1080,
+              "height": 1080
+            },
+            {
+              "kind": "video",
+              "src": "/media/21f100e3-b80c-47f4-961a-cc99f7e40658.mp4",
+              "poster": "/media/21f100e3-b80c-47f4-961a-cc99f7e40658-poster.jpg",
+              "width": 1080,
+              "height": 1080
+            },
+            {
+              "kind": "video",
+              "src": "/media/cb79d309-37ed-4ab7-bbfd-682ae1d95407.mp4",
+              "poster": "/media/cb79d309-37ed-4ab7-bbfd-682ae1d95407-poster.jpg",
+              "width": 1080,
+              "height": 1080
+            }
+          ]
+        },
+        {
+          "kind": "text",
+          "html": "<div class=\"title\">Three Types of Motion</div><div class=\"sub-title\">General System UI:</div><div>80% of the motion will be in this category. This is where we use the good-old iOS/Android system motion. Users are familiar with it. It’s safe. It’s quiet, and it goes unnoticed, like the old saying “good design is invisible.”<br></div><div class=\"sub-title\">Reddity System UI</div><div>18% This is where we want to draw attention. Be “visible”. We are going to use the custom “OrangeRed” animation curve here to make Reddit feel unique, and delight our users.<br></div><div class=\"sub-title\">Delightfulness</div><div>2% A small portion of our design mimics real life objects: Confetti, Spinning wheels, and floating particles. Many serious platforms don't dare to do the crazy stuff that we do, so our animation will make sure they feel real. Use carefully.</div>"
+        },
+        {
+          "kind": "media",
+          "layout": "single",
+          "items": [
+            {
+              "kind": "video",
+              "src": "/media/4627164d-badd-4093-81a9-796f60d22ae7.mp4",
+              "poster": "/media/4627164d-badd-4093-81a9-796f60d22ae7-poster.jpg",
+              "width": 1920,
+              "height": 1080
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "hatch-awards-2019",
+      "title": "HATCH AWARDS 2019",
+      "cover": {
+        "kind": "video",
+        "src": "/media/a4744850-d9e5-4f4d-aa55-8893926ed2d8.mp4",
+        "poster": "/media/a4744850-d9e5-4f4d-aa55-8893926ed2d8-poster.jpg",
+        "width": 1916,
+        "height": 1080
+      },
+      "modules": [
+        {
+          "kind": "embed",
+          "provider": "vimeo",
+          "src": "https://player.vimeo.com/video/370892682?h=11419f1d7f&color=00d0c1&title=0&byline=0&portrait=0"
+        },
+        {
+          "kind": "text",
+          "html": "<div data-style-network=\"text-align:left;\"><span data-class-network=\"italic\">The Hatch Awards</span> is New England's annual awards for creative branding and marketing. With award categories ranging from print to TV, broadcast to digital, mobile, and web-based content, the Hatch Awards continue the tradition of celebrating the very best in creative excellence in the region.</div><div data-style-network=\"text-align:left;\">For this project, I worked under&nbsp;<a href=\"http://blackmath.com/\" target=\"_blank\" rel=\"noreferrer\">Black Math</a>. I am responsible for the character animation and 2D animation.</div>"
+        },
+        {
+          "kind": "media",
+          "layout": "grid",
+          "columns": 2,
+          "items": [
+            {
+              "kind": "video",
+              "src": "/media/37a295c3-80a0-4a63-aeba-6c85c024055b.mp4",
+              "poster": "/media/37a295c3-80a0-4a63-aeba-6c85c024055b-poster.jpg",
+              "width": 640,
+              "height": 360
+            },
+            {
+              "kind": "video",
+              "src": "/media/5735e2dd-9cb9-411f-8145-0c9f93324cf3.mp4",
+              "poster": "/media/5735e2dd-9cb9-411f-8145-0c9f93324cf3-poster.jpg",
+              "width": 640,
+              "height": 360
+            },
+            {
+              "kind": "video",
+              "src": "/media/0126ab01-c2ac-40b7-af8e-6218a99743cc.mp4",
+              "poster": "/media/0126ab01-c2ac-40b7-af8e-6218a99743cc-poster.jpg",
+              "width": 640,
+              "height": 360
+            },
+            {
+              "kind": "video",
+              "src": "/media/36ee1854-6bf8-4a19-a2ee-2b5d633d0824.mp4",
+              "poster": "/media/36ee1854-6bf8-4a19-a2ee-2b5d633d0824-poster.jpg",
+              "width": 640,
+              "height": 360
+            },
+            {
+              "kind": "video",
+              "src": "/media/51da55f9-9c3f-4c62-bb4b-d7cb09abc374.mp4",
+              "poster": "/media/51da55f9-9c3f-4c62-bb4b-d7cb09abc374-poster.jpg",
+              "width": 640,
+              "height": 360
+            },
+            {
+              "kind": "video",
+              "src": "/media/1252c82d-87a1-48a7-90fe-dbc1cf05ca6c.mp4",
+              "poster": "/media/1252c82d-87a1-48a7-90fe-dbc1cf05ca6c-poster.jpg",
+              "width": 640,
+              "height": 360
+            },
+            {
+              "kind": "video",
+              "src": "/media/254513ad-254b-41af-9d12-67e8b39cdaf5.mp4",
+              "poster": "/media/254513ad-254b-41af-9d12-67e8b39cdaf5-poster.jpg",
+              "width": 640,
+              "height": 360
+            },
+            {
+              "kind": "video",
+              "src": "/media/a6b2fc6a-b929-40e1-a722-7d1b68ab09ca.mp4",
+              "poster": "/media/a6b2fc6a-b929-40e1-a722-7d1b68ab09ca-poster.jpg",
+              "width": 640,
+              "height": 360
+            }
+          ]
+        },
+        {
+          "kind": "media",
+          "layout": "single",
+          "items": [
+            {
+              "kind": "video",
+              "src": "/media/7e6f2558-4fc4-4241-bf0c-ea58135ffc44.mp4",
+              "poster": "/media/7e6f2558-4fc4-4241-bf0c-ea58135ffc44-poster.jpg",
+              "width": 1881,
+              "height": 969
+            }
+          ]
+        },
+        {
+          "kind": "media",
+          "layout": "single",
+          "items": [
+            {
+              "kind": "image",
+              "src": "/media/932750a9-1d5d-4c53-831d-5a1fb98caaf9.jpg",
+              "width": 1920,
+              "height": 1080
+            }
+          ]
+        },
+        {
+          "kind": "media",
+          "layout": "grid",
+          "columns": 2,
+          "items": [
+            {
+              "kind": "video",
+              "src": "/media/6c673bb9-6b6c-4495-a4c9-ed2e7bbaffea.mp4",
+              "poster": "/media/6c673bb9-6b6c-4495-a4c9-ed2e7bbaffea-poster.jpg",
+              "width": 650,
+              "height": 366
+            },
+            {
+              "kind": "video",
+              "src": "/media/1b8b12e7-1374-447c-a092-1a2de25295bd.mp4",
+              "poster": "/media/1b8b12e7-1374-447c-a092-1a2de25295bd-poster.jpg",
+              "width": 650,
+              "height": 366
+            },
+            {
+              "kind": "video",
+              "src": "/media/f9fdeaf7-a835-493f-b67e-ea6d6a3c34af.mp4",
+              "poster": "/media/f9fdeaf7-a835-493f-b67e-ea6d6a3c34af-poster.jpg",
+              "width": 650,
+              "height": 366
+            },
+            {
+              "kind": "video",
+              "src": "/media/aa66bd5e-d860-43a9-a7e0-fed47b4050ba.mp4",
+              "poster": "/media/aa66bd5e-d860-43a9-a7e0-fed47b4050ba-poster.jpg",
+              "width": 650,
+              "height": 366
+            },
+            {
+              "kind": "video",
+              "src": "/media/a130ec32-3eea-4e9d-b33d-c6d46f2634f1.mp4",
+              "poster": "/media/a130ec32-3eea-4e9d-b33d-c6d46f2634f1-poster.jpg",
+              "width": 650,
+              "height": 366
+            },
+            {
+              "kind": "video",
+              "src": "/media/99be79e9-1ea6-4d79-b92d-f1e93f1c0c52.mp4",
+              "poster": "/media/99be79e9-1ea6-4d79-b92d-f1e93f1c0c52-poster.jpg",
+              "width": 650,
+              "height": 366
+            },
+            {
+              "kind": "video",
+              "src": "/media/c43f5a1e-e745-4c7f-8b25-c5972eba9985.mp4",
+              "poster": "/media/c43f5a1e-e745-4c7f-8b25-c5972eba9985-poster.jpg",
+              "width": 650,
+              "height": 366
+            },
+            {
+              "kind": "video",
+              "src": "/media/767d1bf0-c0ef-4626-9d94-b6184ba1d813.mp4",
+              "poster": "/media/767d1bf0-c0ef-4626-9d94-b6184ba1d813-poster.jpg",
+              "width": 650,
+              "height": 366
+            },
+            {
+              "kind": "video",
+              "src": "/media/f3c648b8-d9f4-433f-a041-b90fb33816dd.mp4",
+              "poster": "/media/f3c648b8-d9f4-433f-a041-b90fb33816dd-poster.jpg",
+              "width": 650,
+              "height": 366
+            },
+            {
+              "kind": "video",
+              "src": "/media/5acd174c-00b3-4fc4-a472-4c2f91c4ca20.mp4",
+              "poster": "/media/5acd174c-00b3-4fc4-a472-4c2f91c4ca20-poster.jpg",
+              "width": 650,
+              "height": 366
+            },
+            {
+              "kind": "video",
+              "src": "/media/c2b1bb2d-5a67-47f9-8bc3-2d36515700a3.mp4",
+              "poster": "/media/c2b1bb2d-5a67-47f9-8bc3-2d36515700a3-poster.jpg",
+              "width": 600,
+              "height": 338
+            },
+            {
+              "kind": "video",
+              "src": "/media/0c8cfe4b-ba6a-44c4-ad9b-f32b163eec61.mp4",
+              "poster": "/media/0c8cfe4b-ba6a-44c4-ad9b-f32b163eec61-poster.jpg",
+              "width": 650,
+              "height": 366
+            },
+            {
+              "kind": "video",
+              "src": "/media/d8207f9a-64ae-4bb1-b4fb-0b6075e21043.mp4",
+              "poster": "/media/d8207f9a-64ae-4bb1-b4fb-0b6075e21043-poster.jpg",
+              "width": 650,
+              "height": 366
+            },
+            {
+              "kind": "video",
+              "src": "/media/0c82ce90-7353-47d1-8802-9aeaae1e5e52.mp4",
+              "poster": "/media/0c82ce90-7353-47d1-8802-9aeaae1e5e52-poster.jpg",
+              "width": 650,
+              "height": 366
+            },
+            {
+              "kind": "video",
+              "src": "/media/1cc56c24-b836-4d84-b83b-017b94f84de5.mp4",
+              "poster": "/media/1cc56c24-b836-4d84-b83b-017b94f84de5-poster.jpg",
+              "width": 650,
+              "height": 366
+            },
+            {
+              "kind": "video",
+              "src": "/media/080111c3-af03-4153-864c-43ef30bc5e6d.mp4",
+              "poster": "/media/080111c3-af03-4153-864c-43ef30bc5e6d-poster.jpg",
+              "width": 650,
+              "height": 366
+            },
+            {
+              "kind": "video",
+              "src": "/media/3a87f4f1-1d1d-4fc3-ad14-ce2b80c3ff53.mp4",
+              "poster": "/media/3a87f4f1-1d1d-4fc3-ad14-ce2b80c3ff53-poster.jpg",
+              "width": 650,
+              "height": 366
+            },
+            {
+              "kind": "video",
+              "src": "/media/adc08a61-5bf0-41f1-bdbc-cba7fb649738.mp4",
+              "poster": "/media/adc08a61-5bf0-41f1-bdbc-cba7fb649738-poster.jpg",
+              "width": 650,
+              "height": 366
+            },
+            {
+              "kind": "video",
+              "src": "/media/73cf84c3-5fb9-4052-be09-bea6efb4dc39.mp4",
+              "poster": "/media/73cf84c3-5fb9-4052-be09-bea6efb4dc39-poster.jpg",
+              "width": 650,
+              "height": 366
+            },
+            {
+              "kind": "video",
+              "src": "/media/5cfebf5f-689c-4879-9549-9fb2de87afdd.mp4",
+              "poster": "/media/5cfebf5f-689c-4879-9549-9fb2de87afdd-poster.jpg",
+              "width": 650,
+              "height": 366
+            },
+            {
+              "kind": "video",
+              "src": "/media/ca917508-a71b-46a5-adc0-681b612dd6f6.mp4",
+              "poster": "/media/ca917508-a71b-46a5-adc0-681b612dd6f6-poster.jpg",
+              "width": 650,
+              "height": 366
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "nihonto-enter-the-swordsmith",
+      "title": "\"Nihontō - Enter the Swordsmith\"",
+      "cover": {
+        "kind": "video",
+        "src": "/media/e3135418-edf5-4a10-b62d-9e05b4997c1c.mp4",
+        "poster": "/media/e3135418-edf5-4a10-b62d-9e05b4997c1c-poster.jpg",
+        "width": 638,
+        "height": 360
+      },
+      "modules": [
+        {
+          "kind": "media",
+          "layout": "single",
+          "items": [
+            {
+              "kind": "image",
+              "src": "/media/b103b1b5-ce5e-4d87-92cd-17d054bd2c2e.png",
+              "optimizedSrc": "/media/b103b1b5-ce5e-4d87-92cd-17d054bd2c2e.avif",
+              "width": 1920,
+              "height": 2268
+            }
+          ]
+        },
+        {
+          "kind": "text",
+          "html": "<div>To celebrate the rebirth of a legendary motorcycle, Iron &amp; Air Media wanted to create an animated short film to immortalize the lore of the iconic Suzuki Katana. We helped bring their vision to life.</div><div>For this project, I worked under&nbsp;<a href=\"http://blackmath.com/\" target=\"_blank\" rel=\"noreferrer\">Black Math</a>. I am responsible for the bike 3D modeling, environment 3D modeling, 3D animation, and motion graphics elements.</div>"
+        },
+        {
+          "kind": "embed",
+          "provider": "vimeo",
+          "src": "https://player.vimeo.com/video/409874051?h=ba525464c2&color=00d0c1&title=0&byline=0&portrait=0"
+        },
+        {
+          "kind": "media",
+          "layout": "grid",
+          "columns": 2,
+          "items": [
+            {
+              "kind": "video",
+              "src": "/media/92e5abb6-2c17-4d96-baa9-7685db65e5c0.mp4",
+              "poster": "/media/92e5abb6-2c17-4d96-baa9-7685db65e5c0-poster.jpg",
+              "width": 640,
+              "height": 360
+            },
+            {
+              "kind": "video",
+              "src": "/media/f7c9bec5-26d3-4890-892d-61c7a99fa8bd.mp4",
+              "poster": "/media/f7c9bec5-26d3-4890-892d-61c7a99fa8bd-poster.jpg",
+              "width": 640,
+              "height": 360
+            },
+            {
+              "kind": "video",
+              "src": "/media/003867ce-0112-4813-94db-6a53779964a1.mp4",
+              "poster": "/media/003867ce-0112-4813-94db-6a53779964a1-poster.jpg",
+              "width": 640,
+              "height": 360
+            },
+            {
+              "kind": "video",
+              "src": "/media/f55039f3-2fea-4e12-b9bc-b976339cf8d8.mp4",
+              "poster": "/media/f55039f3-2fea-4e12-b9bc-b976339cf8d8-poster.jpg",
+              "width": 640,
+              "height": 360
+            },
+            {
+              "kind": "video",
+              "src": "/media/5f128045-7d66-490f-8f1d-47289c5573b5.mp4",
+              "poster": "/media/5f128045-7d66-490f-8f1d-47289c5573b5-poster.jpg",
+              "width": 640,
+              "height": 360
+            },
+            {
+              "kind": "video",
+              "src": "/media/131c381d-9e48-487d-9330-50094f2108ff.mp4",
+              "poster": "/media/131c381d-9e48-487d-9330-50094f2108ff-poster.jpg",
+              "width": 1080,
+              "height": 607
+            }
+          ]
+        },
+        {
+          "kind": "media",
+          "layout": "grid",
+          "columns": 2,
+          "items": [
+            {
+              "kind": "video",
+              "src": "/media/6ba45bf6-ff10-4a96-8ef3-f3f16f46b95e.mp4",
+              "poster": "/media/6ba45bf6-ff10-4a96-8ef3-f3f16f46b95e-poster.jpg",
+              "width": 600,
+              "height": 338
+            },
+            {
+              "kind": "video",
+              "src": "/media/b91d0a73-e6b1-411d-b62d-737b6c159cea.mp4",
+              "poster": "/media/b91d0a73-e6b1-411d-b62d-737b6c159cea-poster.jpg",
+              "width": 600,
+              "height": 338
+            }
+          ]
+        },
+        {
+          "kind": "media",
+          "layout": "grid",
+          "columns": 2,
+          "items": [
+            {
+              "kind": "video",
+              "src": "/media/c7d2b652-54f8-4740-89d5-bcd85f4559b1.mp4",
+              "poster": "/media/c7d2b652-54f8-4740-89d5-bcd85f4559b1-poster.jpg",
+              "width": 640,
+              "height": 360
+            },
+            {
+              "kind": "video",
+              "src": "/media/d61c2323-f9df-48a1-bf69-0b1fef19a897.mp4",
+              "poster": "/media/d61c2323-f9df-48a1-bf69-0b1fef19a897-poster.jpg",
+              "width": 640,
+              "height": 360
+            },
+            {
+              "kind": "video",
+              "src": "/media/0fe901ca-461d-4333-9cc5-c43b79e9143e.mp4",
+              "poster": "/media/0fe901ca-461d-4333-9cc5-c43b79e9143e-poster.jpg",
+              "width": 640,
+              "height": 357
+            },
+            {
+              "kind": "video",
+              "src": "/media/37c42f80-94ae-412c-8f4e-b3cc3c8b2f31.mp4",
+              "poster": "/media/37c42f80-94ae-412c-8f4e-b3cc3c8b2f31-poster.jpg",
+              "width": 640,
+              "height": 357
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "about": {
+    "title": "About",
+    "html": "<div>I am a product motion designer focused on making interactions clearer, systems more expressive, and product stories easier to understand. My background spans motion systems, launches, social storytelling, and animation direction. My reel: <a href=\"https://vimeo.com/renzeyu/reel\" target=\"_blank\" rel=\"noreferrer\">https://vimeo.com/renzeyu/reel</a><br></div>"
+  }
+}
