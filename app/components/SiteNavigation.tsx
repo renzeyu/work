@@ -58,7 +58,7 @@ const clientIdentities: Record<
   datadog: {
     label: "Datadog",
     logo: "/brand-logos/datadog.svg",
-    darkLogo: "/brand-logos/datadog-dark.svg",
+    darkLogo: "/brand-logos/datadog-dark-0deebf2c.png",
   },
   reddit: { label: "Reddit", logo: "/brand-logos/reddit.png" },
   notion: { label: "Notion", logo: "/brand-logos/notion.png" },

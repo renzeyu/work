@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
 import { access, readdir, readFile, stat } from "node:fs/promises";
 import path from "node:path";
 import test from "node:test";
@@ -232,7 +233,7 @@ test("uses standardized client identities on matching project routes", async () 
 
   assert.match(datadog, /brand-mark--datadog/);
   assert.match(datadog, /\/brand-logos\/datadog\.svg/);
-  assert.match(datadog, /\/brand-logos\/datadog-dark\.svg/);
+  assert.match(datadog, /\/brand-logos\/datadog-dark-0deebf2c\.png/);
   assert.doesNotMatch(datadog, />ZR<\/span>/);
   assert.match(reddit, /brand-mark--reddit/);
   assert.match(reddit, /\/brand-logos\/reddit\.png/);
@@ -241,7 +242,7 @@ test("uses standardized client identities on matching project routes", async () 
 
   for (const logo of [
     "datadog.svg",
-    "datadog-dark.svg",
+    "datadog-dark-0deebf2c.png",
     "reddit.png",
     "notion.png",
     "black-math.png",
@@ -261,34 +262,36 @@ test("uses Datadog as the neutral identity", async () => {
     const html = await readFile(new URL(route, outputRoot), "utf8");
     assert.match(html, /brand-mark--datadog/);
     assert.match(html, /\/brand-logos\/datadog\.svg/);
-    assert.match(html, /\/brand-logos\/datadog-dark\.svg/);
+    assert.match(html, /\/brand-logos\/datadog-dark-0deebf2c\.png/);
   }
 });
 
-test("uses symbol-only Datadog assets with white dark-mode interiors", async () => {
-  const [svg, darkSvg] = await Promise.all([
+test("uses the approved symbol-only Datadog dark-mode artwork", async () => {
+  const [svg, darkPng] = await Promise.all([
     readFile(
       new URL("../public/brand-logos/datadog.svg", import.meta.url),
       "utf8",
     ),
     readFile(
-      new URL("../public/brand-logos/datadog-dark.svg", import.meta.url),
-      "utf8",
+      new URL(
+        "../public/brand-logos/datadog-dark-0deebf2c.png",
+        import.meta.url,
+      ),
     ),
   ]);
 
   assert.equal((svg.match(/<path\b/g) ?? []).length, 1);
   assert.match(svg, /id="datadog-mark"/);
   assert.doesNotMatch(svg, /path20188|DATADOG/);
-  assert.equal((darkSvg.match(/<path\b/g) ?? []).length, 3);
-  assert.match(darkSvg, /id="datadog-dog-fill"[\s\S]+fill="#ffffff"/);
-  assert.match(darkSvg, /id="datadog-graph-fill"[\s\S]+fill="#ffffff"/);
-  assert.match(
-    darkSvg,
-    /M 343\.85224,540\.39898 l 15\.53927,-2\.13856/,
+  assert.equal(darkPng.subarray(0, 8).toString("hex"), "89504e470d0a1a0a");
+  assert.equal(darkPng.readUInt32BE(16), 512);
+  assert.equal(darkPng.readUInt32BE(20), 512);
+  assert.equal(darkPng[24], 8, "Dark logo must remain 8-bit");
+  assert.equal(darkPng[25], 6, "Dark logo must remain an RGBA PNG");
+  assert.equal(
+    createHash("sha256").update(darkPng).digest("hex"),
+    "0deebf2ccd4177db8fde1516b6da969229def88941051e69e9c914d2236244e6",
   );
-  assert.match(darkSvg, /id="datadog-mark"[\s\S]+fill="#612ba6"/);
-  assert.doesNotMatch(darkSvg, /<rect\b|path20188|DATADOG/);
 });
 
 test("serves the optimized Nihonto lead image without dropping its PNG fallback", async () => {
@@ -316,7 +319,9 @@ test("prefixes generated assets for repository-subpath Pages builds", async (con
     html.includes(`src="${basePath}/brand-logos/datadog.svg"`),
   );
   assert.ok(
-    html.includes(`src="${basePath}/brand-logos/datadog-dark.svg"`),
+    html.includes(
+      `src="${basePath}/brand-logos/datadog-dark-0deebf2c.png"`,
+    ),
   );
   assert.doesNotMatch(html, /src="\/_next\//);
 
