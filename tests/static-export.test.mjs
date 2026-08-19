@@ -31,7 +31,24 @@ test("exports every legacy portfolio route as static HTML", async () => {
 });
 
 test("work page contains all project links and migration-safe metadata", async () => {
-  const html = await readFile(new URL("work/index.html", outputRoot), "utf8");
+  const [html, rootHtml] = await Promise.all([
+    readFile(new URL("work/index.html", outputRoot), "utf8"),
+    readFile(new URL("index.html", outputRoot), "utf8"),
+  ]);
+
+  for (const frontpage of [rootHtml, html]) {
+    assert.match(frontpage, /<h1 id="work-heading">Product Motion<\/h1>/);
+    assert.match(
+      frontpage,
+      /<p>Motion systems, launch stories, and interaction-focused work for digital products\.<\/p>/,
+    );
+    assert.doesNotMatch(frontpage, /work-eyebrow|Selected work/);
+    assert.doesNotMatch(frontpage, /class="work-database-heading"/);
+    assert.doesNotMatch(
+      frontpage,
+      /<span>Projects<\/span>|>9(?:<!-- -->)? items</,
+    );
+  }
 
   assert.match(html, /Zeyu Ren/);
   assert.match(html, /Product Motion Designer/);
