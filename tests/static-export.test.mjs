@@ -85,6 +85,25 @@ test("rich project copy is semantic and closed lightboxes do not preload", async
   assert.doesNotMatch(html, /<video[^>]+src="\/media\//);
 });
 
+test("uses standardized client identities on matching project routes", async () => {
+  const [personal, reddit, blackMath] = await Promise.all([
+    readFile(new URL("2024-reel/index.html", outputRoot), "utf8"),
+    readFile(new URL("brand-refresh-launch/index.html", outputRoot), "utf8"),
+    readFile(new URL("hatch-awards-2019/index.html", outputRoot), "utf8"),
+  ]);
+
+  assert.match(personal, /brand-mark--personal/);
+  assert.match(personal, />ZR<\/span>/);
+  assert.match(reddit, /brand-mark--reddit/);
+  assert.match(reddit, /\/brand-logos\/reddit\.png/);
+  assert.match(blackMath, /brand-mark--black-math/);
+  assert.match(blackMath, /\/brand-logos\/black-math\.png/);
+
+  for (const logo of ["reddit.png", "notion.png", "black-math.png"]) {
+    await access(new URL(`../public/brand-logos/${logo}`, import.meta.url));
+  }
+});
+
 test("serves the optimized Nihonto lead image without dropping its PNG fallback", async () => {
   const html = await readFile(
     new URL("nihonto-enter-the-swordsmith/index.html", outputRoot),
@@ -107,6 +126,12 @@ test("prefixes generated assets for repository-subpath Pages builds", async (con
   const html = await readFile(new URL("index.html", outputRoot), "utf8");
   assert.ok(html.includes(`src="${basePath}/_next/`));
   assert.doesNotMatch(html, /src="\/_next\//);
+
+  const redditHtml = await readFile(
+    new URL("brand-refresh-launch/index.html", outputRoot),
+    "utf8",
+  );
+  assert.ok(redditHtml.includes(`src="${basePath}/brand-logos/reddit.png"`));
 
   const cssRoot = new URL("_next/static/css/", outputRoot);
   const cssFiles = (await readdir(cssRoot)).filter((file) => file.endsWith(".css"));

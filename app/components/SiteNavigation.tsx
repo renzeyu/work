@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import {
   Briefcase,
@@ -14,13 +15,31 @@ import {
   VideoCamera,
   X,
 } from "@phosphor-icons/react";
-import { basePath, portfolio, withBasePath } from "../lib/portfolio";
+import {
+  basePath,
+  portfolio,
+  type PortfolioClient,
+  withBasePath,
+} from "../lib/portfolio";
 
 const socialLinks = [
   { key: "linkedin", label: "LinkedIn", Icon: LinkedinLogo },
   { key: "instagram", label: "Instagram", Icon: InstagramLogo },
   { key: "vimeo", label: "Vimeo", Icon: VideoCamera },
 ] as const;
+
+const clientIdentities: Record<
+  PortfolioClient,
+  { label: string; logo?: string }
+> = {
+  personal: { label: "Zeyu Ren" },
+  reddit: { label: "Reddit", logo: "/brand-logos/reddit.png" },
+  notion: { label: "Notion", logo: "/brand-logos/notion.png" },
+  "black-math": {
+    label: "Black Math",
+    logo: "/brand-logos/black-math.png",
+  },
+};
 
 function currentRoute(pathname: string) {
   const route = basePath && pathname.startsWith(basePath)
@@ -118,14 +137,33 @@ function NavigationLinks({ onNavigate }: { onNavigate?: () => void }) {
 }
 
 function Identity() {
+  const pathname = currentRoute(usePathname());
+  const currentProject = portfolio.covers.find(
+    (project) => pathname === `/${project.slug}`,
+  );
+  const client = currentProject?.client ?? "personal";
+  const identity = clientIdentities[client];
+
   return (
     <div className="workspace-identity">
       <a
         className="workspace-brand"
         href={withBasePath("/work/")}
-        title={`${portfolio.brand.name}, ${portfolio.brand.role}`}
+        title={`${identity.label} work by ${portfolio.brand.name}`}
       >
-        <span className="brand-mark">ZR</span>
+        <span className={`brand-mark brand-mark--${client}`}>
+          {identity.logo ? (
+            <Image
+              src={withBasePath(identity.logo)}
+              alt={identity.label}
+              width={128}
+              height={128}
+              unoptimized
+            />
+          ) : (
+            "ZR"
+          )}
+        </span>
         <span className="brand-copy">
           <strong>{portfolio.brand.name}</strong>
           <small>{portfolio.brand.role}</small>

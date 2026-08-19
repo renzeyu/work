@@ -1,21 +1,21 @@
 :root {
   color-scheme: light dark;
-  --shell: #f3f3f2;
-  --surface: #fafaf9;
-  --surface-raised: #fdfdfc;
-  --surface-hover: #ededeb;
-  --surface-active: #e7e7e4;
-  --media-background: #eceeec;
-  --control: #f5f5f3;
-  --ink: #1c1d1c;
-  --ink-soft: #555855;
-  --muted: #646864;
-  --border: #ddddda;
-  --border-strong: #b8bcb8;
-  --accent: #254f43;
-  --accent-soft: #dfe9e4;
-  --on-accent: #f7faf8;
-  --danger: #a13f3f;
+  --shell: #f7f7f5;
+  --surface: #ffffff;
+  --surface-raised: #ffffff;
+  --surface-hover: #efefed;
+  --surface-active: #e9e9e7;
+  --media-background: #f1f1ef;
+  --control: #f7f7f5;
+  --ink: #37352f;
+  --ink-soft: #5f5e59;
+  --muted: #6f6d68;
+  --border: #e9e9e7;
+  --border-strong: #c7c7c4;
+  --accent: #37352f;
+  --accent-soft: #e9e9e7;
+  --on-accent: #ffffff;
+  --danger: #d44c47;
   --radius: 12px;
   --panel-radius: 16px;
   --sidebar-width: 240px;
@@ -25,22 +25,22 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --shell: #181918;
-    --surface: #202120;
-    --surface-raised: #252625;
-    --surface-hover: #2c2e2c;
-    --surface-active: #333533;
-    --media-background: #2a2c2a;
-    --control: #292b29;
-    --ink: #f0f1ee;
-    --ink-soft: #c2c5c1;
-    --muted: #979b96;
-    --border: #383b38;
-    --border-strong: #666b66;
-    --accent: #9cc6b7;
-    --accent-soft: #294139;
-    --on-accent: #17231f;
-    --danger: #e28b8b;
+    --shell: #202020;
+    --surface: #191919;
+    --surface-raised: #202020;
+    --surface-hover: #2c2c2c;
+    --surface-active: #333333;
+    --media-background: #242424;
+    --control: #252525;
+    --ink: #f1f1ef;
+    --ink-soft: #c9c9c7;
+    --muted: #a7a7a4;
+    --border: #333333;
+    --border-strong: #5a5a58;
+    --accent: #f1f1ef;
+    --accent-soft: #373737;
+    --on-accent: #191919;
+    --danger: #ff7369;
   }
 }
 
@@ -169,13 +169,28 @@ a {
   width: 34px;
   height: 34px;
   flex: 0 0 34px;
+  overflow: hidden;
   place-items: center;
+  border: 1px solid var(--border-strong);
   border-radius: 9px;
-  background: var(--accent);
-  color: var(--on-accent);
+  background: #ffffff;
+  color: #ffffff;
   font-size: 12px;
   font-weight: 650;
   letter-spacing: 0.04em;
+}
+
+.brand-mark img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.brand-mark--personal {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: var(--surface);
 }
 
 .brand-copy {
@@ -385,7 +400,7 @@ a {
 
 .work-eyebrow {
   margin: 0 0 14px;
-  color: var(--accent);
+  color: var(--muted);
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.08em;
@@ -631,7 +646,7 @@ a {
   aspect-ratio: 16 / 9;
   overflow: hidden;
   border-radius: 8px;
-  background: #171817;
+  background: #191919;
 }
 
 .feature-video video,
