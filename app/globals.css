@@ -270,6 +270,28 @@ a {
   object-fit: contain;
 }
 
+.brand-mark .brand-logo--dark {
+  display: none;
+}
+
+:root[data-theme="dark"] .brand-mark--datadog .brand-logo--light {
+  display: none;
+}
+
+:root[data-theme="dark"] .brand-mark--datadog .brand-logo--dark {
+  display: block;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) .brand-mark--datadog .brand-logo--light {
+    display: none;
+  }
+
+  :root:not([data-theme]) .brand-mark--datadog .brand-logo--dark {
+    display: block;
+  }
+}
+
 .brand-copy {
   display: grid;
   min-width: 0;

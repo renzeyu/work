@@ -53,9 +53,13 @@ const projectIcons: Record<PortfolioProjectIcon, Icon> = {
 
 const clientIdentities: Record<
   PortfolioClient,
-  { label: string; logo?: string }
+  { label: string; logo: string; darkLogo?: string }
 > = {
-  datadog: { label: "Datadog", logo: "/brand-logos/datadog.svg" },
+  datadog: {
+    label: "Datadog",
+    logo: "/brand-logos/datadog.svg",
+    darkLogo: "/brand-logos/datadog-dark.svg",
+  },
   reddit: { label: "Reddit", logo: "/brand-logos/reddit.png" },
   notion: { label: "Notion", logo: "/brand-logos/notion.png" },
   "black-math": {
@@ -182,11 +186,26 @@ function Identity() {
         href={withBasePath("/work/")}
         title={`${identity.label} work by ${portfolio.brand.name}`}
       >
-        <span className={`brand-mark brand-mark--${client}`}>
-          {identity.logo ? (
+        <span
+          className={`brand-mark brand-mark--${client}`}
+          role="img"
+          aria-label={identity.label}
+        >
+          <Image
+            className="brand-logo brand-logo--light"
+            src={withBasePath(identity.logo)}
+            alt=""
+            aria-hidden="true"
+            width={128}
+            height={128}
+            unoptimized
+          />
+          {identity.darkLogo ? (
             <Image
-              src={withBasePath(identity.logo)}
-              alt={identity.label}
+              className="brand-logo brand-logo--dark"
+              src={withBasePath(identity.darkLogo)}
+              alt=""
+              aria-hidden="true"
               width={128}
               height={128}
               unoptimized
