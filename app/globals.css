@@ -156,11 +156,10 @@ a {
 
 .workspace-brand {
   display: flex;
+  min-width: 0;
   min-height: 42px;
   align-items: center;
   gap: 10px;
-  overflow: hidden;
-  border-radius: 8px;
   text-decoration: none;
 }
 
@@ -169,14 +168,10 @@ a {
   width: 34px;
   height: 34px;
   flex: 0 0 34px;
-  overflow: hidden;
   place-items: center;
-  border: 1px solid var(--border-strong);
-  border-radius: 9px;
-  background: #ffffff;
-  color: #ffffff;
   font-size: 12px;
   font-weight: 650;
+  line-height: 1;
   letter-spacing: 0.04em;
 }
 
@@ -188,7 +183,8 @@ a {
 }
 
 .brand-mark--personal {
-  border-color: var(--ink);
+  overflow: hidden;
+  border-radius: 9px;
   background: var(--ink);
   color: var(--surface);
 }
