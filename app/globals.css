@@ -182,11 +182,9 @@ a {
   object-fit: contain;
 }
 
-.brand-mark--personal {
-  overflow: hidden;
-  border-radius: 9px;
-  background: var(--ink);
-  color: var(--surface);
+.brand-mark--datadog img {
+  width: 81.25%;
+  height: 81.25%;
 }
 
 .brand-copy {

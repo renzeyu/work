@@ -32,7 +32,7 @@ const clientIdentities: Record<
   PortfolioClient,
   { label: string; logo?: string }
 > = {
-  personal: { label: "Zeyu Ren" },
+  datadog: { label: "Datadog", logo: "/brand-logos/datadog.svg" },
   reddit: { label: "Reddit", logo: "/brand-logos/reddit.png" },
   notion: { label: "Notion", logo: "/brand-logos/notion.png" },
   "black-math": {
@@ -141,7 +141,7 @@ function Identity() {
   const currentProject = portfolio.covers.find(
     (project) => pathname === `/${project.slug}`,
   );
-  const client = currentProject?.client ?? "personal";
+  const client = currentProject?.client ?? "datadog";
   const identity = clientIdentities[client];
 
   return (
@@ -160,9 +160,7 @@ function Identity() {
               height={128}
               unoptimized
             />
-          ) : (
-            "ZR"
-          )}
+          ) : null}
         </span>
         <span className="brand-copy">
           <strong>{portfolio.brand.name}</strong>

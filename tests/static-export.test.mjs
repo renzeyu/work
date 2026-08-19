@@ -86,21 +86,41 @@ test("rich project copy is semantic and closed lightboxes do not preload", async
 });
 
 test("uses standardized client identities on matching project routes", async () => {
-  const [personal, reddit, blackMath] = await Promise.all([
+  const [datadog, reddit, blackMath] = await Promise.all([
     readFile(new URL("2024-reel/index.html", outputRoot), "utf8"),
     readFile(new URL("brand-refresh-launch/index.html", outputRoot), "utf8"),
     readFile(new URL("hatch-awards-2019/index.html", outputRoot), "utf8"),
   ]);
 
-  assert.match(personal, /brand-mark--personal/);
-  assert.match(personal, />ZR<\/span>/);
+  assert.match(datadog, /brand-mark--datadog/);
+  assert.match(datadog, /\/brand-logos\/datadog\.svg/);
+  assert.doesNotMatch(datadog, />ZR<\/span>/);
   assert.match(reddit, /brand-mark--reddit/);
   assert.match(reddit, /\/brand-logos\/reddit\.png/);
   assert.match(blackMath, /brand-mark--black-math/);
   assert.match(blackMath, /\/brand-logos\/black-math\.png/);
 
-  for (const logo of ["reddit.png", "notion.png", "black-math.png"]) {
+  for (const logo of [
+    "datadog.svg",
+    "reddit.png",
+    "notion.png",
+    "black-math.png",
+  ]) {
     await access(new URL(`../public/brand-logos/${logo}`, import.meta.url));
+  }
+});
+
+test("uses Datadog as the neutral identity", async () => {
+  for (const route of [
+    "index.html",
+    "work/index.html",
+    "contact/index.html",
+    "2024-reel/index.html",
+    "404.html",
+  ]) {
+    const html = await readFile(new URL(route, outputRoot), "utf8");
+    assert.match(html, /brand-mark--datadog/);
+    assert.match(html, /\/brand-logos\/datadog\.svg/);
   }
 });
 
@@ -125,6 +145,9 @@ test("prefixes generated assets for repository-subpath Pages builds", async (con
 
   const html = await readFile(new URL("index.html", outputRoot), "utf8");
   assert.ok(html.includes(`src="${basePath}/_next/`));
+  assert.ok(
+    html.includes(`src="${basePath}/brand-logos/datadog.svg"`),
+  );
   assert.doesNotMatch(html, /src="\/_next\//);
 
   const redditHtml = await readFile(

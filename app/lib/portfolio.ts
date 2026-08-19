@@ -45,7 +45,7 @@ export type PortfolioProject = {
   modules: ProjectModule[];
 };
 
-export type PortfolioClient = "personal" | "reddit" | "notion" | "black-math";
+export type PortfolioClient = "datadog" | "reddit" | "notion" | "black-math";
 
 export type PortfolioCover = {
   slug: string;
