@@ -182,11 +182,6 @@ a {
   object-fit: contain;
 }
 
-.brand-mark--datadog img {
-  width: 81.25%;
-  height: 81.25%;
-}
-
 .brand-copy {
   display: grid;
   min-width: 0;

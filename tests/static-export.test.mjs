@@ -124,6 +124,17 @@ test("uses Datadog as the neutral identity", async () => {
   }
 });
 
+test("uses the symbol-only Datadog asset", async () => {
+  const svg = await readFile(
+    new URL("../public/brand-logos/datadog.svg", import.meta.url),
+    "utf8",
+  );
+
+  assert.equal((svg.match(/<path\b/g) ?? []).length, 1);
+  assert.match(svg, /id="datadog-mark"/);
+  assert.doesNotMatch(svg, /path20188|DATADOG/);
+});
+
 test("serves the optimized Nihonto lead image without dropping its PNG fallback", async () => {
   const html = await readFile(
     new URL("nihonto-enter-the-swordsmith/index.html", outputRoot),
