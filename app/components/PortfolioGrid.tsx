@@ -5,7 +5,7 @@ export function PortfolioGrid() {
   return (
     <section className="work-page" aria-labelledby="work-heading">
       <header className="work-header">
-        <h1 id="work-heading">Product Motion</h1>
+        <h1 id="work-heading">Motion Design Works</h1>
         <p>
           Motion systems, launch stories, and interaction-focused work for digital products.
         </p>

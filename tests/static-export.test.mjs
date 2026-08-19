@@ -52,7 +52,7 @@ test("work page contains all project links and migration-safe metadata", async (
   ]);
 
   for (const frontpage of [rootHtml, html]) {
-    assert.match(frontpage, /<h1 id="work-heading">Product Motion<\/h1>/);
+    assert.match(frontpage, /<h1 id="work-heading">Motion Design Works<\/h1>/);
     assert.match(
       frontpage,
       /<p>Motion systems, launch stories, and interaction-focused work for digital products\.<\/p>/,
