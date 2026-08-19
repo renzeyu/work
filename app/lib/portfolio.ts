@@ -47,10 +47,22 @@ export type PortfolioProject = {
 
 export type PortfolioClient = "datadog" | "reddit" | "notion" | "black-math";
 
+export type PortfolioProjectIcon =
+  | "reel"
+  | "brand-refresh"
+  | "ipo"
+  | "recap"
+  | "avatars"
+  | "rplace"
+  | "motion-system"
+  | "awards"
+  | "swordsmith";
+
 export type PortfolioCover = {
   slug: string;
   title: string;
   client: PortfolioClient;
+  icon: PortfolioProjectIcon;
   asset: MediaAsset;
 };
 

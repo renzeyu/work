@@ -117,6 +117,53 @@ test("work page contains all project links and migration-safe metadata", async (
   assert.doesNotMatch(html, /cdn\.myportfolio\.com|www-ccv\.adobe\.io/i);
 });
 
+test("assigns every project a distinct icon from the shared navigation system", async () => {
+  const [html, data] = await Promise.all([
+    readFile(new URL("work/index.html", outputRoot), "utf8"),
+    readFile(new URL("../app/data/portfolio.json", import.meta.url), "utf8"),
+  ]);
+  const expectedIcons = [
+    "reel",
+    "brand-refresh",
+    "ipo",
+    "recap",
+    "avatars",
+    "rplace",
+    "motion-system",
+    "awards",
+    "swordsmith",
+  ];
+  const portfolioData = JSON.parse(data);
+  const renderedIcons = [
+    ...html.matchAll(
+      /<svg\b([^>]*)data-project-icon="([^"]+)"([^>]*)>([\s\S]*?)<\/svg>/g,
+    ),
+  ].map((match) => ({
+    attributes: `${match[1]}${match[3]}`,
+    icon: match[2],
+    body: match[4],
+  }));
+
+  assert.deepEqual(
+    portfolioData.covers.map((project) => project.icon),
+    expectedIcons,
+  );
+  assert.deepEqual(
+    [...new Set(renderedIcons.map(({ icon }) => icon))],
+    expectedIcons,
+  );
+
+  const uniqueIconBodies = new Set();
+  for (const icon of expectedIcons) {
+    const copies = renderedIcons.filter((rendered) => rendered.icon === icon);
+    assert.equal(copies.length, 2, `${icon} should render in both navigation views`);
+    assert.match(copies[0].attributes, /aria-hidden="true"/);
+    assert.equal(copies[0].body, copies[1].body);
+    uniqueIconBodies.add(copies[0].body);
+  }
+  assert.equal(uniqueIconBodies.size, expectedIcons.length);
+});
+
 test("publishes repository-path sitemap and robots URLs", async () => {
   const sitemap = await readFile(new URL("sitemap.xml", outputRoot), "utf8");
   const robots = await readFile(new URL("robots.txt", outputRoot), "utf8");

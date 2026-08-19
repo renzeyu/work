@@ -13,6 +13,7 @@
       "slug": "2024-reel",
       "title": "2025 Reel",
       "client": "datadog",
+      "icon": "reel",
       "asset": {
         "kind": "video",
         "src": "/media/da31ab72-111e-44e4-9e34-d7df12ad1480.mp4",
@@ -25,6 +26,7 @@
       "slug": "brand-refresh-launch",
       "title": "Brand Refresh Launch",
       "client": "reddit",
+      "icon": "brand-refresh",
       "asset": {
         "kind": "video",
         "src": "/media/3d7e533f-a400-4cb2-abe9-b7e632fec0b4.mp4",
@@ -37,6 +39,7 @@
       "slug": "reddit-ipo-social-video",
       "title": "Reddit IPO Social Video",
       "client": "reddit",
+      "icon": "ipo",
       "asset": {
         "kind": "video",
         "src": "/media/6945a3e2-b7e9-4dad-8d50-355990ed8564.mp4",
@@ -49,6 +52,7 @@
       "slug": "reddit-recap-1",
       "title": "Reddit Recap",
       "client": "reddit",
+      "icon": "recap",
       "asset": {
         "kind": "video",
         "src": "/media/a89a8489-8064-4575-8ce3-6f7f68612113.mp4",
@@ -61,6 +65,7 @@
       "slug": "collectable-avatars-launch-video",
       "title": "Collectable Avatars Launch Video",
       "client": "reddit",
+      "icon": "avatars",
       "asset": {
         "kind": "video",
         "src": "/media/76e56e0e-2ead-4e5f-8c9c-a191987d4844.mp4",
@@ -73,6 +78,7 @@
       "slug": "rplace-returns-teaser",
       "title": "r/Place Returns Teaser",
       "client": "reddit",
+      "icon": "rplace",
       "asset": {
         "kind": "video",
         "src": "/media/59cf4a58-a42e-4f5f-9f4d-47682bab1c68.mp4",
@@ -85,6 +91,7 @@
       "slug": "reddit-motion-design-system",
       "title": "Reddit Motion Design System",
       "client": "reddit",
+      "icon": "motion-system",
       "asset": {
         "kind": "video",
         "src": "/media/7f7c5218-7b33-44f7-9f79-8c1039f67156.mp4",
@@ -97,6 +104,7 @@
       "slug": "hatch-awards-2019",
       "title": "HATCH AWARDS 2019",
       "client": "black-math",
+      "icon": "awards",
       "asset": {
         "kind": "video",
         "src": "/media/a4744850-d9e5-4f4d-aa55-8893926ed2d8.mp4",
@@ -109,6 +117,7 @@
       "slug": "nihonto-enter-the-swordsmith",
       "title": "\"Nihontō - Enter the Swordsmith\"",
       "client": "black-math",
+      "icon": "swordsmith",
       "asset": {
         "kind": "video",
         "src": "/media/e3135418-edf5-4a10-b62d-9e05b4997c1c.mp4",

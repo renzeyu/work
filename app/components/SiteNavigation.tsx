@@ -4,21 +4,31 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import {
+  ArrowsClockwise,
+  BezierCurve,
   Briefcase,
+  CalendarDots,
+  ChartLineUp,
   EnvelopeSimple,
-  FilmStrip,
+  FilmReel,
+  GridFour,
   Info,
   InstagramLogo,
   LinkedinLogo,
   List,
   SidebarSimple,
+  Sword,
+  Trophy,
+  UserCircle,
   VideoCamera,
   X,
 } from "@phosphor-icons/react";
+import type { Icon } from "@phosphor-icons/react";
 import {
   basePath,
   portfolio,
   type PortfolioClient,
+  type PortfolioProjectIcon,
   withBasePath,
 } from "../lib/portfolio";
 
@@ -27,6 +37,18 @@ const socialLinks = [
   { key: "instagram", label: "Instagram", Icon: InstagramLogo },
   { key: "vimeo", label: "Vimeo", Icon: VideoCamera },
 ] as const;
+
+const projectIcons: Record<PortfolioProjectIcon, Icon> = {
+  reel: FilmReel,
+  "brand-refresh": ArrowsClockwise,
+  ipo: ChartLineUp,
+  recap: CalendarDots,
+  avatars: UserCircle,
+  rplace: GridFour,
+  "motion-system": BezierCurve,
+  awards: Trophy,
+  swordsmith: Sword,
+};
 
 const clientIdentities: Record<
   PortfolioClient,
@@ -99,6 +121,7 @@ function NavigationLinks({ onNavigate }: { onNavigate?: () => void }) {
           <ul className="project-list">
             {portfolio.covers.map((project) => {
               const route = `/${project.slug}`;
+              const ProjectIcon = projectIcons[project.icon];
               return (
                 <li key={project.slug}>
                   <a
@@ -108,7 +131,11 @@ function NavigationLinks({ onNavigate }: { onNavigate?: () => void }) {
                     onClick={onNavigate}
                     aria-label={project.title}
                   >
-                    <FilmStrip aria-hidden="true" weight="regular" />
+                    <ProjectIcon
+                      aria-hidden="true"
+                      data-project-icon={project.icon}
+                      weight="regular"
+                    />
                     <span className="nav-row__label">{project.title}</span>
                   </a>
                 </li>
