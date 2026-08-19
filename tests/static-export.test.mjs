@@ -164,6 +164,31 @@ test("assigns every project a distinct icon from the shared navigation system", 
   assert.equal(uniqueIconBodies.size, expectedIcons.length);
 });
 
+test("supports a persistent system-aware theme across both navigation views", async () => {
+  const [html, css, themeSource] = await Promise.all([
+    readFile(new URL("work/index.html", outputRoot), "utf8"),
+    readFile(new URL("../app/globals.css", import.meta.url), "utf8"),
+    readFile(new URL("../app/lib/theme.ts", import.meta.url), "utf8"),
+  ]);
+  const headStart = html.indexOf("<head>");
+  const themeInitializer = html.indexOf("zeyuren-product-motion-theme");
+  const bodyStart = html.indexOf("<body");
+
+  assert.equal((html.match(/data-theme-toggle/g) ?? []).length, 2);
+  assert.match(html, />Dark mode<\/span>/);
+  assert.match(html, />Light mode<\/span>/);
+  assert.ok(headStart >= 0 && themeInitializer > headStart);
+  assert.ok(bodyStart > themeInitializer, "Theme initializer must run before body paint");
+  assert.match(themeSource, /localStorage\.getItem\(storageKey\)/);
+  assert.match(themeSource, /prefers-color-scheme: dark/);
+  assert.match(css, /:root\[data-theme="dark"\]\s*\{/);
+  assert.match(
+    css,
+    /@media \(prefers-color-scheme: dark\)[\s\S]*?:root:not\(\[data-theme\]\)/,
+  );
+  assert.doesNotMatch(css, /color-scheme:\s*light dark/);
+});
+
 test("publishes repository-path sitemap and robots URLs", async () => {
   const sitemap = await readFile(new URL("sitemap.xml", outputRoot), "utf8");
   const robots = await readFile(new URL("robots.txt", outputRoot), "utf8");

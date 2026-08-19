@@ -24,6 +24,7 @@ import {
   X,
 } from "@phosphor-icons/react";
 import type { Icon } from "@phosphor-icons/react";
+import { ThemeToggle } from "./ThemeToggle";
 import {
   basePath,
   portfolio,
@@ -144,21 +145,24 @@ function NavigationLinks({ onNavigate }: { onNavigate?: () => void }) {
           </ul>
         </div>
       </nav>
-      <nav className="workspace-socials" aria-label="Social profiles">
-        {socialLinks.map(({ key, label, Icon }) => (
-          <a
-            key={key}
-            href={portfolio.socials[key]}
-            target="_blank"
-            rel="noreferrer"
-            aria-label={label}
-            onClick={onNavigate}
-          >
-            <Icon aria-hidden="true" weight="regular" />
-            <span className="nav-row__label">{label}</span>
-          </a>
-        ))}
-      </nav>
+      <div className="workspace-utilities">
+        <ThemeToggle />
+        <nav className="workspace-socials" aria-label="Social profiles">
+          {socialLinks.map(({ key, label, Icon }) => (
+            <a
+              key={key}
+              href={portfolio.socials[key]}
+              target="_blank"
+              rel="noreferrer"
+              aria-label={label}
+              onClick={onNavigate}
+            >
+              <Icon aria-hidden="true" weight="regular" />
+              <span className="nav-row__label">{label}</span>
+            </a>
+          ))}
+        </nav>
+      </div>
     </>
   );
 }
