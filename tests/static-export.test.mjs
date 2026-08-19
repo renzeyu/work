@@ -45,6 +45,40 @@ test("keeps the footer free of a divider", async () => {
   }
 });
 
+test("self-hosts the complete Notion Inter family", async () => {
+  const css = await readFile(
+    new URL("../app/globals.css", import.meta.url),
+    "utf8",
+  );
+  const faces = [
+    ["Regular", 400, "normal"],
+    ["Italic", 400, "italic"],
+    ["Medium", 500, "normal"],
+    ["MediumItalic", 500, "italic"],
+    ["SemiBold", 600, "normal"],
+    ["SemiBoldItalic", 600, "italic"],
+    ["Bold", 700, "normal"],
+    ["BoldItalic", 700, "italic"],
+  ];
+  const fontFaceRules = [...css.matchAll(/@font-face\s*\{([^}]*)\}/g)].map(
+    (match) => match[1],
+  );
+
+  for (const [name, weight, style] of faces) {
+    const file = `NotionInter-${name}.woff2`;
+    const font = await readFile(new URL(`../app/fonts/${file}`, import.meta.url));
+    const rule = fontFaceRules.find((fontFace) => fontFace.includes(file));
+    assert.equal(font.subarray(0, 4).toString(), "wOF2");
+    assert.ok(rule, `Missing @font-face rule for ${file}`);
+    assert.match(rule, new RegExp(`font-weight: ${weight};`));
+    assert.match(rule, new RegExp(`font-style: ${style};`));
+  }
+
+  await access(new URL("../app/fonts/OFL.txt", import.meta.url));
+  assert.match(css, /font-family: "Notion Inter"/);
+  assert.doesNotMatch(css, /Jost|Trebuchet/);
+});
+
 test("work page contains all project links and migration-safe metadata", async () => {
   const [html, rootHtml] = await Promise.all([
     readFile(new URL("work/index.html", outputRoot), "utf8"),
@@ -205,7 +239,13 @@ test("prefixes generated assets for repository-subpath Pages builds", async (con
     await Promise.all(cssFiles.map((file) => readFile(new URL(file, cssRoot), "utf8")))
   ).join("\n");
   assert.ok(css.includes(`url(${basePath}/_next/`));
+  assert.ok(
+    css.includes(
+      `url(${basePath}/_next/static/media/NotionInter-Regular`,
+    ),
+  );
   assert.doesNotMatch(css, /url\(\/_next\//);
+  assert.doesNotMatch(css, /Jost/);
 });
 
 test("all local media stays within GitHub's single-file limit", async () => {

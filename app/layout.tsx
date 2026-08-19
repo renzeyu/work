@@ -1,5 +1,4 @@
 import type { Metadata, Viewport } from "next";
-import "@fontsource-variable/jost/wght.css";
 import "./globals.css";
 import { SiteShell } from "./components/SiteShell";
 import { absoluteSiteUrl, siteUrl } from "./lib/site";

@@ -50,7 +50,7 @@ The About form opens the visitor’s email app and is configured for `hello@zeyu
 - Looping motion assets use local H.264 MP4 files with poster images.
 - Four former Adobe CCV videos are archived locally.
 - Three longer films remain Vimeo embeds.
-- Jost Variable is self-hosted through the installed package.
+- Notion Inter is self-hosted in web-optimized WOFF2 format under the SIL Open Font License 1.1.
 - Phosphor provides the workspace and social icon family.
 
 All portfolio artwork and copy remain copyright Zeyu Ren.
