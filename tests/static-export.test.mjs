@@ -233,7 +233,7 @@ test("uses standardized client identities on matching project routes", async () 
 
   assert.match(datadog, /brand-mark--datadog/);
   assert.match(datadog, /\/brand-logos\/datadog\.svg/);
-  assert.match(datadog, /\/brand-logos\/datadog-dark-0deebf2c\.png/);
+  assert.match(datadog, /\/brand-logos\/datadog-dark-e9377862\.png/);
   assert.doesNotMatch(datadog, />ZR<\/span>/);
   assert.match(reddit, /brand-mark--reddit/);
   assert.match(reddit, /\/brand-logos\/reddit\.png/);
@@ -242,7 +242,7 @@ test("uses standardized client identities on matching project routes", async () 
 
   for (const logo of [
     "datadog.svg",
-    "datadog-dark-0deebf2c.png",
+    "datadog-dark-e9377862.png",
     "reddit.png",
     "notion.png",
     "black-math.png",
@@ -262,7 +262,7 @@ test("uses Datadog as the neutral identity", async () => {
     const html = await readFile(new URL(route, outputRoot), "utf8");
     assert.match(html, /brand-mark--datadog/);
     assert.match(html, /\/brand-logos\/datadog\.svg/);
-    assert.match(html, /\/brand-logos\/datadog-dark-0deebf2c\.png/);
+    assert.match(html, /\/brand-logos\/datadog-dark-e9377862\.png/);
   }
 });
 
@@ -274,7 +274,7 @@ test("uses the approved symbol-only Datadog dark-mode artwork", async () => {
     ),
     readFile(
       new URL(
-        "../public/brand-logos/datadog-dark-0deebf2c.png",
+        "../public/brand-logos/datadog-dark-e9377862.png",
         import.meta.url,
       ),
     ),
@@ -290,7 +290,7 @@ test("uses the approved symbol-only Datadog dark-mode artwork", async () => {
   assert.equal(darkPng[25], 6, "Dark logo must remain an RGBA PNG");
   assert.equal(
     createHash("sha256").update(darkPng).digest("hex"),
-    "0deebf2ccd4177db8fde1516b6da969229def88941051e69e9c914d2236244e6",
+    "e9377862f9ed3741df1aa391ea28949d687dd2ba16d71196d72bc057d06cb31d",
   );
 });
 
@@ -320,7 +320,7 @@ test("prefixes generated assets for repository-subpath Pages builds", async (con
   );
   assert.ok(
     html.includes(
-      `src="${basePath}/brand-logos/datadog-dark-0deebf2c.png"`,
+      `src="${basePath}/brand-logos/datadog-dark-e9377862.png"`,
     ),
   );
   assert.doesNotMatch(html, /src="\/_next\//);
