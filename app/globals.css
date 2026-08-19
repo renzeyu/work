@@ -823,9 +823,8 @@ a {
   width: min(100%, var(--content-width));
   align-items: center;
   justify-content: space-between;
-  padding: 42px clamp(28px, 5vw, 80px) 34px;
-  margin: 54px auto 0;
-  border-top: 1px solid var(--border);
+  padding: 0 clamp(28px, 5vw, 80px) 34px;
+  margin: 64px auto 0;
   color: var(--muted);
   font-size: 12px;
 }
@@ -1025,8 +1024,8 @@ a {
   }
 
   .site-footer {
-    padding: 28px 20px 30px;
-    margin-top: 42px;
+    padding: 0 20px 30px;
+    margin-top: 48px;
   }
 }
 
@@ -1105,6 +1104,7 @@ a {
 
   .site-footer {
     padding-inline: 16px;
+    margin-top: 40px;
   }
 }
 

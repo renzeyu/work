@@ -30,6 +30,21 @@ test("exports every legacy portfolio route as static HTML", async () => {
   await access(new URL("sitemap.xml", outputRoot));
 });
 
+test("keeps the footer free of a divider", async () => {
+  const css = await readFile(
+    new URL("../app/globals.css", import.meta.url),
+    "utf8",
+  );
+  const footerRules = [...css.matchAll(/\.site-footer\s*\{([^}]*)\}/g)].map(
+    (match) => match[1],
+  );
+
+  assert.ok(footerRules.length > 0);
+  for (const rule of footerRules) {
+    assert.doesNotMatch(rule, /\bborder-(?:top|block-start)\s*:/);
+  }
+});
+
 test("work page contains all project links and migration-safe metadata", async () => {
   const [html, rootHtml] = await Promise.all([
     readFile(new URL("work/index.html", outputRoot), "utf8"),
