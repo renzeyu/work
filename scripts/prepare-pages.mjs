@@ -3,33 +3,44 @@ import {
   mkdir,
   readFile,
   readdir,
+  rename,
+  rm,
   writeFile,
 } from "node:fs/promises";
 import path from "node:path";
 
 const outputRoot = path.resolve("dist/client");
-const files = await readdir(outputRoot);
 const basePath = (process.env.NEXT_PUBLIC_BASE_PATH ?? "").replace(/\/$/, "");
 
-async function collectFiles(directory) {
-  const entries = await readdir(directory, { withFileTypes: true });
-  const nested = await Promise.all(
-    entries.map((entry) => {
-      const entryPath = path.join(directory, entry.name);
-      return entry.isDirectory() ? collectFiles(entryPath) : [entryPath];
-    }),
-  );
-  return nested.flat();
+if (basePath) {
+  const prefixedAssetRoot = path.join(outputRoot, basePath.replace(/^\/+/, ""));
+  const prefixedNextRoot = path.join(prefixedAssetRoot, "_next");
+
+  try {
+    await rename(prefixedNextRoot, path.join(outputRoot, "_next"));
+    await rm(prefixedAssetRoot, { force: true, recursive: true });
+  } catch (error) {
+    if (error?.code !== "ENOENT") throw error;
+  }
 }
 
+const files = await readdir(outputRoot);
+
 if (basePath) {
-  const generatedFiles = await collectFiles(outputRoot);
-  for (const filePath of generatedFiles) {
-    if (!/\.(?:css|html|js|rsc)$/.test(filePath)) continue;
+  for (const file of files) {
+    if (!/\.(?:html|rsc)$/.test(file)) continue;
+    const filePath = path.join(outputRoot, file);
     const source = await readFile(filePath, "utf8");
     const prefixed = source
-      .replaceAll("/_next/", `${basePath}/_next/`)
       .replaceAll('href="/favicon.png"', `href="${basePath}/favicon.png"`)
+      .replaceAll(
+        'href":"/favicon.png"',
+        `href":"${basePath}/favicon.png"`,
+      )
+      .replaceAll(
+        'href\\":\\"/favicon.png\\"',
+        `href\\":\\"${basePath}/favicon.png\\"`,
+      )
       .replaceAll('href="/og.jpg"', `href="${basePath}/og.jpg"`);
     await writeFile(filePath, prefixed);
   }

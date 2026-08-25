@@ -2944,7 +2944,12 @@ test("prefixes generated assets for repository-subpath Pages builds", async (con
   assert.ok(
     html.includes(`src="${basePath}/brand-logos/datadog-dark-e9377862.png"`),
   );
+  assert.doesNotMatch(html, /href(?:=|\\":\\")"?\/favicon\.png/);
   assert.doesNotMatch(html, /src="\/_next\//);
+
+  const rootRsc = await readFile(new URL("index.rsc", outputRoot), "utf8");
+  assert.ok(rootRsc.includes(`href":"${basePath}/favicon.png"`));
+  assert.doesNotMatch(rootRsc, /href":"\/favicon\.png"/);
 
   const redditHtml = await readFile(
     new URL("brand-refresh-launch/index.html", outputRoot),
@@ -3006,6 +3011,36 @@ test("prefixes generated assets for repository-subpath Pages builds", async (con
   );
   assert.doesNotMatch(css, /url\(\/_next\//);
   assert.doesNotMatch(css, /Jost/);
+
+  await access(new URL("_next/static/", outputRoot));
+  await assert.rejects(
+    access(new URL(`${basePath.slice(1)}/_next/static/`, outputRoot)),
+  );
+
+  const chunkRoot = new URL("_next/static/chunks/", outputRoot);
+  const chunkFiles = (await readdir(chunkRoot)).filter((file) =>
+    file.endsWith(".js"),
+  );
+  const chunks = await Promise.all(
+    chunkFiles.map(async (file) => ({
+      file,
+      source: await readFile(new URL(file, chunkRoot), "utf8"),
+    })),
+  );
+  const noseyAssistantChunk = chunks.find(({ file }) =>
+    file.startsWith("NoseyAssistant-"),
+  );
+
+  assert.ok(noseyAssistantChunk, "missing the lazy Nosey assistant chunk");
+  assert.ok(
+    noseyAssistantChunk.source.includes(
+      `${basePath}/_next/static/css/NoseyPrototype`,
+    ),
+  );
+  assert.doesNotMatch(
+    chunks.map(({ source }) => source).join("\n"),
+    /["'`]_next\/static\//,
+  );
 });
 
 test("all local media stays within GitHub's single-file limit", async () => {
