@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { forwardRef, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import {
@@ -18,7 +18,6 @@ import {
   Polygon,
   Shapes,
   SidebarSimple,
-  ScribbleLoop,
   Sword,
   Trophy,
   UsersThree,
@@ -26,7 +25,7 @@ import {
   VideoCamera,
   X,
 } from "@phosphor-icons/react";
-import type { Icon } from "@phosphor-icons/react";
+import type { Icon, IconProps } from "@phosphor-icons/react";
 import { ProjectNavLabel } from "./ProjectNavLabel";
 import { ThemeToggle } from "./ThemeToggle";
 import {
@@ -43,6 +42,44 @@ const socialLinks = [
   { key: "vimeo", label: "Vimeo", Icon: VideoCamera },
 ] as const;
 
+const NoodlingIcon = forwardRef<SVGSVGElement, IconProps>(
+  function NoodlingIcon(
+    {
+      alt,
+      color = "currentColor",
+      size = "1em",
+      mirrored = false,
+      weight: ignoredWeight,
+      ...props
+    },
+    ref,
+  ) {
+    void ignoredWeight;
+
+    return (
+      <svg
+        ref={ref}
+        xmlns="http://www.w3.org/2000/svg"
+        width={size}
+        height={size}
+        viewBox="0 0 24 24"
+        fill="none"
+        {...props}
+      >
+        {alt ? <title>{alt}</title> : null}
+        <path
+          d="M4 13.25C5.55 15.1 8.05 15.75 10.15 14.7C12.55 13.5 13.85 11.55 13.85 9.9C13.85 8.45 13.05 7.65 11.85 7.65C10.4 7.65 9.35 8.95 9.35 10.55C9.35 12.9 11.25 14.4 13.8 14.75C16.15 15.05 18.25 14.25 19.65 13.05"
+          stroke={color}
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          transform={mirrored ? "translate(24 0) scale(-1 1)" : undefined}
+        />
+      </svg>
+    );
+  },
+);
+
 const projectIcons: Record<PortfolioProjectIcon, Icon> = {
   "make-with-notion": Polygon,
   reel: FilmReel,
@@ -55,7 +92,7 @@ const projectIcons: Record<PortfolioProjectIcon, Icon> = {
   awards: Trophy,
   swordsmith: Sword,
   "ai-team": UsersThree,
-  "notion-ai-motion": ScribbleLoop,
+  "notion-ai-motion": NoodlingIcon,
 };
 
 const clientIdentities: Record<

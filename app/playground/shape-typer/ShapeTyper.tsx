@@ -12,6 +12,7 @@ import {
   useMemo,
   useRef,
   useState,
+  useSyncExternalStore,
 } from "react";
 import styles from "./ShapeTyper.module.css";
 import {
@@ -26,7 +27,10 @@ import {
   fittedPreviewFontSize,
   shouldRefitPreview,
 } from "./previewFit.mjs";
-import { createRetainedShapeState } from "./retainedShapeState.mjs";
+import {
+  createRetainedShapeState,
+  resolveKeepShapesPreference,
+} from "./retainedShapeState.mjs";
 import {
   createWiggleTiming,
   DEFAULT_WIGGLE_FPS,
@@ -53,6 +57,21 @@ const PLAYBACK_RATES = [0.25, 1] as const;
 const TEXT_ALIGNMENTS = ["left", "center", "right"] as const;
 const MIN_SHAPE_NUDGE = -20;
 const MAX_SHAPE_NUDGE = 20;
+const MOBILE_KEEP_SHAPES_QUERY = "(max-width: 860px)";
+
+function subscribeToMobileViewport(onStoreChange: () => void) {
+  const mediaQuery = window.matchMedia(MOBILE_KEEP_SHAPES_QUERY);
+  mediaQuery.addEventListener("change", onStoreChange);
+  return () => mediaQuery.removeEventListener("change", onStoreChange);
+}
+
+function getMobileViewportSnapshot() {
+  return window.matchMedia(MOBILE_KEEP_SHAPES_QUERY).matches;
+}
+
+function getServerMobileViewportSnapshot() {
+  return false;
+}
 
 type PlaybackRate = (typeof PLAYBACK_RATES)[number];
 type TextAlignment = (typeof TEXT_ALIGNMENTS)[number];
@@ -598,11 +617,21 @@ type ShapeTyperVariant = "standalone" | "project" | "preview";
 
 type ShapeTyperProps = {
   variant?: ShapeTyperVariant;
+  showPlayground?: boolean;
 };
 
-export function ShapeTyper({ variant = "standalone" }: ShapeTyperProps) {
+export function ShapeTyper({
+  variant = "standalone",
+  showPlayground = true,
+}: ShapeTyperProps) {
   const isPreview = variant === "preview";
   const isContained = variant !== "standalone";
+  const isMobileViewport = useSyncExternalStore(
+    subscribeToMobileViewport,
+    getMobileViewportSnapshot,
+    getServerMobileViewportSnapshot,
+  );
+  const usesMobileKeepShapesDefault = isMobileViewport && !isPreview;
   const stageRef = useRef<HTMLElement>(null);
   const previewRef = useRef<HTMLDivElement>(null);
   const previewInputRef = useRef<HTMLTextAreaElement>(null);
@@ -634,9 +663,15 @@ export function ShapeTyper({ variant = "standalone" }: ShapeTyperProps) {
   const [playbackRate, setPlaybackRate] = useState<PlaybackRate>(1);
   const [textAlignment, setTextAlignment] =
     useState<TextAlignment>("center");
-  const [keepShapes, setKeepShapes] = useState(true);
+  const [keepShapesOverride, setKeepShapesOverride] = useState<boolean | null>(
+    null,
+  );
   const [pinnedShapes, setPinnedShapesState] = useState<ShapeMap>(
     DEFAULT_PINNED_SHAPES,
+  );
+  const keepShapes = resolveKeepShapesPreference(
+    keepShapesOverride,
+    usesMobileKeepShapesDefault,
   );
 
   useEffect(() => {
@@ -1056,7 +1091,7 @@ export function ShapeTyper({ variant = "standalone" }: ShapeTyperProps) {
     setSelectedOrdinal(1);
     setPlaybackRate(1);
     setTextAlignment("center");
-    setKeepShapes(true);
+    setKeepShapesOverride(null);
     refreshIdleReplay();
   }
 
@@ -1072,7 +1107,9 @@ export function ShapeTyper({ variant = "standalone" }: ShapeTyperProps) {
   }
 
   function toggleKeepShapes() {
-    setKeepShapes((current) => !current);
+    setKeepShapesOverride((current) =>
+      !resolveKeepShapesPreference(current, usesMobileKeepShapesDefault),
+    );
     replay();
   }
 
@@ -1653,7 +1690,9 @@ export function ShapeTyper({ variant = "standalone" }: ShapeTyperProps) {
         </aside>
         ) : null}
       </div>
-      {!isPreview ? <ShapePlayground fontsReady={fontsReady} /> : null}
+      {!isPreview && showPlayground ? (
+        <ShapePlayground fontsReady={fontsReady} />
+      ) : null}
     </ToolRoot>
   );
 }

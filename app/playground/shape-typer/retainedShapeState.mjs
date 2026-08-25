@@ -16,3 +16,14 @@ export function createRetainedShapeState(configuredShapes, keepShapes) {
     activeCount: Object.keys(activeShapes).length,
   };
 }
+
+/**
+ * Use the viewport default until the user makes an explicit choice.
+ *
+ * @param {boolean | null} override
+ * @param {boolean} isMobile
+ * @returns {boolean}
+ */
+export function resolveKeepShapesPreference(override, isMobile) {
+  return override ?? !isMobile;
+}

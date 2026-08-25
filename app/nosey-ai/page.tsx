@@ -4,7 +4,7 @@ import { NoseyPrototype } from "./NoseyPrototype";
 export const metadata: Metadata = {
   title: "Your AI Team",
   description:
-    "An interactive motion case study with authored and randomly selected character states.",
+    "A character-led motion system that turned Notion AI products into a human-centered team of specialist helpers.",
 };
 
 export default function NoseyAiPage() {

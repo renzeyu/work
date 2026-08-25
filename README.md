@@ -37,7 +37,7 @@ Each cover includes explicit `client` metadata. The sidebar mark follows the act
 
 The static metadata and sitemap currently target:
 
-[https://renzeyu.github.io/work/](https://renzeyu.github.io/work/)
+[https://zeyuren.com/](https://zeyuren.com/)
 
 If the final repository name differs, update `app/lib/site.ts`, `public/robots.txt`, `public/sitemap.xml`, and the matching static-export assertions before publishing. The included workflow automatically applies the GitHub Pages base path to generated routes and assets.
 

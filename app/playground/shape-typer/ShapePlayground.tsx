@@ -19,7 +19,7 @@ type PlaygroundEngine = ReturnType<
 >;
 
 type ShapePlaygroundProps = {
-  fontsReady: boolean;
+  fontsReady?: boolean;
 };
 
 export function ShapePlayground({ fontsReady }: ShapePlaygroundProps) {
@@ -31,9 +31,34 @@ export function ShapePlayground({ fontsReady }: ShapePlaygroundProps) {
   > | null>(null);
   const [bodyCount, setBodyCount] = useState(0);
   const [engineReady, setEngineReady] = useState(false);
+  const [standaloneFontsReady, setStandaloneFontsReady] = useState(false);
   const [loadFailed, setLoadFailed] = useState(false);
   const [runtimeEligible, setRuntimeEligible] = useState(false);
   const [status, setStatus] = useState("Playground empty");
+  const managesFontReadiness = fontsReady === undefined;
+  const resolvedFontsReady = fontsReady ?? standaloneFontsReady;
+
+  useEffect(() => {
+    if (!managesFontReadiness) return;
+
+    let cancelled = false;
+
+    async function loadShapeFont() {
+      try {
+        await document.fonts.load('400 1em "Shape Glyphs"');
+        await document.fonts.ready;
+      } catch {
+        // The engine has measured fallbacks, so a failed font promise can recover.
+      } finally {
+        if (!cancelled) setStandaloneFontsReady(true);
+      }
+    }
+
+    void loadShapeFont();
+    return () => {
+      cancelled = true;
+    };
+  }, [managesFontReadiness]);
 
   useEffect(() => {
     let cancelled = false;
@@ -101,7 +126,7 @@ export function ShapePlayground({ fontsReady }: ShapePlaygroundProps) {
     };
   }, []);
 
-  const canSpawn = fontsReady && engineReady && !loadFailed;
+  const canSpawn = resolvedFontsReady && engineReady && !loadFailed;
 
   useEffect(() => {
     if (!canSpawn) return;
@@ -193,6 +218,9 @@ export function ShapePlayground({ fontsReady }: ShapePlaygroundProps) {
       className={styles.playgroundSection}
       aria-labelledby="shape-playground-title"
       data-shape-playground="true"
+      data-shape-playground-standalone={
+        managesFontReadiness ? "true" : undefined
+      }
       onPointerDownCapture={refreshPlaygroundAutoplay}
       onKeyDownCapture={refreshPlaygroundAutoplayFromKeyboard}
     >

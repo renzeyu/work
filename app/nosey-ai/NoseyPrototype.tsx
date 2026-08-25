@@ -1412,6 +1412,174 @@ export function NoseyPrototype({ variant = "project" }: NoseyPrototypeProps) {
           </aside>
         </div>
       </div>
+
+      <section
+        className={styles.caseStudy}
+        aria-labelledby="campaign-story-title"
+      >
+        <header className={styles.storyLead}>
+          <h2 id="campaign-story-title">Making AI feel like a team</h2>
+          <p>
+            The campaign needed to make Notion&apos;s AI tools practical and easy
+            to understand. Instead of another feature list, each product became
+            a teammate with a clear job.
+          </p>
+        </header>
+
+        <dl className={styles.storyFacts}>
+          <div>
+            <dt>Campaign idea</dt>
+            <dd>Meet your AI team</dd>
+          </div>
+          <div>
+            <dt>Concept testing</dt>
+            <dd>Individual contributors and executives</dd>
+          </div>
+          <div>
+            <dt>Designed for</dt>
+            <dd>OOH, video, digital, and events</dd>
+          </div>
+        </dl>
+
+        <div className={styles.storyBody}>
+          <section
+            className={styles.storySection}
+            aria-labelledby="from-features-to-teammates"
+          >
+            <h3 id="from-features-to-teammates">From features to teammates</h3>
+            <div className={styles.storySectionBody}>
+              <p>
+                By 2025, teams were adding separate AI tools for writing,
+                meetings, and search. The strategy described the cost of that
+                fragmentation in practical terms: more tabs, more vendors, and
+                tools that did not share company context. The campaign framed
+                Notion as a connected workspace where those jobs could happen
+                alongside the knowledge and projects they depended on.
+              </p>
+              <p>
+                The umbrella idea also had to flex. AI Meeting Notes could lead
+                with a familiar meeting problem for startups and small
+                businesses. Enterprise Search could lead with finding answers
+                for larger organizations. Both needed a clear relationship to
+                the wider Notion AI story.
+              </p>
+            </div>
+          </section>
+
+          <section
+            className={styles.storySection}
+            aria-labelledby="choosing-the-team"
+          >
+            <h3 id="choosing-the-team">Choosing the team</h3>
+            <div className={styles.storySectionBody}>
+              <p>
+                Creative explorations covered four territories: Best Team, Best
+                Tools, Busywork, and x3. The group chose Best Team because it
+                felt friendly, used the familiar Notion face language, and
+                could expand as more products launched.
+              </p>
+              <p>
+                Your AI Team puts a human Notion avatar at the center,
+                surrounded by specialized Nosey teammates they direct. The
+                point was to show AI as support for people, not a replacement
+                for them.
+              </p>
+            </div>
+          </section>
+
+          <blockquote className={styles.storyPrinciple}>
+            <p>
+              Put the human at the center, with AI help as an extension of the
+              human.
+            </p>
+          </blockquote>
+
+          <section
+            className={styles.storySection}
+            aria-labelledby="names-that-worked"
+          >
+            <h3 id="names-that-worked">Names that worked at a glance</h3>
+            <div className={styles.storySectionBody}>
+              <p>
+                Concept testing with individual contributors and executives
+                favored Meet your AI team among the headline options.
+                Notetaker was the clearest role, and more literal,
+                task-focused names improved clarity. The color-coded team was
+                also described as memorable and approachable.
+              </p>
+              <p>
+                The official product names stayed in place. These roles were
+                the first explanation, not new product names.
+              </p>
+
+              <dl className={styles.roleList}>
+                <div>
+                  <dt>Notetaker</dt>
+                  <dd>Takes perfect notes</dd>
+                </div>
+                <div>
+                  <dt>Editor</dt>
+                  <dd>Drafts docs in minutes</dd>
+                </div>
+                <div>
+                  <dt>Researcher</dt>
+                  <dd>Searches every app</dd>
+                </div>
+                <div>
+                  <dt>Builder</dt>
+                  <dd>Builds custom workflows</dd>
+                </div>
+              </dl>
+            </div>
+          </section>
+
+          <section
+            className={styles.storySection}
+            aria-labelledby="motion-built-around-roles"
+          >
+            <h3 id="motion-built-around-roles">Motion built around roles</h3>
+            <div className={styles.storySectionBody}>
+              <p>
+                The interactive prototype above follows the same system. Nosey
+                can think, search, research, write, build, or record, while
+                glasses, gear, and hats give each role a quick visual read. The
+                face remains consistent, so a new behavior still belongs to
+                the same cast.
+              </p>
+              <p>
+                Several characters could read as a team in umbrella work. A
+                product-led piece could focus on one teammate and one pain
+                point. The motion language stayed recognizable in either
+                format.
+              </p>
+            </div>
+          </section>
+
+          <section
+            className={styles.storySection}
+            aria-labelledby="designed-for-more-than-one-frame"
+          >
+            <h3 id="designed-for-more-than-one-frame">
+              Designed for more than one frame
+            </h3>
+            <div className={styles.storySectionBody}>
+              <p>
+                The system was conceived for airport and transit OOH, digital
+                video, web, social and performance ads, direct mail, and events.
+                In physical sequences such as triptychs or wild postings,
+                repetition could introduce several teammates. In video, the
+                umbrella idea and one product job could live in the same piece.
+              </p>
+              <p>
+                The product names remained AI Meeting Notes and Enterprise
+                Search. The creative role names gave each one a faster first
+                explanation and left room for future teammates, including the
+                idea of building your own.
+              </p>
+            </div>
+          </section>
+        </div>
+      </section>
     </article>
   );
 }

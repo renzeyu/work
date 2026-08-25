@@ -34,6 +34,10 @@
   overflow: hidden;
 }
 
+.projectMode .header {
+  padding-right: 20px;
+}
+
 .embedded {
   height: 100%;
 }
@@ -45,14 +49,16 @@
 
 .tool button,
 .tool input,
-.tool textarea {
+.tool textarea,
+.playgroundSection button {
   font: inherit;
 }
 
 .tool button:focus-visible,
 .tool input:focus-visible,
 .tool textarea:focus-visible,
-.tool summary:focus-visible {
+.tool summary:focus-visible,
+.playgroundSection button:focus-visible {
   outline: 2px solid var(--focus);
   outline-offset: 3px;
 }
@@ -906,9 +912,23 @@
 }
 
 .playgroundSection {
+  --canvas: #f4f2f3;
+  --panel: #eceaeb;
+  --ink: #161616;
+  --muted: #6d6d68;
+  --line: #d4d4cf;
+  --focus: #166da8;
+
   padding: clamp(30px, 4vw, 64px);
   border-top: 1px solid var(--line);
   background: var(--panel);
+  color: var(--ink);
+  font-family: "Notion Inter", "Helvetica Neue", Arial, sans-serif;
+  font-weight: 600;
+}
+
+.playgroundSection[data-shape-playground-standalone="true"] {
+  border-top: 0;
 }
 
 .playgroundHeader {

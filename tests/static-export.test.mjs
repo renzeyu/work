@@ -8,7 +8,10 @@ import {
   DEFAULT_COLOR_SEED,
   SHAPE_COLOR_VALUES,
 } from "../app/playground/shape-typer/shapeColorSequence.mjs";
-import { createRetainedShapeState } from "../app/playground/shape-typer/retainedShapeState.mjs";
+import {
+  createRetainedShapeState,
+  resolveKeepShapesPreference,
+} from "../app/playground/shape-typer/retainedShapeState.mjs";
 import {
   limitTyperText,
   MAX_TYPER_CHARACTERS,
@@ -578,10 +581,30 @@ test("exports the interactive Playground snippets and primary nav order", async 
   assert.match(shapeSource, /const ToolRoot = isContained \? "section" : "main"/);
   assert.match(shapeSource, /\{!isPreview \? \([\s\S]*?<header/);
   assert.match(shapeSource, /\{!isPreview \? \([\s\S]*?<aside/);
-  assert.match(shapeSource, /\{!isPreview \? <ShapePlayground/);
+  assert.match(
+    shapeSource,
+    /\{!isPreview && showPlayground \? \([\s\S]*?<ShapePlayground/,
+  );
   assert.match(shapeSource, /shape-typer-limit-help/);
   assert.match(shapeSource, /MAX_TYPER_CHARACTERS/);
   assert.match(shapeSource, /createIdleReplayController/);
+  assert.match(
+    shapeSource,
+    /const MOBILE_KEEP_SHAPES_QUERY = "\(max-width: 860px\)"/,
+  );
+  assert.match(
+    shapeSource,
+    /useSyncExternalStore\(\s*subscribeToMobileViewport,\s*getMobileViewportSnapshot,\s*getServerMobileViewportSnapshot,\s*\)/,
+  );
+  assert.match(
+    shapeSource,
+    /const \[keepShapesOverride, setKeepShapesOverride\] = useState<boolean \| null>/,
+  );
+  assert.match(
+    shapeSource,
+    /const usesMobileKeepShapesDefault = isMobileViewport && !isPreview/,
+  );
+  assert.match(shapeSource, /setKeepShapesOverride\(null\)/);
   assert.match(shapeSource, /new ResizeObserver/);
   assert.match(shapeCss, /@media \(prefers-reduced-motion: reduce\)/);
   assert.match(shapeCss, /\.embedded \.workspace\s*\{[^}]*display:\s*block/s);
@@ -978,6 +1001,10 @@ test("preserves the finished Shape Typer behavior model", () => {
     retained,
   );
   assert.deepEqual(createRetainedShapeState(retained, false).activeShapes, {});
+  assert.equal(resolveKeepShapesPreference(null, false), true);
+  assert.equal(resolveKeepShapesPreference(null, true), false);
+  assert.equal(resolveKeepShapesPreference(true, true), true);
+  assert.equal(resolveKeepShapesPreference(false, false), false);
   assert.equal(MAX_TYPER_CHARACTERS, 180);
   assert.equal(shouldShowCharacterCount("a".repeat(149)), false);
   assert.equal(shouldShowCharacterCount("a".repeat(150)), true);
@@ -1128,6 +1155,48 @@ test("exports Your AI Team and its local Rive runtime assets", async () => {
   assert.match(html, /All work/);
   assert.match(html, /Motion case study/);
   assert.match(html, /Choose a state/);
+  assert.equal((html.match(/<h1\b/g) ?? []).length, 1);
+  assert.match(
+    html,
+    /<section[^>]+aria-labelledby="campaign-story-title"[^>]*>/,
+  );
+  assert.match(
+    html,
+    /<h2 id="campaign-story-title">Making AI feel like a team<\/h2>/,
+  );
+  assert.match(html, /From features to teammates/);
+  assert.match(html, /Choosing the team/);
+  assert.match(html, /Names that worked at a glance/);
+  assert.match(html, /Motion built around roles/);
+  assert.match(html, /Individual contributors and executives/);
+  assert.match(html, /Notetaker/);
+  assert.match(html, /Researcher/);
+  assert.match(html, /Builder/);
+  assert.match(html, /AI Meeting Notes and Enterprise[\s\S]*Search/);
+  assert.match(prototypeCss, /\.caseStudy\s*\{[^}]*width:\s*min\(100%, 800px\)/s);
+  assert.match(
+    prototypeCss,
+    /\.storyBody\s*\{[^}]*width:\s*100%[^}]*margin-left:\s*0/s,
+  );
+  assert.match(
+    prototypeCss,
+    /\.storySection,[\s\S]*\.storyPrinciple\s*\{[^}]*display:\s*grid[^}]*grid-template-columns:\s*minmax\(150px, 190px\) minmax\(0, 1fr\)/,
+  );
+  assert.equal(
+    (prototypeSource.match(/className=\{styles\.storySectionBody\}/g) ?? [])
+      .length,
+    5,
+  );
+  assert.match(
+    prototypeCss,
+    /@media \(max-width: 540px\)[\s\S]*\.storySection,[\s\S]*\.storyPrinciple\s*\{[^}]*grid-template-columns:\s*minmax\(0, 1fr\)/,
+  );
+  assert.match(prototypeCss, /\.storyFacts\s*\{[^}]*display:\s*grid/s);
+  assert.match(
+    prototypeCss,
+    /@media \(max-width: 640px\)[\s\S]*\.storyFacts\s*\{[^}]*grid-template-columns:\s*minmax\(0, 1fr\)/,
+  );
+  assert.doesNotMatch(prototypeSource, /[—–]/);
   assert.doesNotMatch(
     html,
     /Interactive AI assistant|Antimatter|13 states, 23 triggers|Thinking Loop|click (?:the )?assistant/i,
@@ -2072,7 +2141,7 @@ test("work page contains all project links and migration-safe metadata", async (
   assert.match(html, /Make with Notion 2025/);
   assert.match(html, /href="(?:\/work)?\/make-with-notion-2025\/"/);
   assert.match(html, /href="(?:\/work)?\/notion-ai-motion-design\/"/);
-  assert.match(html, /https:\/\/renzeyu\.github\.io\/work\/work\//);
+  assert.match(html, /https:\/\/zeyuren\.com\/work\//);
   assert.match(html, /class="workspace-panel"/);
   assert.match(html, /class="project-card__meta"/);
   assert.doesNotMatch(html, /project-card__overlay/);
@@ -2118,9 +2187,13 @@ test("keeps work navigation and project cards concise", async () => {
 });
 
 test("assigns every project a distinct icon from the shared navigation system", async () => {
-  const [html, data] = await Promise.all([
+  const [html, data, navigationSource] = await Promise.all([
     readFile(new URL("work/index.html", outputRoot), "utf8"),
     readFile(new URL("../app/data/portfolio.json", import.meta.url), "utf8"),
+    readFile(
+      new URL("../app/components/SiteNavigation.tsx", import.meta.url),
+      "utf8",
+    ),
   ]);
   const expectedIcons = [
     "make-with-notion",
@@ -2154,6 +2227,11 @@ test("assigns every project a distinct icon from the shared navigation system", 
   assert.deepEqual(
     [...new Set(renderedIcons.map(({ icon }) => icon))],
     expectedIcons,
+  );
+  assert.match(navigationSource, /"notion-ai-motion": NoodlingIcon/);
+  assert.match(
+    navigationSource,
+    /M4 13\.25C5\.55 15\.1 8\.05 15\.75 10\.15 14\.7C12\.55 13\.5/,
   );
 
   const uniqueIconBodies = new Set();
@@ -2491,42 +2569,42 @@ test("supports an icon-only persistent theme switch across both navigation views
   assert.doesNotMatch(css, /color-scheme:\s*light dark/);
 });
 
-test("publishes repository-path sitemap and robots URLs", async () => {
+test("publishes custom-domain sitemap and robots URLs", async () => {
   const sitemap = await readFile(new URL("sitemap.xml", outputRoot), "utf8");
   const robots = await readFile(new URL("robots.txt", outputRoot), "utf8");
 
   assert.match(
     sitemap,
-    /https:\/\/renzeyu\.github\.io\/work\/work\//,
+    /https:\/\/zeyuren\.com\/work\//,
   );
   assert.match(
     sitemap,
-    /https:\/\/renzeyu\.github\.io\/work\/make-with-notion-2025\//,
+    /https:\/\/zeyuren\.com\/make-with-notion-2025\//,
   );
   assert.match(
     sitemap,
-    /https:\/\/renzeyu\.github\.io\/work\/playground\//,
+    /https:\/\/zeyuren\.com\/playground\//,
   );
   assert.match(
     sitemap,
-    /https:\/\/renzeyu\.github\.io\/work\/nosey-ai\//,
+    /https:\/\/zeyuren\.com\/nosey-ai\//,
   );
   assert.match(
     sitemap,
-    /https:\/\/renzeyu\.github\.io\/work\/notion-ai-motion-design\//,
+    /https:\/\/zeyuren\.com\/notion-ai-motion-design\//,
   );
-  assert.match(sitemap, /https:\/\/renzeyu\.github\.io\/work\/loaders\//);
-  assert.match(sitemap, /https:\/\/renzeyu\.github\.io\/work\/reddit-icons\//);
+  assert.match(sitemap, /https:\/\/zeyuren\.com\/loaders\//);
+  assert.match(sitemap, /https:\/\/zeyuren\.com\/reddit-icons\//);
   assert.match(
     sitemap,
-    /https:\/\/renzeyu\.github\.io\/work\/reddit-seamless\//,
+    /https:\/\/zeyuren\.com\/reddit-seamless\//,
   );
-  assert.match(sitemap, /https:\/\/renzeyu\.github\.io\/work\/upvote-lab\//);
+  assert.match(sitemap, /https:\/\/zeyuren\.com\/upvote-lab\//);
   assert.match(
     robots,
-    /Sitemap: https:\/\/renzeyu\.github\.io\/work\/sitemap\.xml/,
+    /Sitemap: https:\/\/zeyuren\.com\/sitemap\.xml/,
   );
-  assert.doesNotMatch(sitemap, /https:\/\/zeyuren\.com\//);
+  assert.doesNotMatch(sitemap, /https:\/\/renzeyu\.github\.io\//);
 });
 
 test("about page preserves the form and accessible field labels", async () => {
@@ -2763,7 +2841,7 @@ test("exports the interactive Notion AI motion study and its authentic cover", a
   assert.doesNotMatch(workbenchCss, /color-scheme:\s*light/);
   assert.match(
     html,
-    /https:\/\/renzeyu\.github\.io\/work\/notion-ai-motion-design\//,
+    /https:\/\/zeyuren\.com\/notion-ai-motion-design\//,
   );
   assert.match(html, /\/media\/notion-ai-motion-design-cover\.jpg/);
   assert.match(html, /property="og:image:width" content="960"/);
@@ -2867,17 +2945,51 @@ test("exports Make with Notion 2025 as an interactive Work project", async () =>
       ),
     ),
   ]);
+  const topPrototypeStart = html.indexOf(
+    'aria-label="Interactive Make with Notion prototype"',
+  );
+  const devBlogStart = html.indexOf('aria-labelledby="dev-blog-title"');
+  const finalChapterStart = html.indexOf('id="type-on-was-only-half"');
+  const playgroundStart = html.indexOf('data-shape-playground="true"');
+  const topPrototypeHtml = html.slice(topPrototypeStart, devBlogStart);
 
   assert.match(html, /<h1 id="project-title">Make with Notion 2025<\/h1>/);
   assert.match(
     html,
-    /An interactive typer and physics playground built from the Make with Notion 2025 alphabet\./,
+    /Created interstitials for the annual Make with Notion conference, built the team(?:&#x27;|')s typer tool, and produced the Notion 3\.0 keynote\./,
+  );
+  assert.doesNotMatch(
+    html,
+    /Type a message, choose which characters remain shapes|An interactive typer and physics playground built from the Make with Notion 2025 alphabet/,
   );
   assert.equal((html.match(/<h1\b/g) ?? []).length, 1);
   assert.equal((html.match(/<main\b/g) ?? []).length, 1);
   assert.match(html, /data-shape-typer="true"/);
   assert.match(html, /data-shape-typer-variant="project"/);
   assert.match(html, /data-shape-playground="true"/);
+  assert.equal((html.match(/data-shape-playground="true"/g) ?? []).length, 1);
+  assert.ok(topPrototypeStart >= 0);
+  assert.ok(devBlogStart > topPrototypeStart);
+  assert.ok(finalChapterStart > devBlogStart);
+  assert.ok(playgroundStart > finalChapterStart);
+  assert.doesNotMatch(topPrototypeHtml, /data-shape-playground="true"/);
+  assert.match(
+    html,
+    /<section[^>]+aria-labelledby="dev-blog-title"[^>]*>/,
+  );
+  assert.match(
+    html,
+    /<h2 id="dev-blog-title">Building the Make with Notion typer<\/h2>/,
+  );
+  assert.match(html, /Why screen recording stopped working/);
+  assert.match(html, /The system begins with type/);
+  assert.match(html, /Two ways through the template/);
+  assert.match(html, /What the expressions automate/);
+  assert.match(html, /EasyType/);
+  assert.match(html, /TyperOn/);
+  assert.match(html, /Type Off/);
+  assert.match(html, /zero keyframes/);
+  assert.match(html, /<pre[^>]*>[\s\S]*charsPerSecond = 15;/);
   assert.match(html, /<h2 id="mwn-typer-tool-title">MWN typer tool<\/h2>/);
   assert.match(html, /aria-label="Editable animated type preview"/);
   assert.match(html, /aria-label="MWN typer tool controls"/);
@@ -2898,15 +3010,42 @@ test("exports Make with Notion 2025 as an interactive Work project", async () =>
   assert.match(html, /\/brand-logos\/notion\.png/);
   assert.match(
     html,
-    /https:\/\/renzeyu\.github\.io\/work\/make-with-notion-2025\//,
+    /https:\/\/zeyuren\.com\/make-with-notion-2025\//,
   );
   assert.match(html, /\/media\/make-with-notion-2025-cover\.jpg/);
-  assert.match(pageSource, /<ShapeTyper variant="project" \/>/);
+  assert.match(html, /property="og:image:width" content="720"/);
+  assert.match(html, /property="og:image:height" content="404"/);
+  assert.match(
+    pageSource,
+    /<ShapeTyper variant="project" showPlayground=\{false\} \/>/,
+  );
+  assert.match(
+    pageSource,
+    /import \{ ShapePlayground \} from "\.\.\/playground\/shape-typer\/ShapePlayground"/,
+  );
+  assert.match(pageSource, /<ShapePlayground \/>/);
   assert.doesNotMatch(pageSource, /ShapePlaygroundPreview/);
-  assert.match(shapeSource, /\{!isPreview \? <ShapePlayground/);
+  assert.match(
+    shapeSource,
+    /\{!isPreview && showPlayground \? \([\s\S]*?<ShapePlayground/,
+  );
   assert.match(playgroundSource, /data-shape-playground="true"/);
+  assert.match(playgroundSource, /fontsReady\?: boolean/);
+  assert.match(playgroundSource, /document\.fonts\.load/);
+  assert.match(
+    playgroundSource,
+    /data-shape-playground-standalone=/,
+  );
   assert.match(playgroundSource, /onContextMenu=\{resetFromContextMenu\}/);
   assert.match(projectCss, /\.prototype\s*\{[^}]*width:\s*100%/s);
+  assert.match(
+    projectCss,
+    /\.playgroundPrototype\s*\{[^}]*margin-top:\s*clamp\(80px,\s*10vw,\s*136px\)/s,
+  );
+  assert.match(projectCss, /\.devBlog\s*\{[^}]*width:\s*min\(100%, 800px\)/s);
+  assert.match(projectCss, /\.chapter\s*\{[^}]*display:\s*grid/s);
+  assert.match(projectCss, /background:\s*var\(--control\)/);
+  assert.doesNotMatch(pageSource, /[—–]/);
   assert.doesNotMatch(
     projectCss.match(/\.prototype\s*\{([^}]*)\}/)?.[1] ?? "",
     /border\s*:/,
@@ -2914,6 +3053,10 @@ test("exports Make with Notion 2025 as an interactive Work project", async () =>
   assert.match(
     shapeCss,
     /\.playgroundFrame\s*\{[^}]*aspect-ratio:\s*1[^}]*border:\s*0/s,
+  );
+  assert.match(
+    shapeCss,
+    /\.projectMode \.header\s*\{[^}]*padding-right:\s*20px/s,
   );
   assert.equal(coverVideo.subarray(4, 8).toString(), "ftyp");
   assert.equal(coverPoster.subarray(0, 3).toString("hex"), "ffd8ff");
