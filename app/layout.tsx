@@ -7,7 +7,7 @@ import { lightThemeColor, themeInitScript } from "./lib/theme";
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Zeyu Ren - Product Motion Designer",
+    default: "Zeyu Ren - Senior Motion Designer",
     template: "Zeyu Ren - %s",
   },
   description:
@@ -19,14 +19,14 @@ export const metadata: Metadata = {
     type: "website",
     url: absoluteSiteUrl("/work/"),
     siteName: "Zeyu Ren",
-    title: "Zeyu Ren - Product Motion Designer",
+    title: "Zeyu Ren - Senior Motion Designer",
     description:
       "Selected product motion, interaction, and motion systems work.",
     images: [{ url: absoluteSiteUrl("/og.jpg"), width: 1916, height: 1080 }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Zeyu Ren - Product Motion Designer",
+    title: "Zeyu Ren - Senior Motion Designer",
     description:
       "Selected product motion, interaction, and motion systems work.",
     images: [absoluteSiteUrl("/og.jpg")],

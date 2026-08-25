@@ -9,21 +9,25 @@ import {
   Briefcase,
   CalendarDots,
   ChartLineUp,
-  EnvelopeSimple,
   FilmReel,
   GridFour,
   Info,
   InstagramLogo,
   LinkedinLogo,
   List,
+  Polygon,
+  Shapes,
   SidebarSimple,
+  ScribbleLoop,
   Sword,
   Trophy,
+  UsersThree,
   UserCircle,
   VideoCamera,
   X,
 } from "@phosphor-icons/react";
 import type { Icon } from "@phosphor-icons/react";
+import { ProjectNavLabel } from "./ProjectNavLabel";
 import { ThemeToggle } from "./ThemeToggle";
 import {
   basePath,
@@ -40,6 +44,7 @@ const socialLinks = [
 ] as const;
 
 const projectIcons: Record<PortfolioProjectIcon, Icon> = {
+  "make-with-notion": Polygon,
   reel: FilmReel,
   "brand-refresh": ArrowsClockwise,
   ipo: ChartLineUp,
@@ -49,6 +54,8 @@ const projectIcons: Record<PortfolioProjectIcon, Icon> = {
   "motion-system": BezierCurve,
   awards: Trophy,
   swordsmith: Sword,
+  "ai-team": UsersThree,
+  "notion-ai-motion": ScribbleLoop,
 };
 
 const clientIdentities: Record<
@@ -78,77 +85,122 @@ function currentRoute(pathname: string) {
 function NavigationLinks({ onNavigate }: { onNavigate?: () => void }) {
   const pathname = currentRoute(usePathname());
   const workActive = pathname === "/" || pathname === "/work";
+  const navigationRef = useRef<HTMLElement>(null);
+  const [canScrollDown, setCanScrollDown] = useState(false);
+
+  useEffect(() => {
+    const navigation = navigationRef.current;
+    if (!navigation) return;
+
+    let mounted = true;
+    let animationFrame = 0;
+
+    const measureScrollBoundary = () => {
+      if (!mounted) return;
+      cancelAnimationFrame(animationFrame);
+      animationFrame = requestAnimationFrame(() => {
+        const nextCanScrollDown =
+          navigation.scrollHeight - navigation.scrollTop - navigation.clientHeight > 1;
+        setCanScrollDown((current) =>
+          current === nextCanScrollDown ? current : nextCanScrollDown,
+        );
+      });
+    };
+
+    measureScrollBoundary();
+    navigation.addEventListener("scroll", measureScrollBoundary, {
+      passive: true,
+    });
+
+    const resizeObserver = new ResizeObserver(measureScrollBoundary);
+    resizeObserver.observe(navigation);
+    for (const child of navigation.children) resizeObserver.observe(child);
+    void document.fonts.ready.then(measureScrollBoundary);
+
+    return () => {
+      mounted = false;
+      cancelAnimationFrame(animationFrame);
+      navigation.removeEventListener("scroll", measureScrollBoundary);
+      resizeObserver.disconnect();
+    };
+  }, []);
 
   return (
     <>
-      <nav className="workspace-nav" aria-label="Portfolio">
-        <ul className="workspace-nav__primary">
-          <li>
-            <a
-              className="workspace-nav__row"
-              href={withBasePath("/work/")}
-              aria-current={workActive ? "page" : undefined}
-              title="Work"
-              onClick={onNavigate}
-            >
-              <Briefcase aria-hidden="true" weight="regular" />
-              <span className="nav-row__label">Work</span>
-              <span className="nav-count">{portfolio.covers.length}</span>
-            </a>
-          </li>
-          <li>
-            <a
-              className="workspace-nav__row"
-              href={withBasePath("/contact/")}
-              aria-current={pathname === "/contact" ? "page" : undefined}
-              title="About"
-              onClick={onNavigate}
-            >
-              <Info aria-hidden="true" weight="regular" />
-              <span className="nav-row__label">About</span>
-            </a>
-          </li>
-          <li>
-            <a
-              className="workspace-nav__row"
-              href="mailto:hello@zeyuren.com"
-              title="Email"
-              onClick={onNavigate}
-            >
-              <EnvelopeSimple aria-hidden="true" weight="regular" />
-              <span className="nav-row__label">Email</span>
-            </a>
-          </li>
-        </ul>
-
-        <div className="sidebar-section">
-          <p className="sidebar-label">Project pages</p>
-          <ul className="project-list">
-            {portfolio.covers.map((project) => {
-              const route = `/${project.slug}`;
-              const ProjectIcon = projectIcons[project.icon];
-              return (
-                <li key={project.slug}>
-                  <a
-                    className="workspace-nav__row workspace-nav__row--project"
-                    href={withBasePath(`${route}/`)}
-                    aria-current={pathname === route ? "page" : undefined}
-                    onClick={onNavigate}
-                    aria-label={project.title}
-                  >
-                    <ProjectIcon
-                      aria-hidden="true"
-                      data-project-icon={project.icon}
-                      weight="regular"
-                    />
-                    <span className="nav-row__label">{project.title}</span>
-                  </a>
-                </li>
-              );
-            })}
+      <div
+        className="workspace-nav-shell"
+        data-can-scroll-down={canScrollDown}
+      >
+        <nav ref={navigationRef} className="workspace-nav" aria-label="Portfolio">
+          <ul className="workspace-nav__primary">
+            <li>
+              <a
+                className="workspace-nav__row"
+                href={withBasePath("/work/")}
+                aria-current={workActive ? "page" : undefined}
+                title="Work"
+                onClick={onNavigate}
+              >
+                <Briefcase aria-hidden="true" weight="regular" />
+                <span className="nav-row__label">Work</span>
+              </a>
+            </li>
+            <li>
+              <a
+                className="workspace-nav__row"
+                href={withBasePath("/playground/")}
+                aria-current={pathname === "/playground" ? "page" : undefined}
+                title="Playground"
+                onClick={onNavigate}
+              >
+                <Shapes aria-hidden="true" weight="regular" />
+                <span className="nav-row__label">Playground</span>
+              </a>
+            </li>
+            <li>
+              <a
+                className="workspace-nav__row"
+                href={withBasePath("/contact/")}
+                aria-current={pathname === "/contact" ? "page" : undefined}
+                title="About"
+                onClick={onNavigate}
+              >
+                <Info aria-hidden="true" weight="regular" />
+                <span className="nav-row__label">About</span>
+              </a>
+            </li>
           </ul>
-        </div>
-      </nav>
+
+          <div className="sidebar-section">
+            <p className="sidebar-label">Projects</p>
+            <ul className="project-list">
+              {portfolio.covers.map((project) => {
+                const route = `/${project.slug}`;
+                const ProjectIcon = projectIcons[project.icon];
+                return (
+                  <li key={project.slug}>
+                    <a
+                      className="workspace-nav__row workspace-nav__row--project"
+                      href={withBasePath(`${route}/`)}
+                      aria-current={pathname === route ? "page" : undefined}
+                      onClick={onNavigate}
+                      aria-label={project.title}
+                      title={project.title}
+                    >
+                      <ProjectIcon
+                        aria-hidden="true"
+                        data-project-icon={project.icon}
+                        weight="regular"
+                      />
+                      <ProjectNavLabel>{project.title}</ProjectNavLabel>
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        </nav>
+      </div>
       <div className="workspace-utilities">
         <ThemeToggle />
         <nav className="workspace-socials" aria-label="Social profiles">
@@ -231,12 +283,16 @@ export function DesktopSidebar() {
         <button
           className="sidebar-toggle"
           type="button"
+          data-sidebar-toggle
           aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+          title={collapsed ? "Expand sidebar" : "Collapse sidebar"}
           aria-pressed={collapsed}
           onClick={() => setCollapsed((value) => !value)}
         >
           <SidebarSimple aria-hidden="true" weight="regular" />
-          <span className="nav-row__label">{collapsed ? "Expand" : "Collapse"}</span>
+          <span className="nav-row__label">
+            {collapsed ? "Expand" : "Collapse"}
+          </span>
         </button>
         <NavigationLinks />
       </div>

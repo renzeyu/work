@@ -1,0 +1,118 @@
+.playground {
+  --playground-gap: var(--collection-gutter);
+
+  min-height: calc(100dvh - 16px);
+  padding-block: var(--collection-gutter);
+  container-type: inline-size;
+}
+
+.masonry {
+  position: relative;
+  display: grid;
+  width: 100%;
+  gap: var(--playground-gap);
+}
+
+.masonryItem {
+  display: grid;
+  min-width: 0;
+}
+
+.masonry[data-masonry-ready="true"] > .masonryItem {
+  position: absolute;
+  inset: 0 auto auto 0;
+}
+
+.tile {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  overflow: clip;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--media-background);
+  isolation: isolate;
+  transition: border-color 150ms ease;
+}
+
+.tile:focus-within {
+  border-color: var(--border-strong);
+}
+
+.tile > :last-child {
+  width: 100%;
+  height: 100%;
+}
+
+.redditSeamlessTile {
+  width: min(100%, 430px);
+  aspect-ratio: 430 / 898;
+  justify-self: center;
+  overflow: visible;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+.typerTile {
+  aspect-ratio: 16 / 9;
+}
+
+.loaderTile {
+  aspect-ratio: 2 / 1;
+  background: #000000;
+}
+
+.typerTile:focus-within {
+  border-color: var(--border);
+}
+
+.noseyTile {
+  aspect-ratio: 1 / 1;
+}
+
+.redditTile {
+  aspect-ratio: 2 / 1;
+}
+
+.rplaceTile {
+  aspect-ratio: 1 / 1;
+  border: 0;
+  background: #eef0f2;
+}
+
+.noodlingTile {
+  aspect-ratio: 4 / 1;
+}
+
+.shapePlaygroundTile {
+  aspect-ratio: 1 / 1;
+  border: 0;
+  background: #f4f2f3;
+}
+
+.upvoteTile {
+  aspect-ratio: 1 / 1;
+  border: 0;
+  background: transparent;
+}
+
+@media (max-width: 930px) {
+  .playground {
+    min-height: calc(100dvh - 66px);
+  }
+}
+
+@media (max-width: 540px) {
+  .rplaceTile {
+    aspect-ratio: 3 / 4;
+  }
+}
+
+@media (forced-colors: active) {
+  .tile,
+  .tile:focus-within {
+    border-color: CanvasText;
+  }
+}

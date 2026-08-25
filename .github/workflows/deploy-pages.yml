@@ -1,4 +1,4 @@
-name: Deploy product motion portfolio to GitHub Pages
+name: Deploy work portfolio to GitHub Pages
 
 on:
   push:

@@ -113,19 +113,29 @@ export function ThemeToggle() {
 
   return (
     <button
-      className="workspace-nav__row theme-toggle"
+      className="theme-toggle"
       type="button"
       data-theme-toggle
-      aria-label={actionLabel}
-      aria-pressed={theme === null ? undefined : darkModeActive}
+      role="switch"
+      aria-checked={darkModeActive}
+      aria-label="Dark mode"
       title={actionLabel}
       onClick={toggleTheme}
     >
-      <Moon className="theme-toggle__moon" aria-hidden="true" weight="regular" />
-      <Sun className="theme-toggle__sun" aria-hidden="true" weight="regular" />
-      <span className="nav-row__label">
-        <span className="theme-toggle__label--dark">Dark mode</span>
-        <span className="theme-toggle__label--light">Light mode</span>
+      <span className="theme-toggle__switch" aria-hidden="true">
+        <Sun
+          className="theme-toggle__icon theme-toggle__sun"
+          data-theme-icon="sun"
+          aria-hidden="true"
+          weight="regular"
+        />
+        <Moon
+          className="theme-toggle__icon theme-toggle__moon"
+          data-theme-icon="moon"
+          aria-hidden="true"
+          weight="regular"
+        />
+        <span className="theme-toggle__thumb" />
       </span>
     </button>
   );

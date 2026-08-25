@@ -1,0 +1,28 @@
+.project {
+  padding-bottom: clamp(56px, 8vw, 104px);
+}
+
+.prototype {
+  width: 100%;
+  margin: 0 auto;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: #f4f2f3;
+  isolation: isolate;
+}
+
+.prototype > :last-child {
+  width: 100%;
+}
+
+@media (max-width: 540px) {
+  .project {
+    padding-bottom: 40px;
+  }
+}
+
+@media (forced-colors: active) {
+  .prototype {
+    outline: 1px solid CanvasText;
+  }
+}

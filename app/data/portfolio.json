@@ -1,14 +1,53 @@
 {
   "brand": {
     "name": "Zeyu Ren",
-    "role": "Product Motion Designer"
+    "role": "Senior Motion Designer"
   },
   "socials": {
-    "linkedin": "https://www.linkedin.com/in/renzeyu/",
+    "linkedin": "https://www.linkedin.com/in/zeyuren/",
     "instagram": "https://www.instagram.com/renzeyu",
     "vimeo": "https://vimeo.com/renzeyu"
   },
   "covers": [
+    {
+      "slug": "make-with-notion-2025",
+      "title": "Make with Notion 2025",
+      "client": "notion",
+      "icon": "make-with-notion",
+      "asset": {
+        "kind": "video",
+        "src": "/media/make-with-notion-2025-cover.mp4",
+        "poster": "/media/make-with-notion-2025-cover.jpg",
+        "width": 1980,
+        "height": 1080
+      }
+    },
+    {
+      "slug": "nosey-ai",
+      "title": "Your AI Team",
+      "client": "notion",
+      "icon": "ai-team",
+      "asset": {
+        "kind": "video",
+        "src": "/media/your-ai-team-cover.mp4",
+        "poster": "/media/your-ai-team-cover.png",
+        "width": 960,
+        "height": 540
+      }
+    },
+    {
+      "slug": "notion-ai-motion-design",
+      "title": "Notion AI Motion Design",
+      "client": "notion",
+      "icon": "notion-ai-motion",
+      "asset": {
+        "kind": "video",
+        "src": "/media/notion-ai-motion-design-cover.mp4",
+        "poster": "/media/notion-ai-motion-design-cover.jpg",
+        "width": 960,
+        "height": 540
+      }
+    },
     {
       "slug": "2024-reel",
       "title": "2025 Reel",

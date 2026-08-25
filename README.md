@@ -27,9 +27,9 @@ The static site is written to `dist/client`.
 
 ## Content
 
-The existing nine case studies and local media are retained as the initial content set. Update `app/data/portfolio.json` when product-specific case studies are ready. Project routes are thin wrappers under `app/<slug>/page.tsx`.
+The portfolio includes twelve projects and their local media. Update `app/data/portfolio.json` when product-specific case studies are ready. Project routes are thin wrappers under `app/<slug>/page.tsx`, with interactive studies isolated when their own app shell needs to remain intact.
 
-The visible identity now reads “Product Motion Designer,” and the home page introduces the work as motion systems, launch stories, and interaction-focused product work.
+The visible identity now reads “Senior Motion Designer,” and the home page introduces the work as motion systems, launch stories, and interaction-focused product work.
 
 Each cover includes explicit `client` metadata. The sidebar mark follows the active project and currently supports `datadog`, `reddit`, `notion`, and `black-math`. Standardized transparent logo assets live in `public/brand-logos/`. Aggregate Work, About, the reel, and unmatched routes use the Datadog mark.
 
@@ -37,7 +37,7 @@ Each cover includes explicit `client` metadata. The sidebar mark follows the act
 
 The static metadata and sitemap currently target:
 
-[https://renzeyu.github.io/product-motion/](https://renzeyu.github.io/product-motion/)
+[https://renzeyu.github.io/work/](https://renzeyu.github.io/work/)
 
 If the final repository name differs, update `app/lib/site.ts`, `public/robots.txt`, `public/sitemap.xml`, and the matching static-export assertions before publishing. The included workflow automatically applies the GitHub Pages base path to generated routes and assets.
 

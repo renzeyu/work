@@ -1,0 +1,342 @@
+.prototypePage {
+  display: grid;
+  width: 100%;
+  min-height: calc(100dvh - 16px);
+  padding: 12px;
+  place-items: center;
+  overflow: hidden;
+  background: #ffffff;
+  container-type: inline-size;
+}
+
+.device {
+  position: relative;
+  width: min(100%, 520px, calc((100dvh - 48px) * 0.50323));
+  aspect-ratio: 934 / 1856;
+  overflow: hidden;
+  background: #ffffff;
+  contain: layout paint;
+  container-type: inline-size;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/*
+ * The source screens include a home indicator almost flush with the phone
+ * frame. Cover that rasterized bar, then redraw it at the platform safe-area
+ * spacing so every interactive tab shares the same, realistic geometry.
+ */
+.device::before,
+.device::after {
+  position: absolute;
+  left: 49.0364%;
+  content: "";
+  pointer-events: none;
+  transform: translateX(-50%);
+}
+
+.device::before {
+  z-index: 3;
+  top: 95.0431%;
+  width: 29%;
+  height: 0.7005%;
+  background: #fefefe;
+}
+
+.device::after {
+  z-index: 4;
+  top: 94.3966%;
+  width: 28.6938%;
+  height: 0.5388%;
+  border-radius: 999px;
+  background: #171b1e;
+}
+
+.screenStack,
+.screen {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.screen {
+  display: block;
+  object-fit: contain;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.screenActive {
+  opacity: 1;
+}
+
+.bottomNav {
+  position: absolute;
+  z-index: 2;
+  top: 87.4461%;
+  right: 8.5653%;
+  left: 7.2805%;
+  display: grid;
+  height: 7.3815%;
+  overflow: hidden;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  border-top: max(1px, 0.09cqw) solid #dedfdf;
+  background: #fbfbfb;
+  -webkit-clip-path: polygon(
+    0 0,
+    100% 0,
+    100% 27%,
+    99.8724% 31%,
+    99.8724% 34%,
+    99.7449% 38%,
+    99.7449% 42%,
+    99.6173% 45%,
+    99.4898% 49%,
+    99.3622% 53%,
+    99.2347% 56%,
+    98.9796% 60%,
+    98.7245% 64%,
+    98.4694% 67%,
+    98.2143% 71%,
+    97.8316% 75%,
+    97.449% 78%,
+    97.0663% 82%,
+    96.4286% 86%,
+    95.9184% 89%,
+    95.2806% 93%,
+    94.3878% 97%,
+    93.6224% 100%,
+    6.3776% 100%,
+    5.6122% 97%,
+    4.7194% 93%,
+    4.0816% 89%,
+    3.5714% 86%,
+    2.9337% 82%,
+    2.551% 78%,
+    2.1684% 75%,
+    1.7857% 71%,
+    1.5306% 67%,
+    1.2755% 64%,
+    1.0204% 60%,
+    0.7653% 56%,
+    0.6378% 53%,
+    0.5102% 49%,
+    0.3827% 45%,
+    0.2551% 42%,
+    0.2551% 38%,
+    0.1276% 34%,
+    0.1276% 31%,
+    0 27%
+  );
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    100% 27%,
+    99.8724% 31%,
+    99.8724% 34%,
+    99.7449% 38%,
+    99.7449% 42%,
+    99.6173% 45%,
+    99.4898% 49%,
+    99.3622% 53%,
+    99.2347% 56%,
+    98.9796% 60%,
+    98.7245% 64%,
+    98.4694% 67%,
+    98.2143% 71%,
+    97.8316% 75%,
+    97.449% 78%,
+    97.0663% 82%,
+    96.4286% 86%,
+    95.9184% 89%,
+    95.2806% 93%,
+    94.3878% 97%,
+    93.6224% 100%,
+    6.3776% 100%,
+    5.6122% 97%,
+    4.7194% 93%,
+    4.0816% 89%,
+    3.5714% 86%,
+    2.9337% 82%,
+    2.551% 78%,
+    2.1684% 75%,
+    1.7857% 71%,
+    1.5306% 67%,
+    1.2755% 64%,
+    1.0204% 60%,
+    0.7653% 56%,
+    0.6378% 53%,
+    0.5102% 49%,
+    0.3827% 45%,
+    0.2551% 42%,
+    0.2551% 38%,
+    0.1276% 34%,
+    0.1276% 31%,
+    0 27%
+  );
+}
+
+@supports ((-webkit-mask-image: url("")) or (mask-image: url(""))) {
+  .bottomNav {
+    -webkit-clip-path: none;
+    clip-path: none;
+    -webkit-mask: var(--nav-screen-mask) 0 0 / 100% 100% no-repeat;
+    mask: var(--nav-screen-mask) 0 0 / 100% 100% no-repeat;
+    mask-mode: alpha;
+  }
+}
+
+.navButton {
+  position: relative;
+  min-width: 0;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  appearance: none;
+  background: transparent;
+  color: #577078;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.navButton:focus-visible {
+  z-index: 1;
+  border-radius: 5px;
+  outline: max(2px, 0.2cqw) solid #0f1a1c;
+  outline-offset: min(-2px, -0.2cqw);
+}
+
+.navButton:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.navButtonActive {
+  color: #0f1a1c;
+}
+
+.iconSlot {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  display: block;
+  width: 54%;
+  aspect-ratio: 1;
+  transform: translateX(-50%);
+}
+
+.navIcon {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  opacity: 0.66;
+  pointer-events: none;
+}
+
+.navIconAction {
+  z-index: 1;
+}
+
+.navButtonActive .navIcon {
+  opacity: 1;
+}
+
+.navLabel {
+  position: absolute;
+  top: 59.5%;
+  left: 50%;
+  max-width: 96%;
+  color: currentColor;
+  font-family: Arial, "Helvetica Neue", sans-serif;
+  font-size: clamp(8px, 2cqw, 11px);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+
+.createButton {
+  color: #577078;
+  cursor: default;
+  opacity: 1;
+}
+
+.createIcon {
+  position: absolute;
+  top: 13.5%;
+  left: 50%;
+  width: 32%;
+  height: auto;
+  transform: translateX(-50%);
+}
+
+:global(body:has([data-reddit-icons]) .site-footer) {
+  display: none;
+}
+
+@media (max-width: 930px) {
+  .prototypePage {
+    min-height: calc(100dvh - 66px);
+    padding: 8px 0 12px;
+  }
+
+  .device {
+    width: min(100%, 500px, calc((100dvh - 86px) * 0.50323));
+  }
+}
+
+@media (max-width: 540px) {
+  .prototypePage {
+    min-height: calc(100dvh - 62px);
+    padding-block: 6px 10px;
+  }
+
+  .device {
+    width: min(100%, calc((100dvh - 78px) * 0.50323));
+  }
+}
+
+.playgroundVariant {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  padding: 0;
+}
+
+.playgroundVariant .device {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 100%;
+  max-width: none;
+  transform: translateX(-50%);
+}
+
+:global(:root[data-theme="dark"]) .playgroundVariant,
+:global(:root[data-theme="dark"]) .playgroundVariant .device {
+  background: var(--media-background);
+}
+
+@media (prefers-color-scheme: dark) {
+  :global(:root:not([data-theme])) .playgroundVariant,
+  :global(:root:not([data-theme])) .playgroundVariant .device {
+    background: var(--media-background);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .navButton:active:not(:disabled) {
+    transform: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .navButton:focus-visible {
+    outline-color: Highlight;
+  }
+}

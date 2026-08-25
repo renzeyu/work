@@ -1,0 +1,809 @@
+.prototype {
+  --lab-bg: #eef0f1;
+  --lab-surface: #ffffff;
+  --lab-surface-soft: #f6f7f8;
+  --lab-surface-strong: #e8ebed;
+  --lab-ink: #101416;
+  --lab-copy: #354147;
+  --lab-muted: #66767d;
+  --lab-border: #dfe3e5;
+  --lab-border-strong: #c7ced1;
+  --lab-orange: #fe4400;
+  --lab-orange-soft: #fff0e9;
+  --lab-blue: #5279a4;
+  --lab-blue-soft: #ebf2fb;
+  --lab-green: #2ebf65;
+  --lab-focus: #b83200;
+  display: grid;
+  width: 100%;
+  min-height: 100dvh;
+  overflow: auto;
+  padding: 16px;
+  background: var(--lab-bg);
+  color: var(--lab-ink);
+  font-family: "SF Pro Text", "SF Pro Display", -apple-system, BlinkMacSystemFont,
+    "Helvetica Neue", Arial, sans-serif;
+  letter-spacing: -0.012em;
+  place-items: center;
+  scrollbar-color: var(--lab-border-strong) transparent;
+}
+
+:global(html[data-theme="dark"]) .prototype {
+  --lab-bg: #111416;
+  --lab-surface: #1b1f21;
+  --lab-surface-soft: #23282b;
+  --lab-surface-strong: #2b3134;
+  --lab-ink: #f3f5f6;
+  --lab-copy: #cad1d4;
+  --lab-muted: #98a5aa;
+  --lab-border: #32393c;
+  --lab-border-strong: #4a5559;
+  --lab-orange: #fe4400;
+  --lab-orange-soft: #3a2118;
+  --lab-blue: #5279a4;
+  --lab-blue-soft: #202c3c;
+  --lab-green: #3dcc76;
+  --lab-focus: #ff8d63;
+}
+
+.prototype button,
+.prototype output {
+  font: inherit;
+}
+
+.prototype button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.prototype ::selection {
+  background: var(--lab-orange-soft);
+  color: var(--lab-ink);
+}
+
+.prototype button:focus-visible {
+  outline: 3px solid var(--lab-focus);
+  outline-offset: 3px;
+}
+
+.snippet {
+  display: grid;
+  width: min(600px, calc(100vw - 32px), calc(100dvh - 96px));
+  gap: 12px;
+}
+
+.prototype.playgroundVariant {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+  padding: 0;
+  background: transparent;
+  container-type: inline-size;
+}
+
+.playgroundVariant .snippet {
+  width: 100%;
+  height: 100%;
+  gap: 0;
+}
+
+.postCard {
+  position: relative;
+  width: 100%;
+  min-height: 0;
+  aspect-ratio: 1;
+  overflow: visible;
+  background: transparent;
+}
+
+.referenceCanvas {
+  --card-inset-top: 8.4286574cqw;
+  --card-inset-right: 8.4888621cqw;
+  --card-inset-bottom: 8.4888621cqw;
+  --card-inset-left: 8.4286574cqw;
+  --card-radius: 3.6122818cqw;
+  --card-stroke: #e4e5e4;
+  position: absolute;
+  top: -9.4555874%;
+  left: -9.4555874%;
+  width: 118.982808%;
+  aspect-ratio: 1;
+  container-type: inline-size;
+  pointer-events: none;
+}
+
+.referenceCanvas::after {
+  position: absolute;
+  z-index: 7;
+  inset:
+    var(--card-inset-top) var(--card-inset-right) var(--card-inset-bottom)
+    var(--card-inset-left);
+  box-sizing: border-box;
+  border: 1px solid var(--card-stroke);
+  border-radius: var(--card-radius);
+  content: "";
+  pointer-events: none;
+}
+
+.referenceCardFrame {
+  display: block;
+  width: 100%;
+  height: 100%;
+  clip-path: inset(
+    var(--card-inset-top) var(--card-inset-right) var(--card-inset-bottom)
+      var(--card-inset-left) round var(--card-radius)
+  );
+  pointer-events: none;
+  user-select: none;
+}
+
+.referenceAuthorAvatar {
+  position: absolute;
+  z-index: 1;
+  top: 10.8368453cqw;
+  left: 12.5225768cqw;
+  display: block;
+  width: 4.3347381cqw;
+  height: 4.3347381cqw;
+  border: 0;
+  border-radius: 50%;
+  object-fit: cover;
+  pointer-events: none;
+  user-select: none;
+}
+
+.motionMenuTrigger {
+  position: absolute;
+  z-index: 8;
+  top: 12.8838049cqw;
+  left: 86.2131246cqw;
+  display: grid;
+  width: max(6.2612884cqw, 44px);
+  height: max(6.2612884cqw, 44px);
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  appearance: none;
+  background: transparent;
+  box-shadow: none;
+  color: transparent;
+  cursor: pointer;
+  pointer-events: auto;
+  place-items: center;
+  transform: translate(-50%, -50%);
+}
+
+.prototype .motionMenuTrigger:focus-visible {
+  outline: 0.34cqw solid var(--lab-focus);
+  outline-offset: 0.28cqw;
+}
+
+.motionMenuDots {
+  display: flex;
+  gap: 4px;
+  opacity: 0;
+}
+
+.motionMenuDots i {
+  display: block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.motionMenu {
+  position: absolute;
+  z-index: 9;
+  top: 16.25cqw;
+  right: 10.2cqw;
+  display: grid;
+  width: clamp(246px, 42cqw, 306px);
+  max-height: min(510px, 72cqw);
+  grid-template-rows: auto minmax(0, 1fr);
+  overflow: hidden;
+  border: 1px solid #dfe3e5;
+  border-radius: 16px;
+  background: #ffffff;
+  box-shadow: 0 12px 36px rgb(17 26 27 / 16%);
+  color: #111a1b;
+  container-type: normal;
+  pointer-events: auto;
+}
+
+.motionMenu[hidden] {
+  display: none;
+}
+
+.motionMenuHeading {
+  display: flex;
+  min-height: 48px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 0 14px;
+  border-bottom: 1px solid #e7eaec;
+}
+
+.motionMenuHeading strong {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: -0.018em;
+}
+
+.motionMenuHeading span {
+  color: #66767d;
+  font-size: 10.5px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+.motionMenuList {
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 5px;
+  scrollbar-color: #c7ced1 transparent;
+  scrollbar-width: thin;
+}
+
+.motionMenuItem {
+  display: grid;
+  width: 100%;
+  min-height: 48px;
+  grid-template-columns: 32px minmax(0, 1fr) 18px;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 9px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: #354147;
+  cursor: pointer;
+  text-align: left;
+}
+
+.motionMenuItem:hover,
+.motionMenuItem:focus-visible {
+  background: #f3f5f6;
+}
+
+.prototype .motionMenuItem:focus-visible {
+  outline-width: 2px;
+  outline-offset: -2px;
+}
+
+.motionMenuItem[data-selected] {
+  background: #fff0e9;
+  color: #b83200;
+}
+
+.motionMenuThumbnail {
+  display: grid;
+  width: 32px;
+  height: 32px;
+  overflow: hidden;
+  border-radius: 8px;
+  background: #f3f5f6;
+  pointer-events: none;
+  place-items: center;
+}
+
+.motionMenuItem[data-selected] .motionMenuThumbnail {
+  background: #ffe5d9;
+}
+
+.motionMenuThumbnailPreview {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.motionMenuRandomIcon {
+  width: 18px;
+  height: 18px;
+  color: var(--lab-orange);
+}
+
+.motionMenuCopy {
+  display: grid;
+  min-width: 0;
+  gap: 2px;
+}
+
+.motionMenuItem strong,
+.motionMenuItem small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.motionMenuItem strong {
+  color: currentColor;
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: -0.012em;
+  line-height: 1.2;
+}
+
+.motionMenuItem small {
+  color: #66767d;
+  font-size: 10.5px;
+  line-height: 1.2;
+}
+
+.motionMenuCheck {
+  width: 16px;
+  height: 16px;
+  justify-self: end;
+}
+
+.referenceActionMask {
+  position: absolute;
+  z-index: 2;
+  top: 81.16cqw;
+  left: 11.44cqw;
+  width: 77.06cqw;
+  height: 9.33cqw;
+  background: #ffffff;
+  pointer-events: none;
+}
+
+.referenceActionBar {
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+  box-sizing: border-box;
+  color: #111a1b;
+  font-family: "SF Pro Text", "SF Pro Display", -apple-system, BlinkMacSystemFont,
+    "Helvetica Neue", Arial, sans-serif;
+  font-size: 2.65cqw;
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  pointer-events: none;
+}
+
+.referenceVotePill,
+.referenceCommentPill,
+.referenceSharePill {
+  position: absolute;
+  top: 82.18cqw;
+  height: 7.04cqw;
+  border: 0.18cqw solid #e4e5e4;
+  border-radius: 999px;
+  background: #ffffff;
+  box-sizing: border-box;
+}
+
+.referenceVotePill {
+  left: 12.04cqw;
+  width: 23.24cqw;
+}
+
+.referenceCommentPill {
+  left: 36.6cqw;
+  display: flex;
+  width: 30.95cqw;
+  align-items: center;
+}
+
+.referenceCommentPill > span {
+  position: absolute;
+  left: 8.97cqw;
+  white-space: nowrap;
+}
+
+.referenceSharePill {
+  left: 78.39cqw;
+  display: grid;
+  width: 9.75cqw;
+  place-items: center;
+}
+
+.referenceScore {
+  position: absolute;
+  top: 0;
+  left: 31.1%;
+  display: flex;
+  width: 27.2%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  color: inherit;
+  white-space: nowrap;
+}
+
+.referenceScoreNumber {
+  color: inherit;
+}
+
+.referenceVoteDivider {
+  position: absolute;
+  top: 50%;
+  left: 64.77%;
+  width: 0.18cqw;
+  height: 4.2cqw;
+  background: #e4e5e4;
+  transform: translateY(-50%);
+}
+
+.referenceCommentIcon,
+.referenceShareIcon {
+  display: block;
+  width: 3.31cqw;
+  height: 3.31cqw;
+  flex: 0 0 auto;
+}
+
+.referenceCommentIcon {
+  position: absolute;
+  left: 3.43cqw;
+}
+
+.presenceRail {
+  display: flex;
+  min-width: 0;
+  height: 100%;
+  align-items: center;
+  gap: 1.1cqw;
+  color: #737577;
+}
+
+.presenceDot {
+  width: 2.16cqw;
+  height: 2.16cqw;
+  flex: 0 0 2.16cqw;
+  border-radius: 50%;
+  background: #00c76f;
+}
+
+.avatarStack {
+  display: flex;
+  height: 4.2cqw;
+  align-items: center;
+  padding-left: 0.8cqw;
+}
+
+.presenceAvatar {
+  display: block;
+  width: 4.2cqw;
+  height: 4.2cqw;
+  margin-left: -0.8cqw;
+  border: 0.32cqw solid #ffffff;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.presenceBadge {
+  color: inherit;
+}
+
+.presenceBadge[data-expanded] {
+  display: grid;
+  min-width: 5.1cqw;
+  height: 4.3cqw;
+  padding-inline: 0.8cqw;
+  border: 0.32cqw solid #ffffff;
+  border-radius: 999px;
+  background: #31c75b;
+  color: #ffffff;
+  font-size: 2.4cqw;
+  font-weight: 700;
+  place-items: center;
+}
+
+.presenceLabel {
+  color: inherit;
+  white-space: nowrap;
+}
+
+.referenceVoteControls {
+  position: absolute;
+  z-index: 4;
+  inset: 0;
+  pointer-events: none;
+}
+
+.voteButton {
+  display: grid;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #77797a;
+  cursor: pointer;
+  place-items: center;
+}
+
+.referenceVoteButton {
+  position: absolute;
+  top: 85.73%;
+  width: max(8.75%, 44px);
+  height: max(8.75%, 44px);
+  border-radius: 0;
+  pointer-events: auto;
+  transform: translate(-50%, -50%);
+}
+
+.referenceVoteButton[data-direction="up"] {
+  left: 16.2%;
+}
+
+.referenceVoteButton[data-direction="down"] {
+  left: 31.04%;
+}
+
+.prototype .referenceVoteButton:focus-visible {
+  outline: none;
+}
+
+.prototype[data-keyboard-navigation] .referenceVoteButton:focus-visible::after {
+  position: absolute;
+  z-index: 3;
+  width: 6.83cqw;
+  height: 6.83cqw;
+  border: 0.38cqw solid var(--lab-focus);
+  border-radius: 50%;
+  content: "";
+}
+
+.prototype[data-keyboard-navigation]
+  .referenceVoteButton[data-direction="down"]:focus-visible::after {
+  border-color: var(--lab-blue);
+}
+
+.voteGlyph {
+  --vote-color: var(--lab-orange);
+  position: relative;
+  display: grid;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  place-items: center;
+}
+
+.referenceVoteButton .voteGlyph {
+  width: 8.75cqw;
+  height: 8.75cqw;
+}
+
+.voteGlyph[data-direction="down"] {
+  --vote-color: var(--lab-blue);
+}
+
+.voteStatic {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  width: 100%;
+  height: 100%;
+  color: #111a1b;
+  place-items: center;
+}
+
+.voteStatic[data-active] {
+  color: var(--vote-color);
+}
+
+.tracedVoteArrow {
+  display: block;
+  width: 36.54%;
+  height: 38.46%;
+  object-fit: contain;
+  object-position: center;
+  overflow: visible;
+}
+
+.tracedVoteArrow[data-official-outline] {
+  width: 38.46%;
+}
+
+.tracedVoteArrow[data-direction="down"] {
+  transform: rotate(180deg);
+}
+
+.voteGlyph[data-playing] .voteStatic {
+  visibility: hidden;
+}
+
+.codeVoteMotion {
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  left: 50%;
+  display: block;
+  width: var(--code-motion-size);
+  height: var(--code-motion-size);
+  overflow: visible;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+}
+
+.codeVoteMotion > svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.rollingNumber {
+  display: inline-flex;
+  height: 1.12em;
+  align-items: center;
+  line-height: 1;
+}
+
+.digitWindow {
+  position: relative;
+  display: inline-block;
+  width: 0.64em;
+  height: 1.12em;
+  overflow: hidden;
+}
+
+.digitWindow[data-character="."] {
+  width: 0.28em;
+}
+
+.digitWindow[data-character="k"] {
+  width: 0.52em;
+}
+
+.digit {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+}
+
+.snippetControls {
+  display: flex;
+  min-width: 0;
+  min-height: 40px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.presenceControlGroup,
+.snippetActions {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 6px;
+}
+
+.snippetPresence {
+  display: flex;
+  min-width: 0;
+  height: 40px;
+  align-items: center;
+  padding: 0 4px;
+}
+
+.snippetPresence .presenceRail {
+  width: 100%;
+  gap: 8px;
+  color: var(--lab-copy);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+
+.snippetPresence .presenceDot {
+  width: 10px;
+  height: 10px;
+  flex-basis: 10px;
+}
+
+.snippetPresence .avatarStack {
+  height: 32px;
+  padding-left: 6px;
+}
+
+.snippetPresence .presenceAvatar {
+  width: 32px;
+  height: 32px;
+  margin-left: -7px;
+  border-width: 2px;
+  border-color: var(--lab-bg);
+}
+
+.snippetPresence .presenceBadge[data-expanded] {
+  min-width: 38px;
+  height: 28px;
+  padding-inline: 7px;
+  border-width: 2px;
+  border-color: var(--lab-bg);
+  font-size: 12px;
+}
+
+.utilityButton {
+  display: grid;
+  width: 40px;
+  height: 40px;
+  flex: 0 0 40px;
+  padding: 0;
+  border: 1px solid var(--lab-border);
+  border-radius: 999px;
+  background: var(--lab-surface);
+  color: var(--lab-copy);
+  cursor: pointer;
+  place-items: center;
+}
+
+.utilityButton:hover {
+  border-color: var(--lab-border-strong);
+  background: var(--lab-surface-soft);
+}
+
+.utilityButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.42;
+}
+
+.utilityButton svg {
+  width: 17px;
+  height: 17px;
+}
+
+@media (max-width: 430px) {
+  .prototype {
+    padding: 12px;
+  }
+
+  .snippet {
+    width: min(600px, calc(100vw - 24px), calc(100dvh - 104px));
+    gap: 10px;
+  }
+
+  .utilityButton {
+    width: 38px;
+    height: 38px;
+    flex-basis: 38px;
+  }
+}
+
+@media (max-width: 360px) {
+  .snippetControls {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .presenceControlGroup {
+    justify-content: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .prototype *,
+  .prototype *::before,
+  .prototype *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+
+}
+
+@media (forced-colors: active) {
+  .motionMenuTrigger,
+  .motionMenu,
+  .motionMenuItem,
+  .utilityButton {
+    border-color: ButtonText;
+  }
+
+  .motionMenuDots {
+    color: ButtonText;
+    opacity: 1;
+  }
+
+  .motionMenuItem[data-selected] {
+    background: Highlight;
+    color: HighlightText;
+  }
+}

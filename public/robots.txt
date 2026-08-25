@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://renzeyu.github.io/product-motion/sitemap.xml
+Sitemap: https://renzeyu.github.io/work/sitemap.xml

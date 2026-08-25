@@ -48,6 +48,7 @@ export type PortfolioProject = {
 export type PortfolioClient = "datadog" | "reddit" | "notion" | "black-math";
 
 export type PortfolioProjectIcon =
+  | "make-with-notion"
   | "reel"
   | "brand-refresh"
   | "ipo"
@@ -56,7 +57,9 @@ export type PortfolioProjectIcon =
   | "rplace"
   | "motion-system"
   | "awards"
-  | "swordsmith";
+  | "swordsmith"
+  | "ai-team"
+  | "notion-ai-motion";
 
 export type PortfolioCover = {
   slug: string;
