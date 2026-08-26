@@ -387,7 +387,6 @@ export function UpvoteLab({ variant = "page" }: UpvoteLabProps) {
   const [presenceCount, setPresenceCount] = useState(12);
   const [presenceDirection, setPresenceDirection] = useState<-1 | 1>(1);
   const [presenceStep, setPresenceStep] = useState(0);
-  const [keyboardNavigation, setKeyboardNavigation] = useState(false);
   const [announcement, setAnnouncement] = useState("Neutral. 256 upvotes.");
   const runId = useRef(1);
   const motionMenuRef = useRef<HTMLDivElement>(null);
@@ -461,9 +460,6 @@ export function UpvoteLab({ variant = "page" }: UpvoteLabProps) {
 
     function handleKeyboard(event: KeyboardEvent) {
       const target = event.target as HTMLElement | null;
-      if (event.key === "Tab" || event.key.startsWith("Arrow")) {
-        setKeyboardNavigation(true);
-      }
       if (target?.matches("button, input, select, textarea, a")) return;
       if (event.key === "ArrowUp") {
         event.preventDefault();
@@ -592,8 +588,6 @@ export function UpvoteLab({ variant = "page" }: UpvoteLabProps) {
       data-variant={variant}
       data-motion-selection={motionSelection}
       data-active-study={selectedStudy.id}
-      data-keyboard-navigation={keyboardNavigation || undefined}
-      onPointerDown={() => setKeyboardNavigation(false)}
     >
       {!embedded ? (
         <h1 id="vote-lab-title" className="sr-only">

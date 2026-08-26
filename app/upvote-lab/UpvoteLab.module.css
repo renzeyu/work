@@ -60,11 +60,6 @@
   color: var(--lab-ink);
 }
 
-.prototype button:focus-visible {
-  outline: 3px solid var(--lab-focus);
-  outline-offset: 3px;
-}
-
 .snippet {
   display: grid;
   width: min(600px, calc(100vw - 32px), calc(100dvh - 96px));
@@ -173,11 +168,6 @@
   transform: translate(-50%, -50%);
 }
 
-.prototype .motionMenuTrigger:focus-visible {
-  outline: 0.34cqw solid var(--lab-focus);
-  outline-offset: 0.28cqw;
-}
-
 .motionMenuDots {
   display: flex;
   gap: 4px;
@@ -264,14 +254,8 @@
   text-align: left;
 }
 
-.motionMenuItem:hover,
-.motionMenuItem:focus-visible {
+.motionMenuItem:hover {
   background: #f3f5f6;
-}
-
-.prototype .motionMenuItem:focus-visible {
-  outline-width: 2px;
-  outline-offset: -2px;
 }
 
 .motionMenuItem[data-selected] {
@@ -534,25 +518,6 @@
 
 .referenceVoteButton[data-direction="down"] {
   left: 31.04%;
-}
-
-.prototype .referenceVoteButton:focus-visible {
-  outline: none;
-}
-
-.prototype[data-keyboard-navigation] .referenceVoteButton:focus-visible::after {
-  position: absolute;
-  z-index: 3;
-  width: 6.83cqw;
-  height: 6.83cqw;
-  border: 0.38cqw solid var(--lab-focus);
-  border-radius: 50%;
-  content: "";
-}
-
-.prototype[data-keyboard-navigation]
-  .referenceVoteButton[data-direction="down"]:focus-visible::after {
-  border-color: var(--lab-blue);
 }
 
 .voteGlyph {

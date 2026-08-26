@@ -555,10 +555,7 @@ test("exports the interactive Playground snippets and primary nav order", async 
     loaderCss,
     /body:has\(\[data-loader-prototype="page"\]\) \.site-footer/,
   );
-  assert.match(
-    playgroundCss,
-    /\.typerTile:focus-within\s*\{[^}]*border-color:\s*var\(--border\)/s,
-  );
+  assert.doesNotMatch(playgroundCss, /:focus-within/);
   assert.match(
     playgroundCss,
     /\.noseyTile\s*\{[^}]*aspect-ratio:\s*1\s*\/\s*1/s,
@@ -658,10 +655,7 @@ test("exports the interactive Playground snippets and primary nav order", async 
     shapePlaygroundEngineSource,
     /Matter\.Sleeping\.set\(body, false\)/,
   );
-  assert.match(
-    shapeCss,
-    /\.embedded \.stage:focus-within\s*\{[^}]*box-shadow:\s*none/s,
-  );
+  assert.doesNotMatch(shapeCss, /:focus-within|:focus-visible/);
   assert.ok(playgroundBranch);
   assert.match(playgroundBranch, /aria-label="Play a random Nosey state"/);
   assert.match(playgroundBranch, /aria-describedby="playground-nosey-state"/);
@@ -702,7 +696,7 @@ test("exports the interactive Playground snippets and primary nav order", async 
   assert.match(noodlingSource, /prefers-reduced-motion:\s*reduce/);
   assert.match(noodlingSource, /cancelAnimationFrame/);
   assert.match(noodlingSource, /aria-pressed=\{oldVersion\}/);
-  assert.match(noodlingCss, /\.trigger:focus-visible/);
+  assert.doesNotMatch(noodlingCss, /:focus-visible|:focus-within/);
   assert.match(globalCss, /body:has\(\.playground-page\) \.site-footer/);
   assert.equal(shapeFont.subarray(0, 4).toString("hex"), "00010000");
   assert.equal(shapeFont.byteLength, 1_662_056);
@@ -781,14 +775,10 @@ test("work routes mount the fixed interactive Nosey assistant", async () => {
   assert.match(noseyCss, /@keyframes assistant-fade-in/);
   assert.match(noseyCss, /env\(safe-area-inset-right, 0px\)/);
   assert.match(noseyCss, /env\(safe-area-inset-bottom, 0px\)/);
-  assert.match(noseyCss, /\.assistantButton:focus-visible/);
+  assert.doesNotMatch(noseyCss, /:focus-visible|:focus-within/);
   assert.match(
     noseySource,
     /if \(event\.detail > 0\) event\.currentTarget\.blur\(\)/,
-  );
-  assert.doesNotMatch(
-    noseyCss,
-    /\.assistantButton:focus-visible\s*,[\s\S]{0,120}outline:\s*3px solid #37352f/,
   );
   assert.match(
     noseyCss,
@@ -2275,7 +2265,7 @@ test("feathers and scrolls only overflowing project navigation labels", async ()
     /\.project-nav-label\[data-overflowing="true"\][\s\S]*?calc\(100% - 1rem\)/,
   );
   assert.match(css, /\.workspace-nav__row--project:hover[\s\S]*?150ms/);
-  assert.match(css, /\.workspace-nav__row--project:focus-visible/);
+  assert.doesNotMatch(css, /\.workspace-nav__row--project:focus-visible/);
   assert.match(
     css,
     /\.project-list\s*\{[\s\S]*?grid-template-columns: minmax\(0, 1fr\)/,
@@ -2288,6 +2278,44 @@ test("feathers and scrolls only overflowing project navigation labels", async ()
     css,
     /@media \(forced-colors: active\)[\s\S]*?text-overflow: ellipsis/,
   );
+});
+
+test("keeps keyboard focus free of selection strokes", async () => {
+  const focusStyleUrls = [
+    "../app/playground/Playground.module.css",
+    "../app/playground/shape-typer/ShapeTyper.module.css",
+    "../app/playground/shape-typer/ShapePlaygroundPreview.module.css",
+    "../app/playground/noodling/NoodlingSnippet.module.css",
+    "../app/playground/rplace/RPlacePreview.css",
+    "../app/reddit-icons/RedditIconPrototype.module.css",
+    "../app/reddit-seamless/RedditSeamlessPrototype.module.css",
+    "../app/nosey-ai/NoseyPrototype.module.css",
+    "../app/upvote-lab/UpvoteLab.module.css",
+    "../app/notion-ai-motion-design/NoodlingWorkbench.module.css",
+  ];
+  const [globalCss, ...componentStyles] = await Promise.all([
+    readFile(new URL("../app/globals.css", import.meta.url), "utf8"),
+    ...focusStyleUrls.map((url) =>
+      readFile(new URL(url, import.meta.url), "utf8"),
+    ),
+  ]);
+
+  assert.match(
+    globalCss,
+    /:focus,\s*:focus-visible\s*\{[^}]*outline:\s*none !important[^}]*outline-offset:\s*0 !important/s,
+  );
+  assert.doesNotMatch(globalCss, /\.project-card:focus-visible/);
+  assert.doesNotMatch(
+    globalCss,
+    /\.form-field (?:input|textarea):focus/,
+  );
+  componentStyles.forEach((styles, index) => {
+    assert.doesNotMatch(
+      styles,
+      /:focus-visible|:focus-within|:focus\b/,
+      `${focusStyleUrls[index]} must not add keyboard-focus styling`,
+    );
+  });
 });
 
 test("uses the project-row rhythm for primary navigation states", async () => {
@@ -2506,6 +2534,13 @@ test("supports an icon-only persistent theme switch across both navigation views
   );
   assert.match(themeSource, /localStorage\.getItem\(storageKey\)/);
   assert.match(themeSource, /prefers-color-scheme: dark/);
+  assert.match(themeSource, /lightThemeColor = "#ffffff"/);
+  assert.match(themeSource, /darkThemeColor = "#191919"/);
+  assert.match(themeSource, /lightScrimmedThemeColor = "#9e9e9e"/);
+  assert.match(themeSource, /darkScrimmedThemeColor = "#080808"/);
+  assert.match(themeSource, /classList\.contains\("menu-open"\)/);
+  assert.match(navigationSource, /syncMobileChrome\(true\)/);
+  assert.match(navigationSource, /syncMobileChrome\(false\)/);
   assert.match(toggleSource, /role="switch"/);
   assert.match(toggleSource, /aria-checked=\{darkModeActive\}/);
   assert.match(toggleSource, /data-theme-icon="sun"/);
@@ -2517,11 +2552,16 @@ test("supports an icon-only persistent theme switch across both navigation views
   assert.match(toggleSource, /applyTheme\(nextTheme\)/);
   assert.match(toggleSource, /root\.dataset\.theme = theme/);
   assert.match(toggleSource, /root\.style\.colorScheme = theme/);
-  assert.match(toggleSource, /meta\[name="theme-color"\]/);
+  assert.match(themeSource, /meta\[name="theme-color"\]/);
   assert.match(toggleSource, /dispatchEvent\(/);
   assert.match(toggleSource, /addEventListener\("storage"/);
   assert.match(toggleSource, /colorScheme\.addEventListener\("change"/);
   assert.match(css, /:root\[data-theme="dark"\]\s*\{/);
+  assert.match(
+    css,
+    /@media \(max-width: 930px\)[\s\S]*?html,\s*body\s*\{[^}]*background:\s*var\(--surface\)/,
+  );
+  assert.match(css, /calc\(66px \+ env\(safe-area-inset-top\)\)/);
   assert.doesNotMatch(css, /\.sidebar-controls\b/);
   assert.match(sidebarToggleRule, /margin-bottom:\s*12px/);
   assert.doesNotMatch(

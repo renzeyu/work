@@ -35,6 +35,10 @@ import {
   type PortfolioProjectIcon,
   withBasePath,
 } from "../lib/portfolio";
+import {
+  syncBrowserThemeColor,
+  type ColorTheme,
+} from "../lib/theme";
 
 const socialLinks = [
   { key: "linkedin", label: "LinkedIn", Icon: LinkedinLogo },
@@ -342,9 +346,17 @@ export function MobileHeader() {
   const triggerRef = useRef<HTMLButtonElement>(null);
   const [isOpen, setIsOpen] = useState(false);
 
+  function syncMobileChrome(scrimmed: boolean) {
+    const theme: ColorTheme = document.documentElement.dataset.theme === "dark"
+      ? "dark"
+      : "light";
+    syncBrowserThemeColor(theme, scrimmed);
+  }
+
   function openMenu() {
     setIsOpen(true);
     document.documentElement.classList.add("menu-open");
+    syncMobileChrome(true);
     dialogRef.current?.showModal();
   }
 
@@ -391,6 +403,7 @@ export function MobileHeader() {
         onClose={() => {
           setIsOpen(false);
           document.documentElement.classList.remove("menu-open");
+          syncMobileChrome(false);
           triggerRef.current?.focus();
         }}
       >

@@ -28,11 +28,6 @@
   color: inherit;
 }
 
-.rplace-root button:focus-visible {
-  outline: 3px solid color-mix(in srgb, var(--focus) 72%, transparent);
-  outline-offset: 3px;
-}
-
 .rplace-root button:active:not(:disabled) {
   transform: scale(0.97);
 }
@@ -97,10 +92,6 @@
 
 .rplace-root .place-canvas:active {
   cursor: grabbing;
-}
-
-.rplace-root .place-canvas:focus-visible {
-  outline: none;
 }
 
 .rplace-root .edge-fade {
@@ -450,10 +441,6 @@
   background: #f4f4f4;
 }
 
-.rplace-root .help-image-close:focus-visible {
-  outline: 3px solid #000000;
-  outline-offset: 2px;
-}
 .rplace-root .loading-cover {
   position: absolute;
   z-index: 60;

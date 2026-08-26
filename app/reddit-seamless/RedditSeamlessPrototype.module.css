@@ -33,12 +33,6 @@
   flex: none;
 }
 
-.prototype button:focus-visible,
-.prototype input:focus-visible {
-  outline: 2px solid #0b84ff;
-  outline-offset: 2px;
-}
-
 .stage {
   --device-scale: min(
     1,
@@ -138,11 +132,6 @@
 
 .speedToggle[aria-checked="true"] > span {
   transform: translateX(17px);
-}
-
-.speedToggle:focus-visible {
-  outline: 2px solid #ffffff;
-  outline-offset: 3px;
 }
 
 .deviceFrame {
@@ -1151,10 +1140,6 @@
 .commentComposer input::placeholder {
   color: #71838a;
   opacity: 1;
-}
-
-.commentComposer input:focus {
-  box-shadow: inset 0 0 0 1.5px #43636f;
 }
 
 .commentComposer button {

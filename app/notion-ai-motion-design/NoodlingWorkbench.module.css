@@ -126,14 +126,6 @@
   transform: translateY(1px);
 }
 
-.actions button:focus-visible,
-.inspectorHeader button:focus-visible,
-.numberInput:focus-visible,
-.rangeInput:focus-visible {
-  outline: 2px solid var(--noodle-coral);
-  outline-offset: 2px;
-}
-
 .workbench {
   min-height: 0;
   flex: 1;
@@ -442,11 +434,6 @@
   border-color: var(--noodle-ink-soft);
 }
 
-.numberInput:focus-visible {
-  border-color: var(--noodle-coral);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--noodle-coral) 14%, transparent);
-}
-
 .rangeInput {
   --range-progress: 50%;
   width: 100%;
@@ -503,9 +490,7 @@
 }
 
 .rangeInput:hover::-webkit-slider-thumb,
-.rangeInput:focus-visible::-webkit-slider-thumb,
-.rangeInput:hover::-moz-range-thumb,
-.rangeInput:focus-visible::-moz-range-thumb {
+.rangeInput:hover::-moz-range-thumb {
   transform: scale(1.08);
   box-shadow: 0 2px 9px color-mix(in srgb, var(--noodle-ink) 28%, transparent);
 }
@@ -717,11 +702,7 @@
 }
 
 @media (forced-colors: active) {
-  .canvasBounds,
-  .actions button:focus-visible,
-  .inspectorHeader button:focus-visible,
-  .numberInput:focus-visible,
-  .rangeInput:focus-visible {
+  .canvasBounds {
     outline-color: Highlight;
   }
 }

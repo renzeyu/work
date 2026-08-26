@@ -200,13 +200,6 @@
   touch-action: manipulation;
 }
 
-.navButton:focus-visible {
-  z-index: 1;
-  border-radius: 5px;
-  outline: max(2px, 0.2cqw) solid #0f1a1c;
-  outline-offset: min(-2px, -0.2cqw);
-}
-
 .navButton:active:not(:disabled) {
   transform: translateY(1px);
 }
@@ -332,11 +325,5 @@
 @media (prefers-reduced-motion: reduce) {
   .navButton:active:not(:disabled) {
     transform: none;
-  }
-}
-
-@media (forced-colors: active) {
-  .navButton:focus-visible {
-    outline-color: Highlight;
   }
 }

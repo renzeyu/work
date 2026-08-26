@@ -3,8 +3,7 @@
 import { useEffect, useState } from "react";
 import { Moon, Sun } from "@phosphor-icons/react";
 import {
-  darkThemeColor,
-  lightThemeColor,
+  syncBrowserThemeColor,
   themeChangeEvent,
   themeStorageKey,
   type ColorTheme,
@@ -38,12 +37,7 @@ function applyTheme(theme: ColorTheme) {
   const root = document.documentElement;
   root.dataset.theme = theme;
   root.style.colorScheme = theme;
-  document
-    .querySelector('meta[name="theme-color"]')
-    ?.setAttribute(
-      "content",
-      theme === "dark" ? darkThemeColor : lightThemeColor,
-    );
+  syncBrowserThemeColor(theme);
 }
 
 export function ThemeToggle() {
