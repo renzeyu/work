@@ -1,5 +1,5 @@
 import type { PortfolioProject } from "../lib/portfolio";
-import { withBasePath } from "../lib/portfolio";
+import { withBasePath } from "../lib/base-path";
 import { MediaGallery } from "./MediaGallery";
 import { RichText } from "./RichText";
 

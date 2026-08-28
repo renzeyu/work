@@ -20,7 +20,7 @@ import {
   useState,
   type KeyboardEvent as ReactKeyboardEvent,
 } from "react";
-import { withBasePath } from "../lib/portfolio";
+import { withBasePath } from "../lib/base-path";
 import {
   CodeVoteMotion,
   type CodeVoteMotionKind,

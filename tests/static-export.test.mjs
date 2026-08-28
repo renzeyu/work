@@ -52,6 +52,7 @@ const routes = [
   "reddit-ipo-social-video",
   "reddit-recap-1",
   "reddit-seamless",
+  "reddit-recap-2022",
   "upvote-lab",
   "collectable-avatars-launch-video",
   "rplace-returns-teaser",
@@ -88,6 +89,7 @@ test("exports the interactive Playground snippets and primary nav order", async 
   const [
     html,
     pageSource,
+    islandSource,
     playgroundCss,
     masonrySource,
     loaderSource,
@@ -105,6 +107,13 @@ test("exports the interactive Playground snippets and primary nav order", async 
   ] = await Promise.all([
     readFile(new URL("playground/index.html", outputRoot), "utf8"),
     readFile(new URL("../app/playground/page.tsx", import.meta.url), "utf8"),
+    readFile(
+      new URL(
+        "../app/playground/PlaygroundPrototypeIsland.tsx",
+        import.meta.url,
+      ),
+      "utf8",
+    ),
     readFile(
       new URL("../app/playground/Playground.module.css", import.meta.url),
       "utf8",
@@ -239,6 +248,121 @@ test("exports the interactive Playground snippets and primary nav order", async 
     ...playgroundCss.matchAll(/\.upvoteTile\s*\{([^}]*)\}/g),
   ].map((match) => match[1]);
 
+  if (html.includes('data-prototype-loaded="false"')) {
+    assert.equal(primaryLists.length, 1);
+    const labels = [
+      ...primaryLists[0][1].matchAll(
+        /<span class="nav-row__label">([^<]+)<\/span>/g,
+      ),
+    ].map((match) => match[1]);
+    assert.deepEqual(labels, ["Work", "Playground", "About"]);
+    assert.equal(
+      (
+        html.match(
+          new RegExp(`href="${basePath}/playground/" aria-current="page"`, "g"),
+        ) ?? []
+      ).length,
+      1,
+    );
+    assert.deepEqual(sourcePrototypeOrder, [
+      "shape-typer",
+      "shape-playground",
+      "noodling",
+      "nosey-ai",
+      "loaders",
+      "reddit-icons",
+      "rplace",
+      "upvote-lab",
+      "reddit-seamless",
+      "reddit-recap",
+    ]);
+    assert.deepEqual(exportedPrototypeNames, sourcePrototypeOrder);
+    assert.equal((html.match(/data-prototype-loaded="false"/g) ?? []).length, 10);
+    assert.equal((html.match(/data-prototype-island=/g) ?? []).length, 10);
+    assert.equal((html.match(/data-masonry-item/g) ?? []).length, 10);
+    assert.equal(
+      (html.match(/data-prototype-load-mode="interaction"/g) ?? []).length,
+      8,
+    );
+    assert.equal(
+      (html.match(/data-prototype-load-mode="viewport"/g) ?? []).length,
+      2,
+    );
+    assert.doesNotMatch(
+      html,
+      /data-shape-typer="true"|data-frontpage-nosey="true"|data-loader-variant="playground"|data-reddit-icons="true"|data-noodling-snippet="true"|data-upvote-lab="true"|data-device-frame|reddit-icons\/screens\/|Shapes-Regular-091025\.(?:ttf|woff2)|nosey\.riv|<canvas\b|<video\b|<iframe\b/,
+    );
+    for (const prototype of sourcePrototypeOrder) {
+      assert.match(
+        islandSource,
+        new RegExp(`(?:"${prototype}"|${prototype.replace(/-/g, "\\-")})`),
+      );
+    }
+    assert.match(islandSource, /lazy\(async \(\) =>/);
+    assert.match(islandSource, /new IntersectionObserver/);
+    assert.match(islandSource, /rootMargin: "0px"/);
+    assert.match(islandSource, /effectiveType === "slow-2g"/);
+    assert.match(islandSource, /effectiveType === "2g"/);
+    assert.doesNotMatch(islandSource, /effectiveType === "3g"/);
+    assert.match(islandSource, /connection\.downlink < 0\.75/);
+    assert.match(islandSource, /if \(prefersConservativeLoading\(\)\) return/);
+    assert.match(islandSource, /window\.addEventListener\("load", start/);
+    assert.match(islandSource, /window\.requestIdleCallback/);
+    assert.match(islandSource, /document\.visibilityState !== "visible"/);
+    assert.match(islandSource, /BACKGROUND_START_DELAY_MS = 1800/);
+    assert.match(islandSource, /BACKGROUND_STEP_DELAY_MS = 2600/);
+    assert.match(
+      islandSource,
+      /const backgroundLoadOrder:[\s\S]*"reddit-recap",[\s\S]*"nosey-ai",[\s\S]*\];/,
+    );
+    assert.match(islandSource, /type LoadMode = "interaction" \| "viewport"/);
+    assert.match(islandSource, /onClick=\{activate\}/);
+    assert.match(islandSource, /withBasePath\(src\)/);
+    assert.match(islandSource, /<ShapeTyper variant="preview" \/>/);
+    assert.match(islandSource, /<NoseyPrototype variant="playground" \/>/);
+    assert.match(islandSource, /<RedditIconPrototype variant="playground" \/>/);
+    assert.match(islandSource, /<UpvoteLab variant="playground" \/>/);
+    assert.match(
+      pageSource,
+      /<PlaygroundPrototypeIsland prototype="shape-typer" \/>/,
+    );
+    assert.match(
+      pageSource,
+      /<PlaygroundMasonry>[\s\S]*<\/PlaygroundMasonry>/,
+    );
+    assert.match(
+      globalCss,
+      /--collection-gutter:\s*clamp\(12px,\s*1\.5vw,\s*20px\)/,
+    );
+    assert.match(playgroundRule, /--playground-gap:\s*var\(--collection-gutter\)/);
+    assert.match(masonryRule, /position:\s*relative/);
+    assert.match(masonryRule, /display:\s*grid/);
+    assert.match(masonryRule, /gap:\s*var\(--playground-gap\)/);
+    assert.match(masonryReadyRule, /position:\s*absolute/);
+    assert.match(masonrySource, /Math\.min\(\.\.\.columnHeights\)/);
+    assert.match(
+      playgroundCss,
+      /\.typerTile\s*\{[^}]*aspect-ratio:\s*16\s*\/\s*9/s,
+    );
+    assert.match(
+      playgroundCss,
+      /\.noseyTile\s*\{[^}]*aspect-ratio:\s*1\s*\/\s*1/s,
+    );
+    assert.match(shapeSource, /MAX_TYPER_CHARACTERS/);
+    assert.match(
+      shapeSource,
+      /const MOBILE_KEEP_SHAPES_QUERY = "\(max-width: 860px\)"/,
+    );
+    assert.match(shapePlaygroundSource, /import\("\.\/shapePlaygroundEngine"\)/);
+    assert.match(shapePlaygroundEngineSource, /Matter\.Engine\.create/);
+    assert.ok(playgroundBranch);
+    assert.match(playgroundBranch, /aria-label="Play a random Nosey state"/);
+    assert.match(noodlingSource, /new IntersectionObserver/);
+    assert.match(globalCss, /body:has\(\.playground-page\) \.site-footer/);
+    assert.equal(shapeFont.subarray(0, 4).toString("hex"), "00010000");
+    return;
+  }
+
   assert.equal(primaryLists.length, 2);
   for (const [, primaryList] of primaryLists) {
     const labels = [
@@ -289,6 +413,10 @@ test("exports the interactive Playground snippets and primary nav order", async 
     html,
     /<h2 id="reddit-seamless-playground-title" class="sr-only">Reddit seamless feed-to-post experience<\/h2>/,
   );
+  assert.match(
+    html,
+    /<h2 id="reddit-recap-playground-title" class="sr-only">Interactive Reddit Recap 2022 experience<\/h2>/,
+  );
   assert.match(html, /<h2 id="noodling-title" class="sr-only">Noodling<\/h2>/);
   assert.equal(new Set(exportedPrototypeNames).size, sourcePrototypeOrder.length);
   for (const prototype of sourcePrototypeOrder) {
@@ -303,6 +431,7 @@ test("exports the interactive Playground snippets and primary nav order", async 
   assert.match(html, /data-prototype="shape-playground"/);
   assert.match(html, /data-prototype="upvote-lab"/);
   assert.match(html, /data-prototype="reddit-seamless"/);
+  assert.match(html, /data-prototype="reddit-recap"/);
   assert.deepEqual(sourcePrototypeOrder, [
     "shape-typer",
     "shape-playground",
@@ -313,6 +442,7 @@ test("exports the interactive Playground snippets and primary nav order", async 
     "rplace",
     "upvote-lab",
     "reddit-seamless",
+    "reddit-recap",
   ]);
   assert.deepEqual(exportedPrototypeNames, sourcePrototypeOrder);
   assert.deepEqual(
@@ -324,6 +454,7 @@ test("exports the interactive Playground snippets and primary nav order", async 
       "notion",
       "notion",
       "notion",
+      "reddit",
       "reddit",
       "reddit",
       "reddit",
@@ -476,7 +607,7 @@ test("exports the interactive Playground snippets and primary nav order", async 
     /import \{ PlaygroundMasonry \} from "\.\/PlaygroundMasonry"/,
   );
   assert.match(pageSource, /<PlaygroundMasonry>[\s\S]*<\/PlaygroundMasonry>/);
-  assert.equal((html.match(/data-masonry-item/g) ?? []).length, 9);
+  assert.equal((html.match(/data-masonry-item/g) ?? []).length, 10);
   assert.doesNotMatch(pageSource, /styles\.(?:flow|grid|column)/);
   assert.match(
     globalCss,
@@ -734,7 +865,20 @@ test("work routes mount the fixed interactive Nosey assistant", async () => {
   assert.equal((gridSource.match(/<NoseyAssistant\s*\/>/g) ?? []).length, 1);
   assert.match(assistantSource, /lazy\(\(\) =>[\s\S]*NoseyPrototype/);
   assert.match(assistantSource, /createPortal\([\s\S]*document\.body/);
-  assert.match(assistantSource, /<LazyNoseyPrototype variant="assistant"\s*\/>/);
+  assert.match(
+    assistantSource,
+    /\{activated \? \([\s\S]*<LazyNoseyPrototype[\s\S]*variant="assistant"[\s\S]*startWithRandomState=\{startWithRandomState\}[\s\S]*onAssistantReady=/,
+  );
+  assert.match(assistantSource, /nosey-assistant-static\.png/);
+  assert.match(assistantSource, /onClick=\{\(\) => activate\(true\)\}/);
+  assert.doesNotMatch(
+    assistantSource,
+    /activationTimer|requestIdleCallback|effectiveType|onPointerEnter=/,
+  );
+  assert.doesNotMatch(
+    globalCss,
+    /\.nosey-assistant-placeholder\[data-active="true"\][^}]*pointer-events:\s*none/s,
+  );
   assert.match(noseySource, /variant\?: "assistant" \| "project" \| "playground"/);
   assert.match(noseySource, /if \(variant === "assistant"\)/);
   assert.match(noseySource, /data-frontpage-nosey="true"/);
@@ -1012,6 +1156,51 @@ test("preserves the finished Shape Typer behavior model", () => {
   assert.equal(IDLE_REPLAY_INTERVAL_MS, 4_000);
 });
 
+test("loads one subsetted shared Shape Glyphs webfont", async () => {
+  const [sharedCss, typerCss, previewCss, layoutSource, font] =
+    await Promise.all([
+      readFile(
+        new URL(
+          "../app/playground/shape-typer/ShapeGlyphs.css",
+          import.meta.url,
+        ),
+        "utf8",
+      ),
+      readFile(
+        new URL(
+          "../app/playground/shape-typer/ShapeTyper.module.css",
+          import.meta.url,
+        ),
+        "utf8",
+      ),
+      readFile(
+        new URL(
+          "../app/playground/shape-typer/ShapePlaygroundPreview.module.css",
+          import.meta.url,
+        ),
+        "utf8",
+      ),
+      readFile(new URL("../app/layout.tsx", import.meta.url), "utf8"),
+      readFile(
+        new URL(
+          "../app/playground/shape-typer/Shapes-Regular-091025.woff2",
+          import.meta.url,
+        ),
+      ),
+    ]);
+
+  assert.equal(font.subarray(0, 4).toString(), "wOF2");
+  assert.ok(font.byteLength < 350_000);
+  assert.equal((sharedCss.match(/@font-face/g) ?? []).length, 1);
+  assert.match(sharedCss, /Shapes-Regular-091025\.woff2/);
+  assert.match(
+    sharedCss,
+    /unicode-range:\s*U\+0020, U\+0030-0039, U\+0041-005A, U\+0061-007A/,
+  );
+  assert.doesNotMatch(typerCss + previewCss, /@font-face|\.ttf/);
+  assert.match(layoutSource, /shape-typer\/ShapeGlyphs\.css/);
+});
+
 test("themes the embedded Reddit phone canvas in dark mode", async () => {
   const [css, source, homeScreen] = await Promise.all([
     readFile(
@@ -1043,13 +1232,17 @@ test("themes the embedded Reddit phone canvas in dark mode", async () => {
     createHash("sha256").update(homeScreen).digest("hex"),
     "252a1e30c1776c39d3ed80a3d6e98eb2bb4db20c4b95d1909f9a0fcb28be5c24",
   );
-  assert.match(source, /screenAssetVersion = "transparent-252a1e30"/);
+  assert.match(source, /screenAssetVersion = "webp-q95-20260827"/);
+  assert.match(source, /screenAssetUrl\(activeTab, "webp"\)/);
+  assert.match(source, /screenAssetUrl\(activeTab, "png"\)/);
+  assert.doesNotMatch(source, /screens\/\$\{tab\.id\}\.png/);
 });
 
 test("crops the interactive Reddit phone to its bottom navigation", async () => {
   const [
     playgroundHtml,
     playgroundSource,
+    islandSource,
     playgroundCss,
     redditHtml,
     source,
@@ -1057,6 +1250,13 @@ test("crops the interactive Reddit phone to its bottom navigation", async () => 
   ] = await Promise.all([
     readFile(new URL("playground/index.html", outputRoot), "utf8"),
     readFile(new URL("../app/playground/page.tsx", import.meta.url), "utf8"),
+    readFile(
+      new URL(
+        "../app/playground/PlaygroundPrototypeIsland.tsx",
+        import.meta.url,
+      ),
+      "utf8",
+    ),
     readFile(
       new URL("../app/playground/Playground.module.css", import.meta.url),
       "utf8",
@@ -1077,13 +1277,12 @@ test("crops the interactive Reddit phone to its bottom navigation", async () => 
 
   assert.match(
     playgroundSource,
-    /<RedditIconPrototype variant="playground" \/>/,
+    /<PlaygroundPrototypeIsland prototype="reddit-icons" \/>/,
   );
-  assert.match(
-    playgroundHtml,
-    /data-reddit-icons="true" data-variant="playground"/,
-  );
-  assert.match(playgroundHtml, /aria-label="Reddit app sections"/);
+  assert.match(islandSource, /<RedditIconPrototype variant="playground" \/>/);
+  assert.match(playgroundHtml, /data-prototype-island="reddit-icons"/);
+  assert.match(playgroundHtml, /data-prototype-loaded="false"/);
+  assert.doesNotMatch(playgroundHtml, /data-reddit-icons="true"/);
   assert.match(
     playgroundCss,
     /\.redditTile\s*\{[^}]*aspect-ratio:\s*2\s*\/\s*1/s,
@@ -1115,6 +1314,11 @@ test("crops the interactive Reddit phone to its bottom navigation", async () => 
   );
   assert.match(source, /onClick=\{\(\) => onSelect\(tab\.id\)\}/);
   assert.match(redditHtml, /data-reddit-icons="true" data-variant="page"/);
+  assert.match(redditHtml, /screens\/home\.webp\?v=webp-q95-20260827/);
+  assert.match(redditHtml, /screens\/home\.png\?v=webp-q95-20260827/);
+  for (const inactiveTab of ["communities", "chat", "inbox"]) {
+    assert.doesNotMatch(redditHtml, new RegExp(`screens/${inactiveTab}\\.`));
+  }
 });
 
 test("exports Your AI Team and its local Rive runtime assets", async () => {
@@ -2078,18 +2282,25 @@ test("self-hosts the complete Notion Inter family", async () => {
   const fontFaceRules = [...css.matchAll(/@font-face\s*\{([^}]*)\}/g)].map(
     (match) => match[1],
   );
+  let totalFontBytes = 0;
 
   for (const [name, weight, style] of faces) {
     const file = `NotionInter-${name}.woff2`;
     const font = await readFile(
       new URL(`../app/fonts/${file}`, import.meta.url),
     );
+    totalFontBytes += font.byteLength;
     const rule = fontFaceRules.find((fontFace) => fontFace.includes(file));
     assert.equal(font.subarray(0, 4).toString(), "wOF2");
     assert.ok(rule, `Missing @font-face rule for ${file}`);
     assert.match(rule, new RegExp(`font-weight: ${weight};`));
     assert.match(rule, new RegExp(`font-style: ${style};`));
   }
+
+  assert.ok(
+    totalFontBytes < 400_000,
+    `Notion Inter webfont payload regressed to ${totalFontBytes} bytes`,
+  );
 
   await access(new URL("../app/fonts/OFL.txt", import.meta.url));
   assert.match(css, /font-family: "Notion Inter"/);
@@ -2118,6 +2329,13 @@ test("work page contains all project links and migration-safe metadata", async (
       frontpage,
       /<span>Projects<\/span>|>9(?:<!-- -->)? items</,
     );
+    assert.equal(
+      (frontpage.match(/class="loop-video__poster"/g) ?? []).length,
+      2,
+      "Only the first row of optimized posters belongs in the initial HTML",
+    );
+    assert.doesNotMatch(frontpage, /<video\b|NoseyPrototype|rive\.wasm|\.riv(?:\?|")/);
+    assert.match(frontpage, /\/media\/covers\/make-with-notion-2025\.jpg/);
   }
 
   assert.match(html, /Zeyu Ren/);
@@ -2159,7 +2377,7 @@ test("keeps work navigation and project cards concise", async () => {
   for (const html of [rootHtml, workHtml]) {
     assert.equal(
       (html.match(/<p class="sidebar-label">Projects<\/p>/g) ?? []).length,
-      2,
+      1,
     );
     assert.doesNotMatch(html, /Project pages/);
     assert.doesNotMatch(html, /class="nav-count"|>Work\s+\d+<\/a>/);
@@ -2229,11 +2447,10 @@ test("assigns every project a distinct icon from the shared navigation system", 
     const copies = renderedIcons.filter((rendered) => rendered.icon === icon);
     assert.equal(
       copies.length,
-      2,
-      `${icon} should render in both navigation views`,
+      1,
+      `${icon} should render once in the server-rendered navigation`,
     );
     assert.match(copies[0].attributes, /aria-hidden="true"/);
-    assert.equal(copies[0].body, copies[1].body);
     uniqueIconBodies.add(copies[0].body);
   }
   assert.equal(uniqueIconBodies.size, expectedIcons.length);
@@ -2442,25 +2659,6 @@ test("supports an icon-only persistent theme switch across both navigation views
     '<nav class="workspace-socials"',
     desktopUtilities,
   );
-  const mobileContent = mobileHtml.indexOf(
-    '<div class="mobile-menu__content"',
-  );
-  const mobileNav = mobileHtml.indexOf(
-    '<nav class="workspace-nav"',
-    mobileContent,
-  );
-  const mobileUtilities = mobileHtml.indexOf(
-    '<div class="workspace-utilities"',
-    mobileContent,
-  );
-  const mobileTheme = mobileHtml.indexOf(
-    "data-theme-toggle",
-    mobileUtilities,
-  );
-  const mobileSocials = mobileHtml.indexOf(
-    '<nav class="workspace-socials"',
-    mobileUtilities,
-  );
   const toggleRule = css.match(/\.theme-toggle\s*\{([^}]*)\}/)?.[1] ?? "";
   const sidebarToggleRule =
     css.match(/(?:^|\n)\.sidebar-toggle\s*\{([^}]*)\}/m)?.[1] ?? "";
@@ -2489,18 +2687,18 @@ test("supports an icon-only persistent theme switch across both navigation views
     switchRule.match(/height:\s*(\d+)px/)?.[1] ?? 0,
   );
 
-  assert.equal((html.match(/data-theme-toggle/g) ?? []).length, 2);
-  assert.equal((html.match(/role="switch"/g) ?? []).length, 2);
-  assert.equal((html.match(/aria-checked="false"/g) ?? []).length, 2);
-  assert.equal((html.match(/aria-label="Dark mode"/g) ?? []).length, 2);
+  assert.equal((html.match(/data-theme-toggle/g) ?? []).length, 1);
+  assert.equal((html.match(/role="switch"/g) ?? []).length, 1);
+  assert.equal((html.match(/aria-checked="false"/g) ?? []).length, 1);
+  assert.equal((html.match(/aria-label="Dark mode"/g) ?? []).length, 1);
   assert.doesNotMatch(
     html,
     /<span[^>]*>\s*(?:Dark mode|Light mode)\s*<\/span>/i,
   );
-  assert.equal((html.match(/data-theme-icon="sun"/g) ?? []).length, 2);
-  assert.equal((html.match(/data-theme-icon="moon"/g) ?? []).length, 2);
+  assert.equal((html.match(/data-theme-icon="sun"/g) ?? []).length, 1);
+  assert.equal((html.match(/data-theme-icon="moon"/g) ?? []).length, 1);
   assert.equal((desktopHtml.match(/data-theme-toggle/g) ?? []).length, 1);
-  assert.equal((mobileHtml.match(/data-theme-toggle/g) ?? []).length, 1);
+  assert.equal((mobileHtml.match(/data-theme-toggle/g) ?? []).length, 0);
   assert.equal((desktopHtml.match(/data-sidebar-toggle/g) ?? []).length, 1);
   assert.equal((mobileHtml.match(/data-sidebar-toggle/g) ?? []).length, 0);
   assert.match(sidebarButtonHtml, /aria-label="Collapse sidebar"/);
@@ -2515,13 +2713,9 @@ test("supports an icon-only persistent theme switch across both navigation views
       desktopTheme < desktopSocials,
     "Desktop collapse belongs above navigation; theme belongs in bottom utilities above socials",
   );
-  assert.ok(
-    mobileContent >= 0 &&
-      mobileContent < mobileNav &&
-      mobileNav < mobileUtilities &&
-      mobileUtilities < mobileTheme &&
-      mobileTheme < mobileSocials,
-    "Mobile theme belongs in bottom utilities above socials",
+  assert.match(
+    navigationSource,
+    /\{isOpen \? \([\s\S]*<div className="mobile-menu__content">[\s\S]*<NavigationLinks onNavigate=\{closeMenu\} \/>/,
   );
   assert.match(
     navigationSource,
@@ -2889,22 +3083,23 @@ test("exports the interactive Notion AI motion study and its authentic cover", a
   assert.deepEqual(notionCover?.asset, {
     kind: "video",
     src: "/media/notion-ai-motion-design-cover.mp4",
+    optimizedSrc: "/media/covers/notion-ai-motion-design.mp4",
     poster: "/media/notion-ai-motion-design-cover.jpg",
+    optimizedPoster: "/media/covers/notion-ai-motion-design.jpg",
     width: 960,
     height: 540,
   });
   assert.match(workHtml, /Notion AI Motion Design animated cover/);
   assert.match(workHtml, /\/media\/notion-ai-motion-design-cover\.jpg/);
   assert.match(workHtml, /\/media\/notion-ai-motion-design-cover\.mp4/);
+  assert.match(workHtml, /\/media\/covers\/notion-ai-motion-design\.jpg/);
+  assert.match(workHtml, /\/media\/covers\/notion-ai-motion-design\.mp4/);
   assert.ok(notionCard);
   assert.match(notionCard, /class="loop-video"/);
   assert.match(notionCard, /style="aspect-ratio:960 \/ 540"/);
-  assert.match(
-    notionCard,
-    /<video\b[^>]*poster="[^"]*\/media\/notion-ai-motion-design-cover\.jpg"/,
-  );
-  assert.doesNotMatch(notionCard, /<img\b|static-media/);
-  assert.match(loopVideoSource, /withBasePath\(src\)/);
+  assert.doesNotMatch(notionCard, /<(?:img|video|source)\b|static-media/);
+  assert.match(loopVideoSource, /optimizedPoster \?\? poster/);
+  assert.match(loopVideoSource, /withBasePath\(optimizedSrc \?\? src\)/);
   assert.equal(coverPoster.subarray(0, 3).toString("hex"), "ffd8ff");
   assert.deepEqual(posterDimensions, { width: 960, height: 540 });
   assert.equal(

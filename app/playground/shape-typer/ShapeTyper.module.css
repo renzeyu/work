@@ -1,11 +1,3 @@
-@font-face {
-  font-family: "Shape Glyphs";
-  src: url("./Shapes-Regular-091025.ttf") format("truetype");
-  font-display: block;
-  font-style: normal;
-  font-weight: 400;
-}
-
 .tool {
   --canvas: #f4f2f3;
   --panel: #eceaeb;

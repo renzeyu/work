@@ -295,9 +295,15 @@ function randomChoice<T>(choices: T[]) {
 
 type NoseyPrototypeProps = {
   variant?: "assistant" | "project" | "playground";
+  onAssistantReady?: () => void;
+  startWithRandomState?: boolean;
 };
 
-export function NoseyPrototype({ variant = "project" }: NoseyPrototypeProps) {
+export function NoseyPrototype({
+  variant = "project",
+  onAssistantReady,
+  startWithRandomState = false,
+}: NoseyPrototypeProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const riveRef = useRef<Rive | null>(null);
   const runtimeInputsRef = useRef<Map<string, StateMachineInput>>(new Map());
@@ -318,6 +324,9 @@ export function NoseyPrototype({ variant = "project" }: NoseyPrototypeProps) {
   const randomReturnTimerRef = useRef<number | null>(null);
   const recoverMachineRef = useRef<() => void>(() => undefined);
   const beginExitRef = useRef<() => void>(() => undefined);
+  const triggerRandomStateRef = useRef<() => void>(() => undefined);
+  const assistantReadyNotifiedRef = useRef(false);
+  const assistantInitialStateTriggeredRef = useRef(false);
 
   const [reloadKey, setReloadKey] = useState(0);
   const [status, setStatus] = useState<LoadStatus>("loading");
@@ -1067,6 +1076,27 @@ export function NoseyPrototype({ variant = "project" }: NoseyPrototypeProps) {
     if (!choice) return;
     triggerState(choice, "random");
   };
+
+  useEffect(() => {
+    triggerRandomStateRef.current = triggerRandomState;
+  });
+
+  useEffect(() => {
+    if (variant !== "assistant" || status !== "ready") return;
+
+    if (!assistantReadyNotifiedRef.current) {
+      assistantReadyNotifiedRef.current = true;
+      onAssistantReady?.();
+    }
+
+    if (
+      startWithRandomState &&
+      !assistantInitialStateTriggeredRef.current
+    ) {
+      assistantInitialStateTriggeredRef.current = true;
+      triggerRandomStateRef.current();
+    }
+  }, [onAssistantReady, startWithRandomState, status, variant]);
 
   if (variant === "assistant") {
     return (

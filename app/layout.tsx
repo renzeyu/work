@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import "./playground/shape-typer/ShapeGlyphs.css";
 import { SiteShell } from "./components/SiteShell";
 import { absoluteSiteUrl, siteUrl } from "./lib/site";
 import { lightThemeColor, themeInitScript } from "./lib/theme";

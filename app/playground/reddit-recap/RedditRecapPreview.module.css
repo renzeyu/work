@@ -1,0 +1,136 @@
+.preview {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  place-items: center;
+  overflow: visible;
+  background: transparent;
+  container-type: size;
+}
+
+.deviceFrame {
+  --device-width: 413px;
+  --device-height: 872px;
+  --screen-width: 393px;
+  --screen-height: 852px;
+  --device-scale: min(
+    1,
+    calc(100cqw / var(--device-width)),
+    calc(100cqh / var(--device-height))
+  );
+
+  position: relative;
+  isolation: isolate;
+  width: calc(var(--device-width) * var(--device-scale));
+  height: calc(var(--device-height) * var(--device-scale));
+  max-width: none;
+  aspect-ratio: 413 / 872;
+  transition: transform 240ms cubic-bezier(0.22, 0.8, 0.24, 1);
+}
+
+.preview:hover .deviceFrame,
+.preview:focus-within .deviceFrame {
+  transform: translateY(-3px);
+}
+
+.deviceFrame::before,
+.deviceFrame::after,
+.frameActionButton {
+  position: absolute;
+  z-index: 0;
+  width: 0.338cqh;
+  background: #767676;
+}
+
+.deviceFrame::before,
+.deviceFrame::after {
+  content: "";
+}
+
+.deviceFrame::before {
+  top: 27.5cqh;
+  left: -0.56cqh;
+  height: 8.5cqh;
+  border-radius: 2px 0 0 2px;
+  box-shadow: 0 10.2cqh 0 #767676;
+}
+
+.deviceFrame::after {
+  top: 29cqh;
+  right: -0.56cqh;
+  height: 13cqh;
+  border-radius: 0 2px 2px 0;
+}
+
+.frameActionButton {
+  top: 18.5cqh;
+  left: -0.56cqh;
+  height: 4.45cqh;
+  border-radius: 2px 0 0 2px;
+}
+
+.deviceShell {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  overflow: clip;
+  border: 0.2252cqh solid #8e8e8e;
+  border-radius: 6.6441cqh;
+  background:
+    linear-gradient(90deg, #050505 0 5%, #1d1d1d 9% 91%, #050505 95% 100%);
+  box-shadow:
+    0 38px 90px rgb(0 0 0 / 36%),
+    inset 0 0 0 0.2252cqh #2c2c2c,
+    inset 0 0 0 0.5631cqh #070707;
+}
+
+.screenSurface {
+  position: relative;
+  width: calc(var(--screen-width) * var(--device-scale));
+  height: calc(var(--screen-height) * var(--device-scale));
+  overflow: hidden;
+  border-radius: 5.2928cqh;
+  background: #050505;
+  box-shadow:
+    0 0 0 0.1126cqh #050505,
+    inset 0 0 0 0.1126cqh rgb(255 255 255 / 8%);
+  clip-path: inset(0 round 5.2928cqh);
+  contain: paint;
+  isolation: isolate;
+}
+
+.screen {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: #050505;
+}
+
+.notch {
+  position: absolute;
+  z-index: 3;
+  top: 0.9748cqh;
+  left: 50%;
+  width: 17.6802cqh;
+  height: 3.491cqh;
+  border-radius: 0 0 1.9144cqh 1.9144cqh;
+  background: #050505;
+  pointer-events: none;
+  transform: translateX(-50%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .deviceFrame {
+    transition: none;
+  }
+
+  .preview:hover .deviceFrame,
+  .preview:focus-within .deviceFrame {
+    transform: none;
+  }
+}

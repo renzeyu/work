@@ -1,10 +1,12 @@
 import portfolioJson from "../data/portfolio.json";
+export { basePath, withBasePath } from "./base-path";
 
 export type MediaAsset = {
   kind: "image" | "video";
   src: string;
   optimizedSrc?: string;
   poster?: string;
+  optimizedPoster?: string;
   width?: number;
   height?: number;
 };
@@ -88,13 +90,3 @@ export const portfolio = portfolioJson as PortfolioData;
 export const projectBySlug = new Map(
   portfolio.projects.map((project) => [project.slug, project]),
 );
-
-export const basePath = (process.env.NEXT_PUBLIC_BASE_PATH ?? "").replace(
-  /\/$/,
-  "",
-);
-
-export function withBasePath(path: string) {
-  if (!path.startsWith("/") || !basePath) return path;
-  return `${basePath}${path}`;
-}

@@ -17,7 +17,9 @@
       "asset": {
         "kind": "video",
         "src": "/media/make-with-notion-2025-cover.mp4",
+        "optimizedSrc": "/media/covers/make-with-notion-2025.mp4",
         "poster": "/media/make-with-notion-2025-cover.jpg",
+        "optimizedPoster": "/media/covers/make-with-notion-2025.jpg",
         "width": 720,
         "height": 404
       }
@@ -30,7 +32,9 @@
       "asset": {
         "kind": "video",
         "src": "/media/your-ai-team-cover.mp4",
+        "optimizedSrc": "/media/covers/nosey-ai.mp4",
         "poster": "/media/your-ai-team-cover.png",
+        "optimizedPoster": "/media/covers/nosey-ai.jpg",
         "width": 960,
         "height": 540
       }
@@ -43,7 +47,9 @@
       "asset": {
         "kind": "video",
         "src": "/media/notion-ai-motion-design-cover.mp4",
+        "optimizedSrc": "/media/covers/notion-ai-motion-design.mp4",
         "poster": "/media/notion-ai-motion-design-cover.jpg",
+        "optimizedPoster": "/media/covers/notion-ai-motion-design.jpg",
         "width": 960,
         "height": 540
       }
@@ -56,7 +62,9 @@
       "asset": {
         "kind": "video",
         "src": "/media/da31ab72-111e-44e4-9e34-d7df12ad1480.mp4",
+        "optimizedSrc": "/media/covers/2024-reel.mp4",
         "poster": "/media/da31ab72-111e-44e4-9e34-d7df12ad1480-poster.jpg",
+        "optimizedPoster": "/media/covers/2024-reel.jpg",
         "width": 1916,
         "height": 1080
       }
@@ -69,7 +77,9 @@
       "asset": {
         "kind": "video",
         "src": "/media/3d7e533f-a400-4cb2-abe9-b7e632fec0b4.mp4",
+        "optimizedSrc": "/media/covers/brand-refresh-launch.mp4",
         "poster": "/media/3d7e533f-a400-4cb2-abe9-b7e632fec0b4-poster.jpg",
+        "optimizedPoster": "/media/covers/brand-refresh-launch.jpg",
         "width": 1078,
         "height": 608
       }
@@ -82,7 +92,9 @@
       "asset": {
         "kind": "video",
         "src": "/media/6945a3e2-b7e9-4dad-8d50-355990ed8564.mp4",
+        "optimizedSrc": "/media/covers/reddit-ipo-social-video.mp4",
         "poster": "/media/6945a3e2-b7e9-4dad-8d50-355990ed8564-poster.jpg",
+        "optimizedPoster": "/media/covers/reddit-ipo-social-video.jpg",
         "width": 718,
         "height": 405
       }
@@ -95,7 +107,9 @@
       "asset": {
         "kind": "video",
         "src": "/media/a89a8489-8064-4575-8ce3-6f7f68612113.mp4",
+        "optimizedSrc": "/media/covers/reddit-recap-1.mp4",
         "poster": "/media/a89a8489-8064-4575-8ce3-6f7f68612113-poster.jpg",
+        "optimizedPoster": "/media/covers/reddit-recap-1.jpg",
         "width": 716,
         "height": 404
       }
@@ -108,7 +122,9 @@
       "asset": {
         "kind": "video",
         "src": "/media/76e56e0e-2ead-4e5f-8c9c-a191987d4844.mp4",
+        "optimizedSrc": "/media/covers/collectable-avatars-launch-video.mp4",
         "poster": "/media/76e56e0e-2ead-4e5f-8c9c-a191987d4844-poster.jpg",
+        "optimizedPoster": "/media/covers/collectable-avatars-launch-video.jpg",
         "width": 1078,
         "height": 608
       }
@@ -121,7 +137,9 @@
       "asset": {
         "kind": "video",
         "src": "/media/59cf4a58-a42e-4f5f-9f4d-47682bab1c68.mp4",
+        "optimizedSrc": "/media/covers/rplace-returns-teaser.mp4",
         "poster": "/media/59cf4a58-a42e-4f5f-9f4d-47682bab1c68-poster.jpg",
+        "optimizedPoster": "/media/covers/rplace-returns-teaser.jpg",
         "width": 1916,
         "height": 1080
       }
@@ -134,7 +152,9 @@
       "asset": {
         "kind": "video",
         "src": "/media/7f7c5218-7b33-44f7-9f79-8c1039f67156.mp4",
+        "optimizedSrc": "/media/covers/reddit-motion-design-system.mp4",
         "poster": "/media/7f7c5218-7b33-44f7-9f79-8c1039f67156-poster.jpg",
+        "optimizedPoster": "/media/covers/reddit-motion-design-system.jpg",
         "width": 1916,
         "height": 1080
       }
@@ -147,7 +167,9 @@
       "asset": {
         "kind": "video",
         "src": "/media/a4744850-d9e5-4f4d-aa55-8893926ed2d8.mp4",
+        "optimizedSrc": "/media/covers/hatch-awards-2019.mp4",
         "poster": "/media/a4744850-d9e5-4f4d-aa55-8893926ed2d8-poster.jpg",
+        "optimizedPoster": "/media/covers/hatch-awards-2019.jpg",
         "width": 1916,
         "height": 1080
       }
@@ -160,7 +182,9 @@
       "asset": {
         "kind": "video",
         "src": "/media/e3135418-edf5-4a10-b62d-9e05b4997c1c.mp4",
+        "optimizedSrc": "/media/covers/nihonto-enter-the-swordsmith.mp4",
         "poster": "/media/e3135418-edf5-4a10-b62d-9e05b4997c1c-poster.jpg",
+        "optimizedPoster": "/media/covers/nihonto-enter-the-swordsmith.jpg",
         "width": 638,
         "height": 360
       }

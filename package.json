@@ -6,6 +6,7 @@
     "node": ">=22.13.0"
   },
   "scripts": {
+    "prebuild": "node scripts/generate-portfolio-summary.mjs",
     "dev": "vinext dev --hostname 0.0.0.0",
     "build": "vinext build && node scripts/prepare-pages.mjs",
     "start": "vinext start",

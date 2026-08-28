@@ -1,5 +1,7 @@
 "use client";
 
+import "./RPlacePreview.css";
+
 import {
   Check,
   Clock,
@@ -26,7 +28,7 @@ import {
   type ViewTransform,
 } from "./place-model";
 import { HELP_POSTER_SRC } from "./helpPosterData";
-import { withBasePath } from "../../lib/portfolio";
+import { withBasePath } from "../../lib/base-path";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 type BoardBitmap = {

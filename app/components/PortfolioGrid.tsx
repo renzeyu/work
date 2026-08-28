@@ -1,5 +1,8 @@
-import Image from "next/image";
-import { portfolio, withBasePath } from "../lib/portfolio";
+/* Static export uses native images so the portfolio has no image runtime. */
+/* eslint-disable @next/next/no-img-element */
+
+import { withBasePath } from "../lib/base-path";
+import { portfolioSummary } from "../lib/portfolio-summary";
 import { LoopVideo } from "./LoopVideo";
 import { NoseyAssistant } from "./NoseyAssistant";
 
@@ -12,7 +15,7 @@ export function PortfolioGrid() {
         </h1>
 
         <div className="portfolio-grid">
-          {portfolio.covers.map((project) => (
+          {portfolioSummary.covers.map((project, index) => (
             <a
               className="project-card"
               href={withBasePath(`/${project.slug}/`)}
@@ -23,15 +26,19 @@ export function PortfolioGrid() {
                   <LoopVideo
                     {...project.asset}
                     label={`${project.title} animated cover`}
+                    priority={index < 2}
+                    autoLoad={index === 0}
                   />
                 ) : (
                   <span className="static-media">
-                    <Image
+                    <img
                       src={withBasePath(project.asset.src)}
                       alt={`${project.title} cover`}
-                      fill
-                      sizes="(max-width: 760px) 100vw, 50vw"
-                      unoptimized
+                      width={project.asset.width}
+                      height={project.asset.height}
+                      loading={index === 0 ? "eager" : "lazy"}
+                      fetchPriority={index === 0 ? "high" : "auto"}
+                      decoding="async"
                     />
                   </span>
                 )}

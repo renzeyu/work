@@ -1,7 +1,9 @@
 "use client";
 
+/* Static export uses native images so the navigation has no image runtime. */
+/* eslint-disable @next/next/no-img-element */
+
 import { forwardRef, useEffect, useRef, useState } from "react";
-import Image from "next/image";
 import { usePathname } from "next/navigation";
 import {
   ArrowsClockwise,
@@ -28,13 +30,12 @@ import {
 import type { Icon, IconProps } from "@phosphor-icons/react";
 import { ProjectNavLabel } from "./ProjectNavLabel";
 import { ThemeToggle } from "./ThemeToggle";
+import { basePath, withBasePath } from "../lib/base-path";
 import {
-  basePath,
-  portfolio,
+  portfolioSummary,
   type PortfolioClient,
   type PortfolioProjectIcon,
-  withBasePath,
-} from "../lib/portfolio";
+} from "../lib/portfolio-summary";
 import {
   syncBrowserThemeColor,
   type ColorTheme,
@@ -215,7 +216,7 @@ function NavigationLinks({ onNavigate }: { onNavigate?: () => void }) {
           <div className="sidebar-section">
             <p className="sidebar-label">Projects</p>
             <ul className="project-list">
-              {portfolio.covers.map((project) => {
+              {portfolioSummary.covers.map((project) => {
                 const route = `/${project.slug}`;
                 const ProjectIcon = projectIcons[project.icon];
                 return (
@@ -248,7 +249,7 @@ function NavigationLinks({ onNavigate }: { onNavigate?: () => void }) {
           {socialLinks.map(({ key, label, Icon }) => (
             <a
               key={key}
-              href={portfolio.socials[key]}
+              href={portfolioSummary.socials[key]}
               target="_blank"
               rel="noreferrer"
               aria-label={label}
@@ -266,7 +267,7 @@ function NavigationLinks({ onNavigate }: { onNavigate?: () => void }) {
 
 function Identity() {
   const pathname = currentRoute(usePathname());
-  const currentProject = portfolio.covers.find(
+  const currentProject = portfolioSummary.covers.find(
     (project) => pathname === `/${project.slug}`,
   );
   const client = currentProject?.client ?? "datadog";
@@ -277,37 +278,39 @@ function Identity() {
       <a
         className="workspace-brand"
         href={withBasePath("/work/")}
-        title={`${identity.label} work by ${portfolio.brand.name}`}
+        title={`${identity.label} work by ${portfolioSummary.brand.name}`}
       >
         <span
           className={`brand-mark brand-mark--${client}`}
           role="img"
           aria-label={identity.label}
         >
-          <Image
+          <img
             className="brand-logo brand-logo--light"
             src={withBasePath(identity.logo)}
             alt=""
             aria-hidden="true"
             width={128}
             height={128}
-            unoptimized
+            loading="lazy"
+            decoding="async"
           />
           {identity.darkLogo ? (
-            <Image
+            <img
               className="brand-logo brand-logo--dark"
               src={withBasePath(identity.darkLogo)}
               alt=""
               aria-hidden="true"
               width={128}
               height={128}
-              unoptimized
+              loading="lazy"
+              decoding="async"
             />
           ) : null}
         </span>
         <span className="brand-copy">
-          <strong>{portfolio.brand.name}</strong>
-          <small>{portfolio.brand.role}</small>
+          <strong>{portfolioSummary.brand.name}</strong>
+          <small>{portfolioSummary.brand.role}</small>
         </span>
       </a>
     </div>
@@ -407,20 +410,24 @@ export function MobileHeader() {
           triggerRef.current?.focus();
         }}
       >
-        <div className="mobile-menu__top">
-          <Identity />
-          <button
-            className="menu-close"
-            type="button"
-            aria-label="Close navigation"
-            onClick={closeMenu}
-          >
-            <X aria-hidden="true" weight="regular" />
-          </button>
-        </div>
-        <div className="mobile-menu__content">
-          <NavigationLinks onNavigate={closeMenu} />
-        </div>
+        {isOpen ? (
+          <>
+            <div className="mobile-menu__top">
+              <Identity />
+              <button
+                className="menu-close"
+                type="button"
+                aria-label="Close navigation"
+                onClick={closeMenu}
+              >
+                <X aria-hidden="true" weight="regular" />
+              </button>
+            </div>
+            <div className="mobile-menu__content">
+              <NavigationLinks onNavigate={closeMenu} />
+            </div>
+          </>
+        ) : null}
       </dialog>
     </header>
   );

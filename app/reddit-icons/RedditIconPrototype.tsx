@@ -4,11 +4,11 @@
 
 import { Plus } from "@phosphor-icons/react";
 import { type CSSProperties, useEffect, useRef, useState } from "react";
+import { withBasePath } from "../lib/base-path";
 import styles from "./RedditIconPrototype.module.css";
 
-const basePath = (process.env.NEXT_PUBLIC_BASE_PATH ?? "").replace(/\/$/, "");
 const actionDuration = 1040;
-const screenAssetVersion = "transparent-252a1e30";
+const screenAssetVersion = "webp-q95-20260827";
 
 const tabs = [
   { id: "home", label: "Home" },
@@ -29,7 +29,11 @@ type RedditIconPrototypeProps = {
 };
 
 function assetUrl(path: string) {
-  return `${basePath}/reddit-icons/${path}`;
+  return withBasePath(`/reddit-icons/${path}`);
+}
+
+function screenAssetUrl(tab: TabId, extension: "png" | "webp") {
+  return `${assetUrl(`screens/${tab}.${extension}`)}?v=${screenAssetVersion}`;
 }
 
 export function RedditIconPrototype({
@@ -109,20 +113,22 @@ export function RedditIconPrototype({
         aria-describedby={instructionsId}
       >
         <div className={styles.screenStack} aria-hidden="true">
-          {tabs.map((tab) => (
+          <picture>
+            <source
+              srcSet={screenAssetUrl(activeTab, "webp")}
+              type="image/webp"
+            />
             <img
-              key={tab.id}
-              className={`${styles.screen} ${
-                activeTab === tab.id ? styles.screenActive : ""
-              }`}
-              src={`${assetUrl(`screens/${tab.id}.png`)}?v=${screenAssetVersion}`}
+              className={`${styles.screen} ${styles.screenActive}`}
+              src={screenAssetUrl(activeTab, "png")}
               alt=""
               width="934"
               height="1856"
               loading="eager"
-              decoding="sync"
+              decoding="async"
+              fetchPriority="high"
             />
-          ))}
+          </picture>
         </div>
 
         <nav

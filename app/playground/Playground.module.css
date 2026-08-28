@@ -41,9 +41,273 @@
   height: 100%;
 }
 
+.prototypeIsland {
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  background: transparent;
+  contain: layout style;
+  container-type: size;
+}
+
+.prototypeIsland > :first-child {
+  width: 100%;
+  height: 100%;
+}
+
+.prototypePreview {
+  position: relative;
+  display: grid;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  place-items: center;
+  overflow: hidden;
+  border: 0;
+  border-radius: inherit;
+  background: inherit;
+  color: inherit;
+  font: inherit;
+}
+
+.prototypePreviewButton {
+  appearance: none;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.previewPoster {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.shapePreview {
+  position: relative;
+  display: block;
+  width: 66%;
+  aspect-ratio: 1;
+}
+
+.shapePreview > span {
+  position: absolute;
+  display: block;
+}
+
+.shapePreview > span:nth-child(1) {
+  top: 12%;
+  left: 9%;
+  width: 30%;
+  height: 30%;
+  border-radius: 50%;
+  background: #f03d2f;
+}
+
+.shapePreview > span:nth-child(2) {
+  top: 10%;
+  right: 8%;
+  width: 31%;
+  height: 31%;
+  background: #2ca5dc;
+  transform: rotate(13deg);
+}
+
+.shapePreview > span:nth-child(3) {
+  top: 39%;
+  left: 34%;
+  width: 35%;
+  height: 35%;
+  border-radius: 50% 50% 12% 50%;
+  background: #ffc62f;
+  transform: rotate(-18deg);
+}
+
+.shapePreview > span:nth-child(4) {
+  bottom: 5%;
+  left: 6%;
+  width: 32%;
+  height: 24%;
+  border-radius: 999px;
+  background: #7656bb;
+  transform: rotate(18deg);
+}
+
+.shapePreview > span:nth-child(5) {
+  right: 5%;
+  bottom: 7%;
+  width: 29%;
+  height: 29%;
+  background: #ef96ba;
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+  transform: rotate(9deg);
+}
+
+.noodlingPreview {
+  width: 42%;
+  height: 36%;
+  border: max(2px, 0.35cqw) solid currentColor;
+  border-inline-color: transparent;
+  border-radius: 50%;
+  transform: skewX(-24deg);
+}
+
+.noseyPreview {
+  display: block;
+  width: clamp(76px, 28%, 156px);
+  height: auto;
+  border-radius: 50%;
+}
+
+.loaderPreview {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  place-items: center;
+  background: #000000;
+}
+
+.loaderPreview > span {
+  width: 18%;
+  aspect-ratio: 1;
+  border: max(2px, 0.28cqw) solid #ffffff;
+  border-radius: 50%;
+}
+
+.loaderPreview > span:last-child {
+  border-radius: 2px;
+  transform: rotate(45deg);
+}
+
+.redditIconsPreview {
+  display: grid;
+  width: min(72%, 560px);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  align-items: center;
+  gap: clamp(16px, 4cqw, 44px);
+}
+
+.redditIconsPreview img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.rplacePreview {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  place-items: center;
+  background-color: #eef0f2;
+  background-image:
+    linear-gradient(45deg, rgb(0 0 0 / 5%) 25%, transparent 25%),
+    linear-gradient(-45deg, rgb(0 0 0 / 5%) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, rgb(0 0 0 / 5%) 75%),
+    linear-gradient(-45deg, transparent 75%, rgb(0 0 0 / 5%) 75%);
+  background-position: 0 0, 0 6px, 6px -6px, -6px 0;
+  background-size: 12px 12px;
+}
+
+.rplacePreview img {
+  display: block;
+  width: 14%;
+  height: auto;
+  opacity: 0.72;
+}
+
+.upvotePreview {
+  display: block;
+  width: 22%;
+  height: auto;
+  color: currentColor;
+}
+
+.phonePreview {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  padding: 1.8cqh 1.69cqh;
+  border: 0.225cqh solid #8e8e8e;
+  border-radius: 6.65cqh;
+  background:
+    linear-gradient(90deg, #050505 0 5%, #1d1d1d 9% 91%, #050505 95% 100%);
+  box-shadow:
+    0 38px 90px rgb(0 0 0 / 36%),
+    inset 0 0 0 0.225cqh #2c2c2c,
+    inset 0 0 0 0.563cqh #070707;
+}
+
+.phonePreviewScreen {
+  position: relative;
+  display: grid;
+  width: 100%;
+  height: 100%;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 5.3cqh;
+  background: #ffffff;
+}
+
+.phonePreviewLogo {
+  display: block;
+  width: 28%;
+  height: auto;
+}
+
+.phonePreviewRecap {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: #fff0dd;
+  object-fit: contain;
+}
+
+.phonePreviewNotch {
+  position: absolute;
+  z-index: 2;
+  top: 1.8cqh;
+  left: 50%;
+  width: 17.68cqh;
+  height: 3.49cqh;
+  border-radius: 0 0 1.91cqh 1.91cqh;
+  background: #050505;
+  transform: translateX(-50%);
+}
+
+:global(:root[data-theme="dark"]) .phonePreviewScreen {
+  background: #202020;
+}
+
+:global(:root[data-theme="dark"]) .upvotePreview {
+  filter: invert(1);
+}
+
+.redditSeamlessTile .prototypePreview,
+.redditRecapTile .prototypePreview {
+  overflow: visible;
+}
+
 .redditSeamlessTile {
   width: min(100%, 430px);
   aspect-ratio: 430 / 898;
+  justify-self: center;
+  overflow: visible;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+.redditRecapTile {
+  width: min(100%, 413px);
+  aspect-ratio: 413 / 872;
   justify-self: center;
   overflow: visible;
   border: 0;

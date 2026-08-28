@@ -1,15 +1,7 @@
 import type { Metadata } from "next";
-import { LoaderPrototype } from "../loaders/LoaderPrototype";
-import { NoseyPrototype } from "../nosey-ai/NoseyPrototype";
 import { absoluteSiteUrl } from "../lib/site";
-import { RedditIconPrototype } from "../reddit-icons/RedditIconPrototype";
-import { RedditSeamlessPrototype } from "../reddit-seamless/RedditSeamlessPrototype";
-import { UpvoteLab } from "../upvote-lab/UpvoteLab";
-import { ShapePlaygroundPreview } from "./shape-typer/ShapePlaygroundPreview";
-import { ShapeTyper } from "./shape-typer/ShapeTyper";
-import { NoodlingSnippet } from "./noodling/NoodlingSnippet";
 import { PlaygroundMasonry } from "./PlaygroundMasonry";
-import { RPlacePreview } from "./rplace/RPlacePreview";
+import { PlaygroundPrototypeIsland } from "./PlaygroundPrototypeIsland";
 import styles from "./Playground.module.css";
 
 export const metadata: Metadata = {
@@ -51,7 +43,7 @@ export default function PlaygroundPage() {
           <h2 id="shape-typer-title" className="sr-only">
             Shape Typer
           </h2>
-          <ShapeTyper variant="preview" />
+          <PlaygroundPrototypeIsland prototype="shape-typer" />
         </section>
         <section
           className={`${styles.tile} ${styles.shapePlaygroundTile}`}
@@ -65,9 +57,7 @@ export default function PlaygroundPage() {
           <p id="shape-playground-preview-instructions" className="sr-only">
             Click or tap to drop a shape. Right-click to reset the playground.
           </p>
-          <ShapePlaygroundPreview
-            instructionsId="shape-playground-preview-instructions"
-          />
+          <PlaygroundPrototypeIsland prototype="shape-playground" />
         </section>
         <section
           className={`${styles.tile} ${styles.noodlingTile}`}
@@ -78,7 +68,7 @@ export default function PlaygroundPage() {
           <h2 id="noodling-title" className="sr-only">
             Noodling
           </h2>
-          <NoodlingSnippet />
+          <PlaygroundPrototypeIsland prototype="noodling" />
         </section>
         <section
           className={`${styles.tile} ${styles.noseyTile}`}
@@ -89,7 +79,7 @@ export default function PlaygroundPage() {
           <h2 id="nosey-title" className="sr-only">
             Nosey AI
           </h2>
-          <NoseyPrototype variant="playground" />
+          <PlaygroundPrototypeIsland prototype="nosey-ai" />
         </section>
         <section
           className={`${styles.tile} ${styles.loaderTile}`}
@@ -100,7 +90,7 @@ export default function PlaygroundPage() {
           <h2 id="loader-preview-title" className="sr-only">
             AMA and RPAN loader animations
           </h2>
-          <LoaderPrototype variant="playground" />
+          <PlaygroundPrototypeIsland prototype="loaders" />
         </section>
         <section
           className={`${styles.tile} ${styles.redditTile}`}
@@ -111,7 +101,7 @@ export default function PlaygroundPage() {
           <h2 id="reddit-icons-playground-title" className="sr-only">
             Reddit icon animations
           </h2>
-          <RedditIconPrototype variant="playground" />
+          <PlaygroundPrototypeIsland prototype="reddit-icons" />
         </section>
         <section
           className={`${styles.tile} ${styles.rplaceTile}`}
@@ -122,7 +112,7 @@ export default function PlaygroundPage() {
           <h2 id="rplace-playground-title" className="sr-only">
             Interactive r/place canvas
           </h2>
-          <RPlacePreview />
+          <PlaygroundPrototypeIsland prototype="rplace" />
         </section>
         <section
           className={`${styles.tile} ${styles.upvoteTile}`}
@@ -133,7 +123,7 @@ export default function PlaygroundPage() {
           <h2 id="upvote-lab-playground-title" className="sr-only">
             Vote motion lab
           </h2>
-          <UpvoteLab variant="playground" />
+          <PlaygroundPrototypeIsland prototype="upvote-lab" />
         </section>
         <section
           className={`${styles.tile} ${styles.redditSeamlessTile}`}
@@ -144,10 +134,18 @@ export default function PlaygroundPage() {
           <h2 id="reddit-seamless-playground-title" className="sr-only">
             Reddit seamless feed-to-post experience
           </h2>
-          <RedditSeamlessPrototype
-            variant="playground"
-            ariaLabelledBy="reddit-seamless-playground-title"
-          />
+          <PlaygroundPrototypeIsland prototype="reddit-seamless" />
+        </section>
+        <section
+          className={`${styles.tile} ${styles.redditRecapTile}`}
+          aria-labelledby="reddit-recap-playground-title"
+          data-company="reddit"
+          data-prototype="reddit-recap"
+        >
+          <h2 id="reddit-recap-playground-title" className="sr-only">
+            Interactive Reddit Recap 2022 experience
+          </h2>
+          <PlaygroundPrototypeIsland prototype="reddit-recap" />
         </section>
       </PlaygroundMasonry>
     </section>

@@ -30,7 +30,7 @@ import {
   useRef,
   useState,
 } from "react";
-import { withBasePath } from "../lib/portfolio";
+import { withBasePath } from "../lib/base-path";
 import styles from "./RedditSeamlessPrototype.module.css";
 
 type Screen = "feed" | "detail" | "viewer";

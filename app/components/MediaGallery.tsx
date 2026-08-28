@@ -6,7 +6,7 @@
 import type { CSSProperties, KeyboardEvent } from "react";
 import { useRef, useState } from "react";
 import type { MediaAsset } from "../lib/portfolio";
-import { withBasePath } from "../lib/portfolio";
+import { withBasePath } from "../lib/base-path";
 import { LoopVideo } from "./LoopVideo";
 
 type MediaGalleryProps = {
@@ -52,10 +52,14 @@ function GalleryAsset({
     return (
       <LoopVideo
         src={item.src}
+        optimizedSrc={item.optimizedSrc}
         poster={item.poster}
+        optimizedPoster={item.optimizedPoster}
         width={item.width}
         height={item.height}
         label={label}
+        priority={priority}
+        autoLoad={priority}
       />
     );
   }
