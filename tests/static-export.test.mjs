@@ -867,18 +867,13 @@ test("work routes mount the fixed interactive Nosey assistant", async () => {
   assert.match(assistantSource, /createPortal\([\s\S]*document\.body/);
   assert.match(
     assistantSource,
-    /\{activated \? \([\s\S]*<LazyNoseyPrototype[\s\S]*variant="assistant"[\s\S]*startWithRandomState=\{startWithRandomState\}[\s\S]*onAssistantReady=/,
+    /shouldLoad \? \([\s\S]*<LazyNoseyPrototype variant="assistant" \/>/,
   );
-  assert.match(assistantSource, /nosey-assistant-static\.png/);
-  assert.match(assistantSource, /onClick=\{\(\) => activate\(true\)\}/);
-  assert.doesNotMatch(
-    assistantSource,
-    /activationTimer|requestIdleCallback|effectiveType|onPointerEnter=/,
-  );
-  assert.doesNotMatch(
-    globalCss,
-    /\.nosey-assistant-placeholder\[data-active="true"\][^}]*pointer-events:\s*none/s,
-  );
+  assert.match(assistantSource, /window\.addEventListener\("load", begin/);
+  assert.match(assistantSource, /window\.requestIdleCallback\(loadAssistant/);
+  assert.match(assistantSource, /ASSISTANT_LOAD_DELAY_MS = 500/);
+  assert.doesNotMatch(assistantSource, /nosey-assistant-static\.png|<img|placeholder/);
+  assert.doesNotMatch(globalCss, /nosey-assistant-placeholder/);
   assert.match(noseySource, /variant\?: "assistant" \| "project" \| "playground"/);
   assert.match(noseySource, /if \(variant === "assistant"\)/);
   assert.match(noseySource, /data-frontpage-nosey="true"/);
@@ -899,6 +894,8 @@ test("work routes mount the fixed interactive Nosey assistant", async () => {
     /\.assistantPrototype\[data-entrance="armed"\][\s\S]{0,180}animation:\s*assistant-reference-in 267ms[\s\S]{0,80}var\(--assistant-entrance-delay, 700ms\) linear both/,
   );
   assert.match(noseySource, /data-entrance=\{assistantEntranceArmed/);
+  assert.match(noseySource, /status !== "ready"/);
+  assert.doesNotMatch(noseySource, /styles\.assistantRetry/);
   assert.match(
     noseySource,
     /setAssistantEntranceDelay\(Math\.max\(0, 700 - performance\.now\(\)\)\)/,
@@ -917,6 +914,14 @@ test("work routes mount the fixed interactive Nosey assistant", async () => {
     /@keyframes assistant-reference-in\s*\{[\s\S]*?scale\(/,
   );
   assert.match(noseyCss, /@keyframes assistant-fade-in/);
+  assert.match(
+    noseyCss,
+    /\.assistantPrototype\s*\{[^}]*visibility:\s*hidden/s,
+  );
+  assert.match(
+    noseyCss,
+    /\.assistantPrototype\[data-status="ready"\]\s*\{[^}]*visibility:\s*visible/s,
+  );
   assert.match(noseyCss, /env\(safe-area-inset-right, 0px\)/);
   assert.match(noseyCss, /env\(safe-area-inset-bottom, 0px\)/);
   assert.doesNotMatch(noseyCss, /:focus-visible|:focus-within/);

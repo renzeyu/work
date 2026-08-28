@@ -344,7 +344,7 @@ export function NoseyPrototype({
   useLayoutEffect(() => {
     if (
       variant !== "assistant" ||
-      status === "loading" ||
+      status !== "ready" ||
       assistantEntranceArmedRef.current
     ) {
       return;
@@ -1139,22 +1139,6 @@ export function NoseyPrototype({
             </>
           ) : null}
 
-          {status === "loading" ? (
-            <span className="sr-only" role="status">
-              Loading Nosey.
-            </span>
-          ) : null}
-
-          {status === "error" ? (
-            <button
-              type="button"
-              className={styles.assistantRetry}
-              onClick={() => setReloadKey((key) => key + 1)}
-              aria-label="Retry loading Nosey"
-            >
-              <ArrowClockwise size={22} weight="bold" aria-hidden="true" />
-            </button>
-          ) : null}
         </div>
       </div>
     );

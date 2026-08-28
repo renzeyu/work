@@ -301,9 +301,14 @@
   bottom: calc(clamp(20px, 2vw, 32px) + env(safe-area-inset-bottom, 0px));
   width: 84px;
   height: 84px;
+  visibility: hidden;
   opacity: 0;
   pointer-events: none;
   transform: translateY(84px);
+}
+
+.assistantPrototype[data-status="ready"] {
+  visibility: visible;
 }
 
 .assistantPrototype[data-entrance="armed"] {
@@ -349,8 +354,7 @@
   transition: filter 160ms ease-out;
 }
 
-.assistantButton,
-.assistantRetry {
+.assistantButton {
   position: absolute;
   z-index: 2;
   inset: 0;
@@ -366,18 +370,7 @@
   pointer-events: auto;
 }
 
-.assistantRetry {
-  display: grid;
-  place-items: center;
-  border: 1px solid #d7d6d2;
-  background: #fff;
-  box-shadow:
-    0 1px 2px rgb(55 53 47 / 12%),
-    0 10px 24px rgb(55 53 47 / 14%);
-}
-
-.assistantPrototype:has(.assistantButton:hover) .assistantStage,
-.assistantPrototype:has(.assistantRetry:hover) .assistantStage {
+.assistantPrototype:has(.assistantButton:hover) .assistantStage {
   transform: scale(1.06);
 }
 
@@ -385,8 +378,7 @@
   filter: var(--assistant-shadow-hover);
 }
 
-.assistantPrototype:has(.assistantButton:active) .assistantStage,
-.assistantPrototype:has(.assistantRetry:active) .assistantStage {
+.assistantPrototype:has(.assistantButton:active) .assistantStage {
   transform: scale(0.96);
 }
 
@@ -1009,9 +1001,7 @@
   }
 
   .assistantPrototype:has(.assistantButton:hover) .assistantStage,
-  .assistantPrototype:has(.assistantRetry:hover) .assistantStage,
-  .assistantPrototype:has(.assistantButton:active) .assistantStage,
-  .assistantPrototype:has(.assistantRetry:active) .assistantStage {
+  .assistantPrototype:has(.assistantButton:active) .assistantStage {
     transform: none;
   }
 }
