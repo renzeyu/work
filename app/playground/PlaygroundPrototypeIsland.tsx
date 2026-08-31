@@ -403,13 +403,12 @@ function PrototypePreviewArtwork({
       );
     case "shape-playground":
       return (
-        <span className={styles.shapePreview} aria-hidden="true">
-          <span />
-          <span />
-          <span />
-          <span />
-          <span />
-        </span>
+        <PreviewImage
+          className={styles.previewPoster}
+          src="/media/playground/mwn-shapes.gif"
+          width={805}
+          height={802}
+        />
       );
     case "noodling":
       return <span className={styles.noodlingPreview} aria-hidden="true" />;
@@ -458,9 +457,9 @@ function PrototypePreviewArtwork({
       return (
         <span className={styles.rplacePreview} aria-hidden="true">
           <PreviewImage
-            src="/rplace/question-mark.svg"
-            width={800}
-            height={800}
+            src="/media/playground/rplace.gif"
+            width={200}
+            height={200}
           />
         </span>
       );

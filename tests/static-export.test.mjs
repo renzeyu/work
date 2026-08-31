@@ -191,6 +191,27 @@ test("exports the interactive Playground snippets and primary nav order", async 
   const primaryLists = [
     ...html.matchAll(/<ul class="workspace-nav__primary">([\s\S]*?)<\/ul>/g),
   ];
+
+  await Promise.all([
+    access(
+      new URL(
+        "../public/media/playground/mwn-shapes.gif",
+        import.meta.url,
+      ),
+    ),
+    access(
+      new URL("../public/media/playground/rplace.gif", import.meta.url),
+    ),
+  ]);
+  assert.match(html, /media\/playground\/mwn-shapes\.gif/);
+  assert.match(html, /media\/playground\/rplace\.gif/);
+  assert.match(islandSource, /className=\{styles\.rplacePreview\}/);
+  assert.match(
+    playgroundCss,
+    /\.rplacePreview img\s*\{[^}]*width:\s*min\(64%,\s*320px\)/s,
+  );
+  assert.doesNotMatch(islandSource, /styles\.shapePreview|question-mark\.svg/);
+
   const playgroundBranch =
     noseySource.match(
       /if \(variant === "playground"\) \{([\s\S]*?)\n\s{2}\}\n\n\s{2}return \(/,
@@ -1499,6 +1520,14 @@ test("exports the Reddit seamless feed prototype and its local media", async () 
   assert.match(css, /\.feedDetailTransitionScrim/);
   assert.match(css, /\.feedDetailTransitionMask/);
   assert.match(css, /data-playback-rate="0\.25"/);
+  assert.match(
+    css,
+    /\.screenSurface\s*\{[\s\S]*?width:\s*calc\(var\(--screen-width\)\s*\*\s*var\(--device-scale\)\);[\s\S]*?height:\s*calc\(var\(--screen-height\)\s*\*\s*var\(--device-scale\)\);[\s\S]*?background:\s*#050505;/,
+  );
+  assert.match(
+    css,
+    /\.screenCanvas\s*\{[\s\S]*?top:\s*-1px;[\s\S]*?left:\s*0;[\s\S]*?width:\s*var\(--screen-width\);[\s\S]*?height:\s*var\(--screen-height\);[\s\S]*?transform:\s*scale\(var\(--device-scale\)\)\s*scale\(var\(--screen-bleed-x\),\s*var\(--screen-bleed-y\)\);/,
+  );
   assert.match(css, /@media \(prefers-reduced-motion: reduce\)/);
   assert.equal(kittenGif.subarray(0, 6).toString(), "GIF89a");
   assert.equal(dogGif.subarray(0, 6).toString(), "GIF89a");
@@ -2509,6 +2538,7 @@ test("keeps keyboard focus free of selection strokes", async () => {
     "../app/playground/shape-typer/ShapePlaygroundPreview.module.css",
     "../app/playground/noodling/NoodlingSnippet.module.css",
     "../app/playground/rplace/RPlacePreview.css",
+    "../app/playground/reddit-recap/RedditRecapPreview.module.css",
     "../app/reddit-icons/RedditIconPrototype.module.css",
     "../app/reddit-seamless/RedditSeamlessPrototype.module.css",
     "../app/nosey-ai/NoseyPrototype.module.css",
@@ -2538,6 +2568,19 @@ test("keeps keyboard focus free of selection strokes", async () => {
       `${focusStyleUrls[index]} must not add keyboard-focus styling`,
     );
   });
+});
+
+test("keeps the Playground Reddit Recap device stationary", async () => {
+  const css = await readFile(
+    new URL(
+      "../app/playground/reddit-recap/RedditRecapPreview.module.css",
+      import.meta.url,
+    ),
+    "utf8",
+  );
+
+  assert.doesNotMatch(css, /\.preview:(?:hover|focus-within)\s+\.deviceFrame/);
+  assert.doesNotMatch(css, /transition:\s*transform/);
 });
 
 test("uses the project-row rhythm for primary navigation states", async () => {

@@ -135,6 +135,11 @@
 }
 
 .deviceFrame {
+  --screen-width: 396px;
+  --screen-height: 862px;
+  --screen-bleed-x: 1.006;
+  --screen-bleed-y: 1.004;
+
   position: relative;
   container-type: size;
   isolation: isolate;
@@ -198,11 +203,11 @@
 
 .screenSurface {
   position: relative;
-  width: 100%;
-  height: 100%;
+  width: calc(var(--screen-width) * var(--device-scale));
+  height: calc(var(--screen-height) * var(--device-scale));
   overflow: hidden;
   border-radius: 5.3452cqh;
-  background: #ffffff;
+  background: #050505;
   box-shadow:
     0 0 0 0.1114cqh #050505,
     inset 0 0 0 0.1114cqh rgb(0 0 0 / 18%);
@@ -214,11 +219,13 @@
 
 .screenCanvas {
   position: absolute;
-  top: 0;
+  top: -1px;
   left: 0;
-  width: 396px;
-  height: 862px;
-  transform: scale(var(--device-scale));
+  width: var(--screen-width);
+  height: var(--screen-height);
+  /* Keep the transformed raster edge beyond the screen clip at fractional sizes. */
+  transform: scale(var(--device-scale))
+    scale(var(--screen-bleed-x), var(--screen-bleed-y));
   transform-origin: top left;
 }
 
