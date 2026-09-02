@@ -295,12 +295,20 @@ function randomChoice<T>(choices: T[]) {
 
 type NoseyPrototypeProps = {
   variant?: "assistant" | "project" | "playground";
+  assistantExpanded?: boolean;
+  assistantPlacement?: "viewport" | "slot";
+  onAssistantActivate?: (launcher: HTMLButtonElement) => void;
+  onAssistantIntent?: () => void;
   onAssistantReady?: () => void;
   startWithRandomState?: boolean;
 };
 
 export function NoseyPrototype({
   variant = "project",
+  assistantExpanded = false,
+  assistantPlacement = "viewport",
+  onAssistantActivate,
+  onAssistantIntent,
   onAssistantReady,
   startWithRandomState = false,
 }: NoseyPrototypeProps) {
@@ -1103,8 +1111,12 @@ export function NoseyPrototype({
       <div
         className={`${styles.prototype} ${styles.assistantPrototype}`}
         data-frontpage-nosey="true"
+        data-nosey-panel-character={assistantExpanded || undefined}
+        data-placement={assistantPlacement}
+        data-expanded={assistantExpanded || undefined}
         data-entrance={assistantEntranceArmed ? "armed" : "waiting"}
         data-status={status}
+        aria-hidden={assistantExpanded || undefined}
         style={
           {
             "--assistant-entrance-delay": `${assistantEntranceDelay}ms`,
@@ -1118,24 +1130,59 @@ export function NoseyPrototype({
             aria-hidden="true"
           />
 
-          {status === "ready" ? (
+          {status === "error" && onAssistantActivate ? (
+            <span
+              className={styles.assistantFallback}
+              style={
+                {
+                  "--assistant-fallback": `url(${basePath}/media/nosey-assistant-static.png)`,
+                } as CSSProperties
+              }
+              aria-hidden="true"
+            />
+          ) : null}
+
+          {status === "ready" || (status === "error" && onAssistantActivate) ? (
             <>
               <button
                 type="button"
                 className={styles.assistantButton}
+                disabled={assistantExpanded}
+                tabIndex={assistantExpanded ? -1 : undefined}
                 onClick={(event) => {
-                  triggerRandomState();
+                  if (onAssistantActivate) {
+                    onAssistantActivate(event.currentTarget);
+                  } else triggerRandomState();
                   if (event.detail > 0) event.currentTarget.blur();
                 }}
-                aria-label="Play a Nosey animation"
+                aria-label={
+                  onAssistantActivate
+                    ? "Open AI chat demo"
+                    : "Play a Nosey animation"
+                }
                 aria-describedby="frontpage-nosey-description"
+                aria-haspopup={onAssistantActivate ? "dialog" : undefined}
+                aria-controls={onAssistantActivate ? "nosey-chat-dialog" : undefined}
+                aria-expanded={
+                  onAssistantActivate ? assistantExpanded : undefined
+                }
+                onPointerEnter={onAssistantIntent}
+                onPointerDown={onAssistantIntent}
+                onFocus={onAssistantIntent}
+                data-nosey-chat-trigger={
+                  onAssistantActivate ? "true" : undefined
+                }
               />
               <span id="frontpage-nosey-description" className="sr-only">
-                Interactive character from Your AI Team.
+                {onAssistantActivate
+                  ? "Open the interactive Notion AI chat panel."
+                  : "Interactive character from Your AI Team."}
               </span>
-              <output className="sr-only" aria-live="polite" aria-atomic="true">
-                {activeChoiceLabel}
-              </output>
+              {!onAssistantActivate ? (
+                <output className="sr-only" aria-live="polite" aria-atomic="true">
+                  {activeChoiceLabel}
+                </output>
+              ) : null}
             </>
           ) : null}
 

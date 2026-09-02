@@ -37,6 +37,16 @@ import {
   SHAPE_BRAND_COLORS,
   SHAPE_GLYPHS,
 } from "../app/playground/shape-typer/shapeLibrary.mjs";
+import {
+  DEFAULT_NOTION_RECRUITER_FLOW_ID,
+  createNotionResponseModel,
+  flattenNotionResponse,
+  getNotionActivity,
+  getNotionRecruiterFlow,
+  getNotionRecruiterFlowById,
+  NOTION_CHAT_STAGES,
+  NOTION_RECRUITER_FLOWS,
+} from "../app/components/notion-ai-chat/notionChatSequence.mjs";
 
 const projectRoot = new URL("../", import.meta.url);
 const outputRoot = new URL("../dist/client/", import.meta.url);
@@ -60,7 +70,6 @@ const routes = [
   "hatch-awards-2019",
   "nihonto-enter-the-swordsmith",
   "nosey-ai",
-  "notion-ai-motion-design",
   "contact",
 ];
 
@@ -858,8 +867,15 @@ test("exports the interactive Playground snippets and primary nav order", async 
   );
 });
 
-test("work routes mount the fixed interactive Nosey assistant", async () => {
-  const [gridSource, assistantSource, noseySource, noseyCss, globalCss] =
+test("work routes mount Nosey as the lazy Notion chat launcher", async () => {
+  const [
+    gridSource,
+    assistantSource,
+    assistantCss,
+    noseySource,
+    noseyCss,
+    globalCss,
+  ] =
     await Promise.all([
       readFile(
         new URL("../app/components/PortfolioGrid.tsx", import.meta.url),
@@ -867,6 +883,13 @@ test("work routes mount the fixed interactive Nosey assistant", async () => {
       ),
       readFile(
         new URL("../app/components/NoseyAssistant.tsx", import.meta.url),
+        "utf8",
+      ),
+      readFile(
+        new URL(
+          "../app/components/NoseyAssistant.module.css",
+          import.meta.url,
+        ),
         "utf8",
       ),
       readFile(
@@ -885,27 +908,210 @@ test("work routes mount the fixed interactive Nosey assistant", async () => {
 
   assert.equal((gridSource.match(/<NoseyAssistant\s*\/>/g) ?? []).length, 1);
   assert.match(assistantSource, /lazy\(\(\) =>[\s\S]*NoseyPrototype/);
+  assert.match(
+    assistantSource,
+    /const loadNotionChatDemo = \(\) =>[\s\S]*?import\("\.\/notion-ai-chat\/NotionChatDemo"\)[\s\S]*?const LazyNotionChatDemo = lazy\(loadNotionChatDemo\)/,
+  );
   assert.match(assistantSource, /createPortal\([\s\S]*document\.body/);
   assert.match(
     assistantSource,
-    /shouldLoad \? \([\s\S]*<LazyNoseyPrototype variant="assistant" \/>/,
+    /<LazyNoseyPrototype[\s\S]{0,180}variant="assistant"[\s\S]{0,120}assistantPlacement="slot"[\s\S]{0,180}onAssistantActivate=\{openPanel\}[\s\S]{0,120}assistantExpanded=\{panelOpen\}/,
   );
+  assert.equal((assistantSource.match(/<LazyNoseyPrototype/g) ?? []).length, 1);
   assert.match(assistantSource, /window\.addEventListener\("load", begin/);
   assert.match(assistantSource, /window\.requestIdleCallback\(loadAssistant/);
   assert.match(assistantSource, /ASSISTANT_LOAD_DELAY_MS = 500/);
-  assert.doesNotMatch(assistantSource, /nosey-assistant-static\.png|<img|placeholder/);
+  assert.match(
+    assistantSource,
+    /const useLightweightLauncher =[\s\S]{0,100}prefersReducedMotion \|\| hasConstrainedConnection/,
+  );
+  assert.match(assistantSource, /connection\?\.saveData/);
+  for (const effectiveType of ["slow-2g", "2g", "3g"]) {
+    assert.match(
+      assistantSource,
+      new RegExp(`connection\\?\\.effectiveType === "${effectiveType}"`),
+    );
+  }
+  assert.match(
+    assistantSource,
+    /if \(!canUseBrowser \|\| useLightweightLauncher\) return;/,
+  );
+  assert.match(
+    assistantSource,
+    /const warmNotionChat = useCallback\(\(\) => \{[\s\S]*?void loadNotionChatDemo\(\)/,
+  );
+  assert.match(
+    assistantSource,
+    /const openPanel = useCallback\([\s\S]{0,100}warmNotionChat\(\);/,
+  );
+  assert.match(
+    assistantSource,
+    /\{useLightweightLauncher \? \([\s\S]*?data-nosey-launcher-mode="static"[\s\S]*?aria-label="Open AI chat demo"[\s\S]*?data-nosey-chat-trigger="true"[\s\S]*?nosey-assistant-static\.png[\s\S]*?\) : shouldLoad \? \([\s\S]*?data-nosey-launcher-mode="rive"/,
+  );
+  assert.match(assistantSource, /fetchPriority="low"/);
+  assert.match(assistantSource, /\{panelMounted \? \([\s\S]*?<dialog/);
+  assert.match(assistantSource, /id="nosey-chat-dialog"/);
+  assert.match(assistantSource, /data-nosey-chat-dialog="true"/);
+  assert.match(assistantSource, /aria-labelledby="nosey-chat-title"/);
+  assert.match(assistantSource, /aria-modal="false"/);
+  assert.match(assistantSource, /dialog\.show\(\)/);
+  assert.doesNotMatch(assistantSource, /showModal\(|onCancel=|getBoundingClientRect\(\)/);
+  assert.match(assistantSource, /onClose=\{finishPanelMinimize\}/);
+  assert.match(assistantSource, /aria-label="Minimize AI chat demo"/);
+  assert.match(assistantSource, /data-nosey-chat-minimize="true"/);
+  assert.match(assistantSource, /data-nosey-chat-header="true"/);
+  assert.match(
+    assistantSource,
+    /const \[chatSessionKey, setChatSessionKey\] = useState\(0\)/,
+  );
+  assert.match(
+    assistantSource,
+    /const startNewChat = useCallback\(\(\) => \{[\s\S]*?setChatSessionKey\(\(current\) => current \+ 1\)/,
+  );
+  assert.equal(
+    (assistantSource.match(/data-nosey-header-icon=/g) ?? []).length,
+    3,
+  );
+  assert.match(
+    assistantSource,
+    /data-nosey-header-icon="chevron"[\s\S]*?data-nosey-header-icon="new-chat"[\s\S]*?data-nosey-header-icon="panel-mode"[\s\S]*?data-nosey-chat-minimize="true"/,
+  );
+  assert.match(
+    assistantSource,
+    /<button[\s\S]{0,180}data-nosey-header-icon="new-chat"[\s\S]{0,180}aria-label="Start a new AI chat"[\s\S]{0,120}aria-controls="nosey-chat-demo"[\s\S]{0,120}onClick=\{startNewChat\}/,
+  );
+  assert.match(
+    assistantSource,
+    /data-nosey-chat-loading="true"[\s\S]{0,120}role="status"[\s\S]{0,120}aria-live="polite"/,
+  );
+  assert.match(
+    assistantSource,
+    /<LazyNotionChatDemo key=\{chatSessionKey\} active=\{panelOpen\} \/>/,
+  );
+  assert.match(
+    assistantSource,
+    /window\.requestAnimationFrame\(\(\) => \{[\s\S]{0,100}window\.requestAnimationFrame\(\(\) => focusTarget\?\.focus\(\)\)/,
+  );
   assert.doesNotMatch(globalCss, /nosey-assistant-placeholder/);
+
+  const shellRule =
+    assistantCss.match(/\.assistantShell\s*\{([^}]*)\}/)?.[1] ?? "";
+  const dialogRule = assistantCss.match(/\.dialog\s*\{([^}]*)\}/)?.[1] ?? "";
+  assert.match(dialogRule, /--notion-chat-height:\s*100%;/);
+  assert.match(dialogRule, /--notion-chat-min-height:\s*0px;/);
+  assert.match(shellRule, /position:\s*fixed;/);
+  assert.match(shellRule, /width:\s*min\(400px,\s*calc\(100vw - 40px\)\);/);
+  assert.match(shellRule, /height:\s*min\(650px,\s*calc\(100dvh - 40px\)\);/);
+  assert.match(
+    shellRule,
+    /min-height:\s*min\(520px,\s*calc\(100dvh - 40px\)\);/,
+  );
+  assert.match(shellRule, /container-type:\s*inline-size;/);
+  assert.doesNotMatch(assistantCss, /::backdrop|nosey-backdrop-/);
+  assert.match(assistantCss, /env\(safe-area-inset-right, 0px\)/);
+  assert.match(assistantCss, /env\(safe-area-inset-bottom, 0px\)/);
+  assert.match(
+    assistantCss,
+    /@media \(max-width: 700px\)[\s\S]*?\.assistantShell\s*\{[^}]*width:\s*auto;[^}]*height:\s*auto;[^}]*min-height:\s*0;/,
+  );
+  assert.match(
+    assistantCss,
+    /@media \(hover: none\) and \(pointer: coarse\)[\s\S]*?\.newChatButton,\s*\.minimizeButton\s*\{[^}]*width:\s*44px;[^}]*height:\s*44px;/,
+  );
+  assert.match(
+    assistantCss,
+    /\.minimizeButton:focus-visible\s*\{[^}]*#2383e2;/s,
+  );
+  assert.match(
+    assistantCss,
+    /\.newChatButton,\s*\.minimizeButton\s*\{[^}]*pointer-events:\s*auto;[^}]*cursor:\s*pointer;/s,
+  );
+  assert.match(
+    assistantCss,
+    /\.newChatButton:focus-visible,\s*\.minimizeButton:focus-visible\s*\{[^}]*#2383e2;/s,
+  );
+  assert.match(
+    assistantCss,
+    /\.lightweightLauncher\s*\{[^}]*width:\s*100%;[^}]*height:\s*100%;[^}]*cursor:\s*pointer;/s,
+  );
+  assert.match(
+    assistantCss,
+    /\.lightweightLauncher:focus-visible\s*\{[^}]*#2383e2;/s,
+  );
+  assert.match(
+    assistantCss,
+    /\.panelTitleGroup\s*\{[^}]*display:\s*inline-flex[^}]*gap:\s*4px/s,
+  );
+  assert.match(
+    assistantCss,
+    /\.panelActions\s*\{[^}]*margin-left:\s*auto[^}]*display:\s*inline-flex/s,
+  );
+  assert.match(
+    assistantCss,
+    /\.headerUtility,[\s\S]{0,80}\.minimizeButton\s*\{[^}]*width:\s*32px[^}]*height:\s*32px/s,
+  );
+  assert.match(
+    assistantCss,
+    /\.minimizeButton\s*\{[^}]*border-radius:\s*50%;/s,
+  );
+  assert.match(
+    assistantCss,
+    /@media \(prefers-reduced-motion: reduce\)[\s\S]*?\.dialog,[\s\S]*?animation-duration:\s*0\.001ms;/,
+  );
+
   assert.match(noseySource, /variant\?: "assistant" \| "project" \| "playground"/);
+  assert.match(noseySource, /assistantExpanded\?: boolean/);
+  assert.match(noseySource, /assistantPlacement\?: "viewport" \| "slot"/);
+  assert.match(
+    noseySource,
+    /onAssistantActivate\?: \(launcher: HTMLButtonElement\) => void/,
+  );
+  assert.match(noseySource, /onAssistantIntent\?: \(\) => void/);
+  assert.match(
+    noseySource,
+    /onPointerEnter=\{onAssistantIntent\}[\s\S]{0,100}onPointerDown=\{onAssistantIntent\}[\s\S]{0,100}onFocus=\{onAssistantIntent\}/,
+  );
   assert.match(noseySource, /if \(variant === "assistant"\)/);
   assert.match(noseySource, /data-frontpage-nosey="true"/);
-  assert.match(noseySource, /aria-label="Play a Nosey animation"/);
+  assert.match(noseySource, /\? "Open AI chat demo"[\s\S]{0,80}: "Play a Nosey animation"/);
+  assert.match(noseySource, /aria-haspopup=\{onAssistantActivate \? "dialog" : undefined\}/);
+  assert.match(
+    noseySource,
+    /aria-controls=\{onAssistantActivate \? "nosey-chat-dialog" : undefined\}/,
+  );
+  assert.match(noseySource, /aria-expanded=\{[\s\S]{0,100}assistantExpanded/);
+  assert.match(noseySource, /data-nosey-chat-trigger=/);
+  assert.match(noseySource, /data-nosey-panel-character=\{assistantExpanded/);
+  assert.match(noseySource, /data-placement=\{assistantPlacement\}/);
+  assert.match(noseySource, /disabled=\{assistantExpanded\}/);
+  assert.match(noseySource, /tabIndex=\{assistantExpanded \? -1 : undefined\}/);
   assert.match(
     noseySource,
     /<canvas[\s\S]{0,180}styles\.assistantCanvas[\s\S]{0,120}aria-hidden="true"/,
   );
-  assert.match(noseySource, /onClick=\{triggerRandomState\}/);
-  assert.match(noseySource, /<output className="sr-only" aria-live="polite"/);
+  assert.match(
+    noseySource,
+    /if \(onAssistantActivate\)[\s\S]{0,100}onAssistantActivate\(event\.currentTarget\);[\s\S]{0,80}else triggerRandomState\(\)/,
+  );
+  assert.match(
+    noseySource,
+    /status === "error" && onAssistantActivate[\s\S]*?styles\.assistantFallback[\s\S]*?nosey-assistant-static\.png/,
+  );
+  assert.match(
+    noseySource,
+    /status === "ready" \|\| \(status === "error" && onAssistantActivate\)/,
+  );
+  assert.match(noseySource, /Open the interactive Notion AI chat panel\./);
+  assert.match(noseySource, /!onAssistantActivate \? \([\s\S]*?<output/);
   assert.match(noseyCss, /\.assistantPrototype\s*\{[^}]*position:\s*fixed/s);
+  assert.match(
+    noseyCss,
+    /\.assistantPrototype\[data-placement="slot"\]\s*\{[^}]*position:\s*absolute[^}]*inset:\s*0[^}]*width:\s*100%[^}]*height:\s*100%/s,
+  );
+  assert.match(
+    assistantCss,
+    /\.assistantShell\[data-panel-state="open"\] \.noseySlot,[\s\S]{0,180}top:\s*64px[^}]*left:\s*18px[^}]*width:\s*72px[^}]*height:\s*72px/,
+  );
   assert.match(
     noseyCss,
     /\.assistantPrototype\s*\{[^}]*opacity:\s*0[^}]*translateY\(84px\)/s,
@@ -943,9 +1149,20 @@ test("work routes mount the fixed interactive Nosey assistant", async () => {
     noseyCss,
     /\.assistantPrototype\[data-status="ready"\]\s*\{[^}]*visibility:\s*visible/s,
   );
+  assert.match(
+    noseyCss,
+    /\.assistantPrototype\[data-status="error"\]\s*\{[^}]*visibility:\s*visible[^}]*pointer-events:\s*auto/s,
+  );
+  assert.match(
+    noseyCss,
+    /\.assistantFallback\s*\{[^}]*background:\s*var\(--assistant-fallback\) center \/ contain no-repeat/s,
+  );
   assert.match(noseyCss, /env\(safe-area-inset-right, 0px\)/);
   assert.match(noseyCss, /env\(safe-area-inset-bottom, 0px\)/);
-  assert.doesNotMatch(noseyCss, /:focus-visible|:focus-within/);
+  assert.match(
+    noseyCss,
+    /\.assistantButton:focus-visible\s*\{[^}]*#2383e2;/s,
+  );
   assert.match(
     noseySource,
     /if \(event\.detail > 0\) event\.currentTarget\.blur\(\)/,
@@ -2341,11 +2558,18 @@ test("self-hosts the complete Notion Inter family", async () => {
   assert.doesNotMatch(css, /Jost|Trebuchet/);
 });
 
-test("work page contains all project links and migration-safe metadata", async () => {
-  const [html, rootHtml] = await Promise.all([
+test("work page contains current project links and migration-safe metadata", async () => {
+  const [html, rootHtml, portfolioSource, summarySource] = await Promise.all([
     readFile(new URL("work/index.html", outputRoot), "utf8"),
     readFile(new URL("index.html", outputRoot), "utf8"),
+    readFile(new URL("../app/data/portfolio.json", import.meta.url), "utf8"),
+    readFile(
+      new URL("../app/data/portfolio-summary.json", import.meta.url),
+      "utf8",
+    ),
   ]);
+  const portfolioData = JSON.parse(portfolioSource);
+  const summaryData = JSON.parse(summarySource);
 
   for (const frontpage of [rootHtml, html]) {
     assert.match(
@@ -2370,8 +2594,24 @@ test("work page contains all project links and migration-safe metadata", async (
     );
     assert.doesNotMatch(frontpage, /<video\b|NoseyPrototype|rive\.wasm|\.riv(?:\?|")/);
     assert.match(frontpage, /\/media\/covers\/make-with-notion-2025\.jpg/);
+    assert.doesNotMatch(
+      frontpage,
+      /data-notion-chat-demo|data-nosey-chat-dialog|How can I help you today\?/,
+    );
+    assert.doesNotMatch(frontpage, /Notion AI Motion Design/);
+    assert.doesNotMatch(frontpage, /href="[^"]*\/notion-ai-motion-design\//);
+    assert.doesNotMatch(frontpage, /notion-ai-motion-design-cover/);
   }
 
+  assert.deepEqual(summaryData.covers, portfolioData.covers);
+  assert.equal(
+    portfolioData.covers.some(({ slug }) => slug === "notion-ai-motion-design"),
+    false,
+  );
+  assert.equal(
+    portfolioData.covers.some(({ icon }) => icon === "notion-ai-motion"),
+    false,
+  );
   assert.match(html, /Zeyu Ren/);
   assert.match(html, /Senior Motion Designer/);
   assert.match(html, /Product Motion/);
@@ -2379,10 +2619,8 @@ test("work page contains all project links and migration-safe metadata", async (
   assert.match(html, /Reddit Motion Design System/);
   assert.match(html, /Nihont/);
   assert.match(html, /Your AI Team/);
-  assert.match(html, /Notion AI Motion Design/);
   assert.match(html, /Make with Notion 2025/);
   assert.match(html, /href="(?:\/work)?\/make-with-notion-2025\/"/);
-  assert.match(html, /href="(?:\/work)?\/notion-ai-motion-design\/"/);
   assert.match(html, /https:\/\/zeyuren\.com\/work\//);
   assert.match(html, /class="workspace-panel"/);
   assert.match(html, /class="project-card__meta"/);
@@ -2390,6 +2628,9 @@ test("work page contains all project links and migration-safe metadata", async (
   assert.doesNotMatch(html, /codex-preview|react-loading-skeleton/i);
   assert.doesNotMatch(html, /noindex/i);
   assert.doesNotMatch(html, /cdn\.myportfolio\.com|www-ccv\.adobe\.io/i);
+  await assert.rejects(
+    access(new URL("notion-ai-motion-design/index.html", outputRoot)),
+  );
 });
 
 test("keeps work navigation and project cards concise", async () => {
@@ -2440,7 +2681,6 @@ test("assigns every project a distinct icon from the shared navigation system", 
   const expectedIcons = [
     "make-with-notion",
     "ai-team",
-    "notion-ai-motion",
     "reel",
     "brand-refresh",
     "ipo",
@@ -2470,8 +2710,8 @@ test("assigns every project a distinct icon from the shared navigation system", 
     [...new Set(renderedIcons.map(({ icon }) => icon))],
     expectedIcons,
   );
-  assert.match(navigationSource, /"notion-ai-motion": NoodlingIcon/);
-  assert.match(
+  assert.doesNotMatch(navigationSource, /NoodlingIcon|notion-ai-motion/);
+  assert.doesNotMatch(
     navigationSource,
     /M4 13\.25C5\.55 15\.1 8\.05 15\.75 10\.15 14\.7C12\.55 13\.5/,
   );
@@ -2541,9 +2781,7 @@ test("keeps keyboard focus free of selection strokes", async () => {
     "../app/playground/reddit-recap/RedditRecapPreview.module.css",
     "../app/reddit-icons/RedditIconPrototype.module.css",
     "../app/reddit-seamless/RedditSeamlessPrototype.module.css",
-    "../app/nosey-ai/NoseyPrototype.module.css",
     "../app/upvote-lab/UpvoteLab.module.css",
-    "../app/notion-ai-motion-design/NoodlingWorkbench.module.css",
   ];
   const [globalCss, ...componentStyles] = await Promise.all([
     readFile(new URL("../app/globals.css", import.meta.url), "utf8"),
@@ -2871,7 +3109,7 @@ test("publishes custom-domain sitemap and robots URLs", async () => {
     sitemap,
     /https:\/\/zeyuren\.com\/nosey-ai\//,
   );
-  assert.match(
+  assert.doesNotMatch(
     sitemap,
     /https:\/\/zeyuren\.com\/notion-ai-motion-design\//,
   );
@@ -2918,7 +3156,7 @@ test("uses standardized client identities on matching project routes", async () 
   const [datadog, reddit, notion, blackMath] = await Promise.all([
     readFile(new URL("2024-reel/index.html", outputRoot), "utf8"),
     readFile(new URL("brand-refresh-launch/index.html", outputRoot), "utf8"),
-    readFile(new URL("notion-ai-motion-design/index.html", outputRoot), "utf8"),
+    readFile(new URL("make-with-notion-2025/index.html", outputRoot), "utf8"),
     readFile(new URL("hatch-awards-2019/index.html", outputRoot), "utf8"),
   ]);
 
@@ -2987,193 +3225,540 @@ test("uses the approved symbol-only Datadog dark-mode artwork", async () => {
   );
 });
 
-test("exports the interactive Notion AI motion study and its authentic cover", async () => {
+test("embeds the Notion AI chat behind Nosey without a project route", async () => {
   const [
-    html,
+    rootHtml,
     workHtml,
     portfolioSource,
-    coverPoster,
-    coverVideo,
-    pageSource,
-    projectCss,
-    workbenchSource,
-    workbenchCss,
-    loopVideoSource,
+    assistantSource,
+    assistantCss,
+    demoSource,
+    demoCss,
+    noodleSource,
+    sequenceSource,
+    chunkFiles,
   ] = await Promise.all([
-    readFile(new URL("notion-ai-motion-design/index.html", outputRoot), "utf8"),
+    readFile(new URL("index.html", outputRoot), "utf8"),
     readFile(new URL("work/index.html", outputRoot), "utf8"),
     readFile(new URL("../app/data/portfolio.json", import.meta.url), "utf8"),
     readFile(
-      new URL(
-        "media/notion-ai-motion-design-cover.jpg",
-        outputRoot,
-      ),
+      new URL("../app/components/NoseyAssistant.tsx", import.meta.url),
+      "utf8",
     ),
     readFile(
-      new URL(
-        "media/notion-ai-motion-design-cover.mp4",
-        outputRoot,
-      ),
-    ),
-    readFile(
-      new URL("../app/notion-ai-motion-design/page.tsx", import.meta.url),
+      new URL("../app/components/NoseyAssistant.module.css", import.meta.url),
       "utf8",
     ),
     readFile(
       new URL(
-        "../app/notion-ai-motion-design/NoodlingProject.module.css",
+        "../app/components/notion-ai-chat/NotionChatDemo.tsx",
         import.meta.url,
       ),
       "utf8",
     ),
     readFile(
       new URL(
-        "../app/notion-ai-motion-design/NoodlingWorkbench.tsx",
+        "../app/components/notion-ai-chat/NotionChatDemo.module.css",
         import.meta.url,
       ),
       "utf8",
     ),
     readFile(
       new URL(
-        "../app/notion-ai-motion-design/NoodlingWorkbench.module.css",
+        "../app/components/notion-ai-chat/NotionNoodleGlyph.tsx",
         import.meta.url,
       ),
       "utf8",
     ),
     readFile(
-      new URL("../app/components/LoopVideo.tsx", import.meta.url),
+      new URL(
+        "../app/components/notion-ai-chat/notionChatSequence.mjs",
+        import.meta.url,
+      ),
       "utf8",
+    ),
+    readdir(new URL("_next/static/chunks/", outputRoot)),
+  ]);
+
+  const portfolioData = JSON.parse(portfolioSource);
+  assert.equal(
+    portfolioData.covers.some(
+      ({ slug }) => slug === "notion-ai-motion-design",
+    ),
+    false,
+  );
+  for (const html of [rootHtml, workHtml]) {
+    assert.doesNotMatch(html, /Notion AI Motion Design/);
+    assert.doesNotMatch(html, /href="[^"]*\/notion-ai-motion-design\//);
+    assert.doesNotMatch(
+      html,
+      /data-notion-chat-demo|How can I help you today\?/,
+    );
+  }
+  await Promise.all([
+    assert.rejects(
+      access(new URL("notion-ai-motion-design/index.html", outputRoot)),
+    ),
+    assert.rejects(
+      access(
+        new URL(
+          "../app/notion-ai-motion-design/page.tsx",
+          import.meta.url,
+        ),
+      ),
+    ),
+    assert.rejects(
+      access(
+        new URL(
+          "../app/notion-ai-motion-design/NoodlingProject.module.css",
+          import.meta.url,
+        ),
+      ),
+    ),
+    assert.rejects(
+      access(
+        new URL(
+          "../app/notion-ai-motion-design/NoodlingWorkbench.tsx",
+          import.meta.url,
+        ),
+      ),
+    ),
+    assert.rejects(
+      access(
+        new URL(
+          "../app/notion-ai-motion-design/NoodlingWorkbench.module.css",
+          import.meta.url,
+        ),
+      ),
     ),
   ]);
-  const notionCover = JSON.parse(portfolioSource).covers.find(
-    ({ slug }) => slug === "notion-ai-motion-design",
-  );
-  const notionCard = workHtml.match(
-    /<a class="project-card" href="[^"]*\/notion-ai-motion-design\/">[\s\S]*?<\/a>/,
-  )?.[0];
-  const tkhdIndex = coverVideo.indexOf(Buffer.from("tkhd"));
-  const tkhdStart = tkhdIndex - 4;
-  const tkhdSize = coverVideo.readUInt32BE(tkhdStart);
-  let jpegOffset = 2;
-  let posterDimensions;
 
-  while (jpegOffset < coverPoster.length) {
-    if (coverPoster[jpegOffset] !== 0xff) {
-      jpegOffset += 1;
-      continue;
-    }
+  assert.match(
+    assistantSource,
+    /import\("\.\/notion-ai-chat\/NotionChatDemo"\)/,
+  );
+  assert.match(
+    assistantSource,
+    /\{panelMounted \? \([\s\S]*?<dialog[\s\S]*?<LazyNotionChatDemo key=\{chatSessionKey\} active=\{panelOpen\} \/>/,
+  );
+  assert.match(assistantSource, /assistantPlacement="slot"/);
+  assert.match(assistantSource, /aria-label="Minimize AI chat demo"/);
+  assert.match(assistantSource, /data-nosey-chat-header="true"/);
+  assert.match(assistantSource, /data-nosey-header-icon="new-chat"/);
+  assert.match(assistantSource, /aria-label="Start a new AI chat"/);
+  assert.match(demoSource, /id="nosey-chat-demo"/);
+  assert.match(assistantSource, /data-nosey-header-icon="panel-mode"/);
+  assert.match(assistantSource, /dialog\.show\(\)/);
+  assert.doesNotMatch(assistantSource, /showModal\(|onCancel=/);
+  assert.match(assistantSource, /document\.addEventListener\("keydown", minimizeOnEscape\)/);
+  assert.match(assistantSource, /event\.key !== "Escape"/);
+  assert.match(assistantSource, /focusTarget\?\.focus\(\)/);
+  assert.match(assistantSource, /setPanelMounted\(true\)/);
+  assert.match(assistantCss, /container-type:\s*inline-size/);
+  assert.match(assistantCss, /--notion-chat-height:\s*100%/);
+  assert.match(assistantCss, /--notion-chat-min-height:\s*0px/);
+  assert.match(
+    assistantCss,
+    /--notion-chat-conversation-top:\s*58px/,
+  );
+  assert.match(assistantCss, /--notion-chat-start-top:\s*64px/);
+  assert.match(assistantCss, /--notion-chat-brand-size:\s*72px/);
+  assert.match(
+    assistantCss,
+    /\.panelHeader\s*\{[^}]*border-radius:\s*15px 15px 0 0;[^}]*background:\s*#fff;/s,
+  );
+  assert.doesNotMatch(assistantCss, /::backdrop|nosey-backdrop-/);
+  assert.match(assistantCss, /@media \(max-width: 700px\)/);
+  assert.match(assistantCss, /@media \(prefers-reduced-motion: reduce\)/);
+  assert.match(demoSource, /data-nosey-brand-space="true"/);
+  assert.doesNotMatch(demoSource, /<NotionStartMark \/>/);
+  assert.match(
+    demoCss,
+    /\.startBrandSpace\s*\{[^}]*--notion-chat-brand-size/s,
+  );
 
-    const marker = coverPoster[jpegOffset + 1];
-    jpegOffset += 2;
-    if ([0xc0, 0xc1, 0xc2, 0xc3, 0xc5, 0xc6, 0xc7, 0xc9, 0xca, 0xcb, 0xcd, 0xce, 0xcf].includes(marker)) {
-      posterDimensions = {
-        width: coverPoster.readUInt16BE(jpegOffset + 5),
-        height: coverPoster.readUInt16BE(jpegOffset + 3),
-      };
-      break;
-    }
+  assert.ok(
+    chunkFiles.some((file) => file.startsWith("NoseyAssistant-")),
+    "missing the Nosey assistant chunk",
+  );
+  assert.ok(
+    chunkFiles.some((file) => file.startsWith("NotionChatDemo-")),
+    "missing the separately lazy Notion chat chunk",
+  );
 
-    if (marker === 0xd9 || marker === 0xda) break;
-    if (marker === 0x01 || (marker >= 0xd0 && marker <= 0xd7)) continue;
-    jpegOffset += coverPoster.readUInt16BE(jpegOffset);
-  }
-
-  assert.match(html, /<h1 id="project-title">Notion AI Motion Design<\/h1>/);
-  assert.match(
-    html,
-    /An interactive motion study of the Notion AI scribble(?:&#x27;|')s thinking cadence\./,
-  );
-  assert.match(html, /data-noodling-workbench="true"/);
-  assert.doesNotMatch(html, /<iframe\b|renzeyu\.github\.io\/noodling/);
-  assert.doesNotMatch(html, /Open prototype|View source|aria-label="Project links"/);
-  assert.doesNotMatch(html, /href="https:\/\/github\.com\/renzeyu\/noodling"/);
-  assert.match(html, /aria-label="Noodling controls"/);
-  assert.match(html, />Pause<\/button>/);
-  assert.match(html, />Restart<\/button>/);
-  assert.match(html, />Reset<\/button>/);
-  assert.match(html, />Old Version<\/button>/);
-  assert.match(html, />Restore defaults<\/button>/);
-  assert.equal((html.match(/type="number"/g) ?? []).length, 17);
-  assert.equal((html.match(/type="range"/g) ?? []).length, 17);
-  assert.match(
-    html,
-    /aria-label="Animated looping line for the AI thinking state"/,
-  );
-  assert.doesNotMatch(workbenchSource, /<main\b/);
-  assert.match(pageSource, /<NoodlingWorkbench\s*\/>/);
-  assert.match(workbenchSource, /getComputedStyle\(canvas\)\.color/);
-  assert.match(workbenchSource, /new MutationObserver\(refreshColor\)/);
-  assert.match(workbenchSource, /attributeFilter: \["data-theme", "style"\]/);
-  assert.match(workbenchSource, /prefers-reduced-motion: reduce/);
-  assert.match(workbenchSource, /new ResizeObserver/);
-  assert.match(workbenchSource, /IntersectionObserver/);
-  assert.match(workbenchSource, /visibilitychange/);
-  assert.match(workbenchSource, /cancelAnimationFrame/);
-  assert.match(workbenchCss, /var\(--surface\)/);
-  assert.match(workbenchCss, /var\(--media-background\)|var\(--shell\)/);
-  assert.match(workbenchCss, /var\(--ink\)/);
-  assert.match(workbenchCss, /var\(--border\)/);
-  assert.match(workbenchCss, /@container \(max-width: 860px\)/);
-  assert.match(workbenchCss, /@media \(prefers-reduced-motion: reduce\)/);
-  assert.match(
-    projectCss,
-    /\.workbenchFrame\s*\{[^}]*container-type:\s*inline-size/s,
-  );
-  assert.doesNotMatch(workbenchCss, /:global\((?:html|body)\)|100dvh/);
-  assert.doesNotMatch(workbenchCss, /color-scheme:\s*light/);
-  assert.match(
-    html,
-    /https:\/\/zeyuren\.com\/notion-ai-motion-design\//,
-  );
-  assert.match(html, /\/media\/notion-ai-motion-design-cover\.jpg/);
-  assert.match(html, /property="og:image:width" content="960"/);
-  assert.match(html, /property="og:image:height" content="540"/);
-  assert.deepEqual(notionCover?.asset, {
-    kind: "video",
-    src: "/media/notion-ai-motion-design-cover.mp4",
-    optimizedSrc: "/media/covers/notion-ai-motion-design.mp4",
-    poster: "/media/notion-ai-motion-design-cover.jpg",
-    optimizedPoster: "/media/covers/notion-ai-motion-design.jpg",
-    width: 960,
-    height: 540,
-  });
-  assert.match(workHtml, /Notion AI Motion Design animated cover/);
-  assert.match(workHtml, /\/media\/notion-ai-motion-design-cover\.jpg/);
-  assert.match(workHtml, /\/media\/notion-ai-motion-design-cover\.mp4/);
-  assert.match(workHtml, /\/media\/covers\/notion-ai-motion-design\.jpg/);
-  assert.match(workHtml, /\/media\/covers\/notion-ai-motion-design\.mp4/);
-  assert.ok(notionCard);
-  assert.match(notionCard, /class="loop-video"/);
-  assert.match(notionCard, /style="aspect-ratio:960 \/ 540"/);
-  assert.doesNotMatch(notionCard, /<(?:img|video|source)\b|static-media/);
-  assert.match(loopVideoSource, /optimizedPoster \?\? poster/);
-  assert.match(loopVideoSource, /withBasePath\(optimizedSrc \?\? src\)/);
-  assert.equal(coverPoster.subarray(0, 3).toString("hex"), "ffd8ff");
-  assert.deepEqual(posterDimensions, { width: 960, height: 540 });
-  assert.equal(
-    createHash("sha256").update(coverPoster).digest("hex"),
-    "35b3dbe66b756b09cb20520225342bc8c7cb5950cab3f38f933db8cb9e37d366",
-  );
-  assert.notEqual(
-    createHash("sha256").update(coverPoster).digest("hex"),
-    "5177d8694113b4ebf8de8a7a6530c3d623fe61cf00a3738e28c301b89d8d7cb9",
-  );
-  assert.equal(coverVideo.subarray(4, 8).toString(), "ftyp");
-  assert.ok(tkhdIndex > 4);
+  assert.equal(DEFAULT_NOTION_RECRUITER_FLOW_ID, "overview");
+  assert.equal(NOTION_RECRUITER_FLOWS.length, 4);
   assert.deepEqual(
-    {
-      width: coverVideo.readUInt32BE(tkhdStart + tkhdSize - 8) / 65_536,
-      height: coverVideo.readUInt32BE(tkhdStart + tkhdSize - 4) / 65_536,
-    },
-    { width: 960, height: 540 },
+    NOTION_RECRUITER_FLOWS.map(({ id }) => id),
+    ["overview", "ownership", "impact", "collaboration"],
   );
-  assert.equal(coverVideo.byteLength, 126_244);
+  assert.deepEqual(
+    NOTION_RECRUITER_FLOWS.map(({ label }) => label),
+    [
+      "What should I know about Zeyu?",
+      "What did Zeyu personally own?",
+      "Which projects show measurable impact?",
+      "How does Zeyu work with teams?",
+    ],
+  );
   assert.equal(
-    createHash("sha256").update(coverVideo).digest("hex"),
-    "ff431073134b2ef7ae56374221372dd93bb11f94b4b6915282e8767d9b9c52ba",
+    new Set(NOTION_RECRUITER_FLOWS.map(({ label }) => label)).size,
+    4,
+  );
+  assert.equal(
+    new Set(NOTION_RECRUITER_FLOWS.map(({ planSummary }) => planSummary)).size,
+    4,
+  );
+  assert.equal(
+    new Set(
+      NOTION_RECRUITER_FLOWS.map(({ checklist }) =>
+        JSON.stringify(checklist),
+      ),
+    ).size,
+    4,
+  );
+  assert.equal(
+    new Set(
+      NOTION_RECRUITER_FLOWS.map(({ response }) => JSON.stringify(response)),
+    ).size,
+    4,
+  );
+  for (const flow of NOTION_RECRUITER_FLOWS) {
+    assert.equal(flow.label.endsWith("?"), true);
+    assert.equal(flow.planChunks.length, 6);
+    assert.equal(flow.planChunks.join(""), flow.planSummary);
+    assert.equal(flow.checklist.length, 3);
+    assert.ok(flow.checklist.every((item) => item.trim().length > 0));
+    assert.ok(flow.response.intro.trim());
+    assert.ok(flow.response.sections.length > 0);
+    assert.ok(
+      flow.response.sections.every(
+        ({ title, items }) =>
+          title.trim() &&
+          items.length > 0 &&
+          items.every((item) => item.trim()),
+      ),
+    );
+    assert.ok(flow.response.closing.trim());
+    assert.equal(getNotionRecruiterFlow(flow.label).id, flow.id);
+    assert.equal(getNotionRecruiterFlowById(flow.id).id, flow.id);
+    assert.equal(
+      getNotionActivity("searching", flow.id).summary,
+      flow.searchSummary,
+    );
+    assert.equal(
+      getNotionActivity("answering", flow.id).checklistProgress,
+      3,
+    );
+
+    const responseModel = createNotionResponseModel(flow.response);
+    assert.ok(responseModel.wordTotal > 0);
+    assert.equal(responseModel.arrivalRanges.at(-1)?.end, responseModel.wordTotal);
+    assert.equal(responseModel.segmentOffsets.at(-1)?.end, responseModel.wordTotal);
+    assert.equal(
+      flattenNotionResponse(flow.response),
+      [
+        flow.response.intro,
+        ...flow.response.sections.flatMap(({ title, items }) => [
+          title,
+          ...items,
+        ]),
+        flow.response.closing,
+      ].join("\n"),
+    );
+  }
+  assert.equal(getNotionRecruiterFlow("Show me the project metrics").id, "impact");
+  assert.equal(getNotionRecruiterFlow("Who did Zeyu partner with?").id, "collaboration");
+  assert.equal(getNotionRecruiterFlow("What was Zeyu responsible for?").id, "ownership");
+  assert.equal(getNotionRecruiterFlow("Tell me something unexpected").id, "overview");
+  assert.equal(getNotionRecruiterFlowById("unknown").id, "overview");
+  assert.match(
+    getNotionRecruiterFlowById("impact").response.closing,
+    /team outcomes rather than results attributable to motion alone/,
+  );
+  assert.deepEqual(
+    NOTION_CHAT_STAGES.map(({ id }) => id),
+    [
+      "plan",
+      "searching",
+      "found-results",
+      "searching-web",
+      "searched-web",
+      "updating-todos",
+      "updated-todos",
+      "todo-ready",
+      "todo-1",
+      "todo-2",
+      "todo-3",
+      "answering",
+    ],
+  );
+  assert.ok(
+    NOTION_CHAT_STAGES.slice(0, -1).every(
+      ({ dwellMs }) => Number.isFinite(dwellMs) && dwellMs > 0,
+    ),
+  );
+  assert.equal(NOTION_CHAT_STAGES.at(-1)?.dwellMs, null);
+  const expectedActivities = {
+    searching: {
+      summary: "Searching Zeyu’s portfolio and featured work",
+      rows: [],
+      showChecklist: false,
+      checklistProgress: 0,
+    },
+    "found-results": {
+      summary: "Found 37 results",
+      rows: [
+        { label: "Found 37 results", state: "done", hasPageBadge: true },
+      ],
+      showChecklist: false,
+      checklistProgress: 0,
+    },
+    "searching-web": {
+      summary: "Searching the web",
+      rows: [
+        { label: "Found 37 results", state: "done", hasPageBadge: true },
+        {
+          label: "Searching the web",
+          state: "live",
+          hasPageBadge: false,
+        },
+      ],
+      showChecklist: false,
+      checklistProgress: 0,
+    },
+    "searched-web": {
+      summary: "Searched the web",
+      rows: [
+        { label: "Found 37 results", state: "done", hasPageBadge: true },
+        {
+          label: "Searched the web",
+          state: "done",
+          hasPageBadge: false,
+        },
+      ],
+      showChecklist: false,
+      checklistProgress: 0,
+    },
+    "updating-todos": {
+      summary: "Updating to-dos",
+      rows: [
+        { label: "Found 37 results", state: "done", hasPageBadge: true },
+        {
+          label: "Searched the web",
+          state: "done",
+          hasPageBadge: false,
+        },
+        {
+          label: "Updating to-dos",
+          state: "live",
+          hasPageBadge: false,
+        },
+      ],
+      showChecklist: false,
+      checklistProgress: 0,
+    },
+    "updated-todos": {
+      summary: "Updated to-dos",
+      rows: [
+        { label: "Found 37 results", state: "done", hasPageBadge: true },
+        {
+          label: "Searched the web",
+          state: "done",
+          hasPageBadge: false,
+        },
+        {
+          label: "Updated to-dos",
+          state: "done",
+          hasPageBadge: false,
+        },
+      ],
+      showChecklist: false,
+      checklistProgress: 0,
+    },
+  };
+
+  for (const [stageId, expected] of Object.entries(expectedActivities)) {
+    assert.deepEqual(getNotionActivity(stageId), expected);
+  }
+  assert.equal(getNotionActivity("plan"), null);
+  assert.deepEqual(
+    ["todo-ready", "todo-1", "todo-2", "todo-3", "answering"].map(
+      (stageId) => {
+        const activity = getNotionActivity(stageId);
+        return [
+          stageId,
+          activity?.showChecklist,
+          activity?.checklistProgress,
+        ];
+      },
+    ),
+    [
+      ["todo-ready", true, 0],
+      ["todo-1", true, 1],
+      ["todo-2", true, 2],
+      ["todo-3", true, 3],
+      ["answering", true, 3],
+    ],
+  );
+  assert.equal(getNotionActivity("unknown-stage"), null);
+
+  assert.match(demoSource, /data-notion-chat-demo="true"/);
+  assert.match(
+    demoSource,
+    /data-notion-chat-surface="nosey-panel"/,
+  );
+  assert.match(demoSource, /data-recruiter-flow=\{activeFlow\.id\}/);
+  assert.match(demoSource, /aria-label="Notion AI chat demo"/);
+  assert.match(demoSource, /How can I help you today\?/);
+  assert.match(demoSource, /aria-label="Suggested prompts"/);
+  for (const prompt of [
+    "What should I know about Zeyu?",
+    "What did Zeyu personally own?",
+    "Which projects show measurable impact?",
+    "How does Zeyu work with teams?",
+  ]) {
+    assert.match(sequenceSource, new RegExp(prompt.replace("?", "\\?")));
+  }
+  assert.doesNotMatch(
+    [demoSource, sequenceSource].join("\n"),
+    /Create custom agent|Create an interactive dashboard|Create a diagram based on page|Summarize this page/,
+  );
+  assert.match(demoSource, /START_PROMPTS = NOTION_RECRUITER_FLOWS/);
+  assert.match(
+    demoSource,
+    /onClick=\{\(\) => submitPrompt\(item\.label, item\.id\)\}/,
+  );
+  assert.match(demoSource, /activeFlow\.checklist\.map/);
+  assert.match(demoSource, /response=\{activeFlow\.response\}/);
+  assert.match(demoSource, /flattenNotionResponse\(activeFlow\.response\)/);
+  assert.match(demoSource, /setSelectedFlowId\(nextFlow\.id\)/);
+  assert.match(
+    demoSource,
+    /setSelectedFlowId\(DEFAULT_NOTION_RECRUITER_FLOW_ID\)/,
+  );
+  assert.match(
+    demoSource,
+    /aria-label="Do anything with AI…"[\s\S]{0,100}placeholder="Do anything with AI…"/,
+  );
+  assert.match(demoSource, /NOTION_CHAT_STAGES/);
+  assert.match(demoSource, /getNotionActivity/);
+  assert.match(demoSource, /window\.setTimeout|setTimeout/);
+  assert.match(demoSource, /window\.clearTimeout|clearTimeout/);
+  assert.match(demoSource, /prefers-reduced-motion: reduce/);
+  assert.match(demoSource, /event\.key === "Enter"/);
+  assert.match(demoSource, /!event\.nativeEvent\.isComposing/);
+  assert.match(demoSource, /!event\.shiftKey/);
+  assert.match(
+    demoSource,
+    /aria-label=\{isGenerating \? "Stop generating" : "Send message"\}/,
+  );
+  assert.match(
+    demoSource,
+    /onKeyDownCapture=\{\(event\) => \{[\s\S]*?event\.key !== "Escape"[\s\S]*?setModelOpen\(false\)/,
+  );
+  assert.match(
+    demoSource,
+    /if \(!reducedMotion \|\| !isGenerating\) return;[\s\S]*?setPrefaceCount\(activeFlow\.planChunks\.length\);[\s\S]*?setStageIndex\(NOTION_CHAT_STAGES\.length - 1\);[\s\S]*?setVisibleWords\(responseModel\.wordTotal\);[\s\S]*?setPhase\("done"\);/,
+  );
+  for (const label of [
+    "New conversation",
+    "Good response",
+    "Bad response",
+  ]) {
+    assert.match(demoSource, new RegExp('aria-label="' + label + '"'));
+  }
+  assert.match(
+    demoSource,
+    /"Copy response"[\s\S]*?aria-label="New conversation"[\s\S]*?aria-label="Good response"[\s\S]*?aria-label="Bad response"/,
+  );
+  assert.match(demoSource, /aria-pressed=/);
+  assert.match(demoSource, /role="log"/);
+  assert.match(demoSource, /aria-busy=\{isGenerating\}/);
+  assert.match(demoSource, /role="status"/);
+  assert.match(demoSource, /aria-live="polite"/);
+  assert.match(
+    demoSource,
+    /aria-label="Scroll to the end of the response"/,
+  );
+  assert.match(demoSource, /key=\{[^}]*notion-step-/);
+  assert.match(demoSource, /viewBox="0 0 100 100"/);
+  assert.match(demoSource, /M6\.017 4\.313l55\.333-4\.087/);
+
+  assert.match(demoCss, /font-family:\s*"Notion Inter"/);
+  for (const color of ["#37352f", "#5f5d59", "#8f8e8a", "#f0efed"]) {
+    assert.match(demoCss.toLowerCase(), new RegExp(color));
+  }
+  const checklistRule =
+    demoCss.match(/\.checklist\s*\{([^}]*)\}/)?.[1] ?? "";
+  const checklistRowRule =
+    demoCss.match(/\.checklist\s*>\s*p\s*\{([^}]*)\}/)?.[1] ?? "";
+  assert.match(checklistRule, /gap:\s*3px/);
+  assert.match(checklistRowRule, /min-height:\s*30px/);
+  assert.match(checklistRowRule, /align-items:\s*center/);
+  assert.doesNotMatch(demoCss, /\.checklist\s*>\s*p:first-child/);
+  assert.match(
+    demoCss,
+    /height:\s*var\(--notion-chat-height,\s*clamp\(650px,\s*78dvh,\s*780px\)\)/,
+  );
+  assert.match(
+    demoCss,
+    /min-height:\s*var\(--notion-chat-min-height,\s*650px\)/,
+  );
+  assert.match(
+    demoCss,
+    /padding:\s*var\(--notion-chat-conversation-top,\s*18px\)/,
+  );
+  assert.match(demoCss, /:focus-visible/);
+  assert.match(demoCss, /:focus-within/);
+  assert.match(
+    demoCss,
+    /:focus-within[^}]*border-color:\s*(?:#2383e2|var\(--notion-blue\))/s,
+  );
+  assert.match(
+    demoCss,
+    /\[data-ready="true"\][^}]*var\(--notion-blue\)/s,
+  );
+  assert.match(demoCss, /@media \(prefers-reduced-motion: reduce\)/);
+  const jumpButtonRule =
+    demoCss.match(/\.jumpToBottom\s*\{([^}]*)\}/)?.[1] ?? "";
+  assert.match(jumpButtonRule, /display:\s*grid;/);
+  assert.match(jumpButtonRule, /width:\s*32px;/);
+  assert.match(jumpButtonRule, /height:\s*32px;/);
+  assert.match(jumpButtonRule, /place-items:\s*center;/);
+  assert.match(jumpButtonRule, /border-radius:\s*50%;/);
+  const jumpChevronRule =
+    demoCss.match(/\.jumpToBottom\s*>\s*span\s*\{([^}]*)\}/)?.[1] ?? "";
+  assert.match(jumpChevronRule, /width:\s*9px;/);
+  assert.match(jumpChevronRule, /height:\s*9px;/);
+  assert.match(jumpChevronRule, /border-right:[^;]+;/);
+  assert.match(jumpChevronRule, /border-bottom:[^;]+;/);
+  assert.match(
+    jumpChevronRule,
+    /transform:\s*translateY\(-1px\) rotate\(45deg\);/,
+  );
+  assert.match(
+    demoCss,
+    /\.jumpToBottom\[data-motion-state="visible"\][^}]*animation:/s,
+  );
+  assert.match(
+    demoCss,
+    /\.jumpToBottom\[data-motion-state="leaving"\][^}]*animation:/s,
+  );
+
+  assert.match(noodleSource, /const FOOTAGE_TIME_SCALE = 0\.75/);
+  assert.match(noodleSource, /const TAIL_LENGTH = 72/);
+  assert.match(noodleSource, /requestAnimationFrame\(tick\)/);
+  assert.match(noodleSource, /new ResizeObserver/);
+  assert.match(noodleSource, /new IntersectionObserver/);
+  assert.match(noodleSource, /prefers-reduced-motion: reduce/);
+  assert.match(noodleSource, /visibilitychange/);
+  assert.match(noodleSource, /cancelAnimationFrame/);
+  assert.doesNotMatch(
+    [demoSource, demoCss, noodleSource, sequenceSource].join("\n"),
+    /\.otf\b|\/fonts\//i,
   );
 });
-
 test("exports Make with Notion 2025 as an interactive Work project", async () => {
   const [
     html,
@@ -3392,18 +3977,6 @@ test("prefixes generated assets for repository-subpath Pages builds", async (con
     playgroundHtml.includes(
       `${basePath}/rive/notionai_assistant_antimatter_0414.riv`,
     ) || playgroundHtml.includes("NoseyPrototype-"),
-  );
-
-  const notionHtml = await readFile(
-    new URL("notion-ai-motion-design/index.html", outputRoot),
-    "utf8",
-  );
-  assert.ok(notionHtml.includes(`src="${basePath}/brand-logos/notion.png"`));
-  assert.ok(
-    notionHtml.includes(`${basePath}/media/notion-ai-motion-design-cover.jpg`),
-  );
-  assert.ok(
-    html.includes(`${basePath}/media/notion-ai-motion-design-cover.jpg`),
   );
 
   const makeWithNotionHtml = await readFile(

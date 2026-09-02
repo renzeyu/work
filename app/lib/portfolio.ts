@@ -60,8 +60,7 @@ export type PortfolioProjectIcon =
   | "motion-system"
   | "awards"
   | "swordsmith"
-  | "ai-team"
-  | "notion-ai-motion";
+  | "ai-team";
 
 export type PortfolioCover = {
   slug: string;

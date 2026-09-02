@@ -1,0 +1,404 @@
+.assistantShell {
+  position: fixed;
+  z-index: 40;
+  right: calc(clamp(20px, 2vw, 32px) + env(safe-area-inset-right, 0px));
+  bottom: calc(clamp(20px, 2vw, 32px) + env(safe-area-inset-bottom, 0px));
+  width: min(400px, calc(100vw - 40px));
+  height: min(650px, calc(100dvh - 40px));
+  min-height: min(520px, calc(100dvh - 40px));
+  pointer-events: none;
+  container-type: inline-size;
+  isolation: isolate;
+}
+
+.dialog {
+  --notion-chat-height: 100%;
+  --notion-chat-min-height: 0px;
+  --notion-chat-conversation-top: 58px;
+  --notion-chat-start-top: 64px;
+  --notion-chat-brand-size: 72px;
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid #e7e6e3;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 18px 52px rgb(15 15 15 / 20%);
+  color: #37352f;
+  color-scheme: light;
+  pointer-events: auto;
+  animation: nosey-chat-in 120ms ease-out both;
+}
+
+.dialog[data-state="closing"] {
+  pointer-events: none;
+  animation: nosey-chat-out 100ms ease-in both;
+}
+
+.noseySlot {
+  position: absolute;
+  z-index: 3;
+  right: 0;
+  bottom: 0;
+  width: 84px;
+  height: 84px;
+  pointer-events: auto;
+}
+
+.lightweightLauncher {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  appearance: none;
+  background: transparent;
+  display: block;
+  cursor: pointer;
+}
+
+.lightweightLauncher > img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+  transition: transform 160ms ease-out;
+}
+
+.lightweightLauncher:hover > img {
+  transform: scale(1.06);
+}
+
+.lightweightLauncher:active > img {
+  transform: scale(0.96);
+}
+
+.lightweightLauncher:focus-visible {
+  box-shadow:
+    0 0 0 3px #fff,
+    0 0 0 5px #2383e2;
+}
+
+.lightweightLauncher:disabled {
+  cursor: default;
+}
+
+:global(html.menu-open) .lightweightLauncher {
+  visibility: hidden;
+}
+
+.assistantShell[data-panel-state="open"] .noseySlot,
+.assistantShell[data-panel-state="closing"] .noseySlot {
+  top: 64px;
+  right: auto;
+  bottom: auto;
+  left: 18px;
+  width: 72px;
+  height: 72px;
+  pointer-events: none;
+}
+
+.assistantShell[data-panel-state="open"] .noseySlot {
+  animation: nosey-panel-character-in 120ms ease-out both;
+}
+
+.assistantShell[data-panel-state="closing"] .noseySlot {
+  animation: nosey-panel-character-out 100ms ease-in both;
+}
+
+.assistantShell[data-panel-state="open"]:has(
+    .dialog [data-notion-chat-demo][data-phase]:not([data-phase="idle"])
+  )
+  .noseySlot,
+.assistantShell[data-panel-state="closing"]:has(
+    .dialog [data-notion-chat-demo][data-phase]:not([data-phase="idle"])
+  )
+  .noseySlot {
+  visibility: hidden;
+  opacity: 0;
+  animation: none;
+}
+
+.panelHeader {
+  position: absolute;
+  z-index: 12;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 48px;
+  padding: 0 8px 0 16px;
+  display: flex;
+  align-items: center;
+  border-radius: 15px 15px 0 0;
+  background: #fff;
+  pointer-events: none;
+}
+
+.panelTitleGroup {
+  min-width: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.panelTitle {
+  color: #37352f;
+  font-family: "Notion Inter", Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 18px;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+
+.panelChevron {
+  width: 16px;
+  height: 16px;
+  overflow: visible;
+  fill: none;
+  stroke: #787774;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.panelActions {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+}
+
+.headerUtility,
+.minimizeButton {
+  width: 32px;
+  height: 32px;
+}
+
+.headerUtility {
+  color: #37352f;
+  display: grid;
+  place-items: center;
+}
+
+.headerUtility svg {
+  width: 18px;
+  height: 18px;
+  overflow: visible;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.55;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.headerUtility .panelModeFill {
+  fill: currentColor;
+  stroke: none;
+}
+
+.newChatButton,
+.minimizeButton {
+  margin-left: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: #37352f;
+  display: grid;
+  place-items: center;
+  pointer-events: auto;
+  cursor: pointer;
+  transition:
+    background-color 120ms ease-out,
+    color 120ms ease-out,
+    transform 100ms ease-out;
+}
+
+.newChatButton:hover,
+.minimizeButton:hover {
+  background: rgb(55 53 47 / 8%);
+  color: #37352f;
+}
+
+.newChatButton:active,
+.minimizeButton:active {
+  background: rgb(55 53 47 / 12%);
+  transform: scale(0.94);
+}
+
+.newChatButton:focus-visible,
+.minimizeButton:focus-visible {
+  box-shadow:
+    0 0 0 2px #fff,
+    0 0 0 4px #2383e2;
+}
+
+.minimizeButton svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+}
+
+.panelLoading {
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  color: #8f8e8a;
+  display: grid;
+  place-items: center;
+  font-family: "Notion Inter", Arial, sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+@keyframes nosey-chat-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes nosey-chat-out {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes nosey-panel-character-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes nosey-panel-character-out {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+@media (max-width: 900px) and (min-width: 701px) {
+  .assistantShell {
+    right: calc(14px + env(safe-area-inset-right, 0px));
+    bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .noseySlot {
+    width: 64px;
+    height: 64px;
+  }
+}
+
+@media (max-height: 720px) and (min-width: 701px) {
+  .assistantShell {
+    top: max(12px, env(safe-area-inset-top, 0px));
+    bottom: max(12px, env(safe-area-inset-bottom, 0px));
+    height: auto;
+    min-height: 0;
+  }
+}
+
+@media (max-width: 700px) {
+  .assistantShell {
+    top: max(8px, env(safe-area-inset-top, 0px));
+    right: max(8px, env(safe-area-inset-right, 0px));
+    bottom: max(8px, env(safe-area-inset-bottom, 0px));
+    left: max(8px, env(safe-area-inset-left, 0px));
+    width: auto;
+    height: auto;
+    min-height: 0;
+  }
+
+  .noseySlot {
+    width: 64px;
+    height: 64px;
+  }
+
+  .dialog {
+    --notion-chat-start-top: 60px;
+    --notion-chat-brand-size: 68px;
+  }
+
+  .assistantShell[data-panel-state="open"] .noseySlot,
+  .assistantShell[data-panel-state="closing"] .noseySlot {
+    top: 60px;
+    left: 18px;
+    width: 68px;
+    height: 68px;
+  }
+}
+
+@media (max-width: 360px) {
+  .assistantShell {
+    top: max(12px, env(safe-area-inset-top, 0px));
+    right: max(12px, env(safe-area-inset-right, 0px));
+    bottom: max(12px, env(safe-area-inset-bottom, 0px));
+    left: max(12px, env(safe-area-inset-left, 0px));
+  }
+
+  .noseySlot {
+    width: 56px;
+    height: 56px;
+  }
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .panelHeader {
+    padding-right: 8px;
+  }
+
+  .newChatButton,
+  .minimizeButton {
+    width: 44px;
+    height: 44px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dialog,
+  .dialog[data-state="closing"],
+  .assistantShell[data-panel-state="open"] .noseySlot,
+  .assistantShell[data-panel-state="closing"] .noseySlot {
+    animation-duration: 0.001ms;
+  }
+
+  .minimizeButton {
+    transition: none;
+  }
+
+  .lightweightLauncher > img {
+    transition: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .dialog,
+  .lightweightLauncher,
+  .minimizeButton {
+    border: 1px solid CanvasText;
+  }
+}

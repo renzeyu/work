@@ -1,0 +1,997 @@
+.demo {
+  --notion-answer-ink: #37352f;
+  --notion-tool-ink: #5f5d59;
+  --notion-rail-ink: #8f8e8a;
+  --notion-step-dot-ink: #b4b2ae;
+  --notion-step-line-ink: #dededb;
+  --notion-card-border: #dededb;
+  --notion-prompt: #f0efed;
+  --notion-blue: #2383e2;
+  position: relative;
+  width: 100%;
+  height: var(--notion-chat-height, clamp(650px, 78dvh, 780px));
+  min-height: var(--notion-chat-min-height, 650px);
+  overflow: hidden;
+  isolation: isolate;
+  background: #fff;
+  color: var(--notion-answer-ink);
+  color-scheme: light;
+  font-family: "Notion Inter", Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  font-synthesis: none;
+  line-height: 18px;
+  -webkit-font-smoothing: antialiased;
+}
+
+.demo ::selection {
+  background: rgb(35 131 226 / 22%);
+  color: var(--notion-answer-ink);
+}
+
+.demo :is(button, textarea) {
+  font-family: inherit;
+  font-weight: 500;
+  font-synthesis: none;
+}
+
+.demo button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.startState {
+  position: absolute;
+  z-index: 2;
+  inset: 0 0 115px;
+  width: min(100%, 680px);
+  height: calc(100% - 115px);
+  margin: 0 auto;
+  padding: var(--notion-chat-start-top, 64px) 24px 0;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  color: #2c2c2b;
+}
+
+.startBrandSpace {
+  width: var(--notion-chat-brand-size, 72px);
+  height: var(--notion-chat-brand-size, 72px);
+  flex: 0 0 auto;
+}
+
+.startState h2 {
+  max-width: none;
+  margin: 16px 0 14px;
+  color: #2c2c2b;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 22px;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+.startPrompts {
+  margin-top: auto;
+  padding-bottom: 20px;
+  display: grid;
+  gap: 0;
+}
+
+.startPrompt {
+  width: max-content;
+  max-width: 100%;
+  min-height: 35px;
+  margin-left: -8px;
+  padding: 0 8px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: #383836;
+  display: grid;
+  grid-template-columns: 17px minmax(0, max-content);
+  align-items: center;
+  gap: 10px;
+  font-size: 15px;
+  line-height: 19px;
+  letter-spacing: -0.01em;
+  text-align: left;
+  cursor: pointer;
+}
+
+.startPrompt:hover {
+  background: rgb(55 53 47 / 8%);
+}
+
+.startPrompt:focus-visible {
+  background: rgb(55 53 47 / 8%);
+  box-shadow: 0 0 0 2px rgb(35 131 226 / 58%);
+}
+
+.promptIcon {
+  position: relative;
+  width: 17px;
+  height: 17px;
+  color: #383836;
+  display: block;
+}
+
+.promptIcon > svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.conversation {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  bottom: 104px;
+  left: 50%;
+  width: min(100%, 680px);
+  padding: var(--notion-chat-conversation-top, 18px) 22px 34px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: #d7d7d2 transparent;
+  mask-image: linear-gradient(to bottom, #000 0, #000 calc(100% - 24px), transparent 100%);
+  transform: translateX(-50%);
+}
+
+.exchange {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.userMessage {
+  align-self: flex-end;
+  max-width: 82%;
+  margin: 0 0 22px auto;
+  padding: 9px 12px;
+  border-radius: 11px;
+  background: var(--notion-prompt);
+  color: var(--notion-answer-ink);
+  font-size: 14px;
+  line-height: 18px;
+  overflow-wrap: anywhere;
+}
+
+.prelude {
+  margin: 0;
+  color: var(--notion-answer-ink);
+  font-size: 14px;
+  line-height: 18px;
+}
+
+.prelude > p {
+  margin: 0;
+  color: inherit;
+}
+
+.prelude[data-preface-state="waiting"] .brewing {
+  margin-top: 0;
+}
+
+.prelude + .activity {
+  margin-top: 4px;
+}
+
+.brewing {
+  min-height: 24px;
+  margin-top: 22px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--notion-rail-ink);
+  font-size: 13.5px;
+  line-height: 17px;
+}
+
+.noodleSlot,
+.summaryNoodle {
+  position: relative;
+  width: 24px;
+  height: 16px;
+  flex: 0 0 24px;
+  display: block;
+}
+
+.noodleCanvas {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 24px;
+  height: 16px;
+  display: block;
+  color: #a4a39f;
+}
+
+.brewingCopy {
+  --shimmer-size: 116px;
+  width: 60px;
+  overflow: hidden;
+  color: transparent;
+  white-space: nowrap;
+  background-image: linear-gradient(
+    90deg,
+    var(--notion-tool-ink) 0%,
+    var(--notion-rail-ink) 38%,
+    var(--notion-rail-ink) 62%,
+    var(--notion-tool-ink) 100%
+  );
+  background-repeat: repeat-x;
+  background-size: var(--shimmer-size) 100%;
+  background-position: calc(var(--shimmer-size) * -1) 0;
+  background-clip: text;
+  -webkit-background-clip: text;
+  animation: status-shimmer 1.5s linear infinite;
+}
+
+.caretDown,
+.headerCaret,
+.rowCaret {
+  width: 6px;
+  height: 6px;
+  display: block;
+  flex: 0 0 auto;
+  border-right: 1.25px solid currentColor;
+  border-bottom: 1.25px solid currentColor;
+}
+
+.caretDown {
+  margin: -3px 0 0 -1px;
+  color: var(--notion-rail-ink);
+  transform: rotate(45deg);
+}
+
+.activity {
+  margin: 0 0 12px;
+  padding: 6.5px 0 2px;
+  color: var(--notion-tool-ink);
+  font-size: 13.5px;
+  line-height: 17px;
+}
+
+.steps {
+  margin: 0;
+}
+
+.steps > summary {
+  min-height: 22px;
+  width: max-content;
+  max-width: 100%;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  list-style: none;
+  color: var(--notion-tool-ink);
+  font-size: 13.5px;
+  line-height: 17px;
+  cursor: pointer;
+}
+
+.steps > summary::-webkit-details-marker {
+  display: none;
+}
+
+.steps > summary:focus-visible {
+  border-radius: 4px;
+  box-shadow: 0 0 0 2px rgb(35 131 226 / 48%);
+}
+
+.steps[data-summary-mode="live"] > summary {
+  width: 100%;
+  min-width: 0;
+}
+
+.liveSummary {
+  min-width: 0;
+  flex: 1 1 auto;
+  overflow: hidden;
+  color: var(--notion-tool-ink);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.liveSummary > span {
+  display: inline;
+}
+
+.shimmer {
+  color: transparent;
+  background-image: linear-gradient(
+    90deg,
+    var(--notion-tool-ink) 0 35%,
+    var(--notion-rail-ink) 49%,
+    var(--notion-tool-ink) 63% 100%
+  );
+  background-size: 260% 100%;
+  background-position: 100% 0;
+  background-clip: text;
+  -webkit-background-clip: text;
+  animation: tool-shimmer 1.5s linear infinite;
+}
+
+.headerCaret {
+  margin: -3px 0 0 1px;
+  color: var(--notion-rail-ink);
+  transform: rotate(45deg);
+  transition: transform 180ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.steps:not([open]) .headerCaret {
+  margin-top: 0;
+  transform: rotate(-45deg);
+}
+
+.stepList {
+  margin: 8.5px 0 0;
+  display: grid;
+}
+
+.stepList:empty {
+  margin-top: 0;
+}
+
+.stepRow {
+  position: relative;
+  min-height: 30px;
+  display: grid;
+  grid-template-columns: 14px minmax(0, 1fr);
+  align-items: center;
+  gap: 8px;
+  color: var(--notion-tool-ink);
+  font-size: 13.5px;
+  line-height: 17px;
+}
+
+.stepRow:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  left: 6.5px;
+  top: 20px;
+  width: 1px;
+  height: 20px;
+  background: var(--notion-step-line-ink);
+}
+
+.stepDot {
+  position: relative;
+  z-index: 1;
+  width: 14px;
+  height: 14px;
+  display: grid;
+  place-items: center;
+  background: #fff;
+}
+
+.stepDot::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--notion-step-dot-ink);
+}
+
+.stepContent {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.stepContent > span {
+  width: fit-content;
+  max-width: 100%;
+  overflow: hidden;
+  display: inline-block;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pageBadge {
+  width: 13px;
+  height: 13px;
+  flex: 0 0 auto;
+  display: block;
+  overflow: visible;
+}
+
+.rowCaret {
+  width: 5px;
+  height: 5px;
+  margin-left: -1px;
+  color: var(--notion-rail-ink);
+  transform: rotate(-45deg);
+}
+
+.checklist {
+  margin: 16px 0 0;
+  padding: 11px 14px;
+  border: 1px solid var(--notion-card-border);
+  border-radius: 12px;
+  display: grid;
+  gap: 3px;
+  background: #fff;
+  font-size: 13.5px;
+}
+
+.checklist > p {
+  min-height: 30px;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 15px minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+  color: var(--notion-tool-ink);
+  line-height: 17px;
+  opacity: 1;
+  text-decoration: none;
+  transition: color 180ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.checklist > p > i {
+  position: relative;
+  width: 15px;
+  height: 15px;
+  margin-top: 0;
+  border: 1.25px solid var(--notion-step-dot-ink);
+  border-radius: 50%;
+  background: transparent;
+  transition:
+    border-color 180ms cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 180ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.checklist > p[data-plan-state="active"] > i::after {
+  content: "";
+  position: absolute;
+  inset: 2px;
+  border-radius: 50%;
+  background: linear-gradient(
+    90deg,
+    transparent 0 48%,
+    var(--notion-step-dot-ink) 52% 100%
+  );
+}
+
+.checklist > p[data-plan-state="done"] {
+  text-decoration: line-through;
+}
+
+.checklist > p[data-plan-state="done"] > i {
+  border-color: var(--notion-step-dot-ink);
+  background: var(--notion-step-dot-ink);
+}
+
+.checklist > p[data-plan-state="done"] > i::after {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 2px;
+  width: 4px;
+  height: 7px;
+  border-right: 1.25px solid #fff;
+  border-bottom: 1.25px solid #fff;
+  transform: rotate(42deg);
+  animation: plan-check 180ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.assistantMessage {
+  color: var(--notion-answer-ink);
+  font-size: 14px;
+  line-height: 18px;
+}
+
+.answer {
+  color: var(--notion-answer-ink);
+}
+
+.answer p {
+  margin: 0 0 8px;
+}
+
+.answer section {
+  margin: 11px 0;
+}
+
+.answer h3 {
+  margin: 0 0 7px;
+  color: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 18px;
+}
+
+.answer ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.answer li {
+  margin: 3px 0;
+  padding-left: 2px;
+}
+
+.responseChunk {
+  display: inline;
+  animation: response-chunk-in 160ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.feedback {
+  min-height: 24px;
+  margin: 5px 0 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.feedback button {
+  width: 24px;
+  min-width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  border-radius: 5px;
+  background: transparent;
+  color: rgb(55 53 47 / 65%);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+
+.feedback button:hover,
+.feedback button[aria-pressed="true"] {
+  background: rgb(55 53 47 / 8%);
+  color: var(--notion-tool-ink);
+}
+
+.feedback button:focus-visible {
+  box-shadow: 0 0 0 2px rgb(35 131 226 / 48%);
+}
+
+.feedbackIcon {
+  width: 16px;
+  height: 16px;
+  overflow: visible;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.copyStatus {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.interrupted {
+  margin: 12px 0 0;
+  color: var(--notion-rail-ink);
+  font-size: 13.5px;
+}
+
+.composerWrap {
+  position: absolute;
+  z-index: 3;
+  left: 50%;
+  bottom: 11px;
+  width: min(calc(100% - 24px), 656px);
+  transform: translateX(-50%);
+}
+
+.composer {
+  position: relative;
+  width: 100%;
+  height: 104px;
+  min-height: 104px;
+  padding: 14px 14px 9px;
+  border: 1px solid var(--notion-card-border);
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: none;
+  display: grid;
+  grid-template-rows: minmax(38px, auto) 28px;
+}
+
+.composer:focus-within,
+.composer[data-ready="true"] {
+  border-color: var(--notion-blue);
+  box-shadow: 0 0 0 1px var(--notion-blue);
+}
+
+.composer textarea {
+  width: 100%;
+  height: 38px;
+  min-height: 0;
+  padding: 0 1px;
+  resize: none;
+  overflow: auto;
+  border: 0;
+  background: transparent;
+  color: var(--notion-answer-ink);
+  caret-color: var(--notion-answer-ink);
+  font-size: 15px;
+  line-height: 20px;
+}
+
+.composer textarea::placeholder {
+  color: var(--notion-rail-ink);
+  opacity: 1;
+}
+
+.composerActions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.composerStart,
+.composerEnd {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.composer button {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #8e8b87;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+
+.composer button:disabled {
+  cursor: default;
+}
+
+.composer button:focus-visible {
+  box-shadow: 0 0 0 2px rgb(35 131 226 / 48%);
+}
+
+.addButton,
+.settingsButton {
+  width: 26px;
+  height: 26px;
+  border-radius: 6px !important;
+}
+
+.addButton:hover,
+.settingsButton:hover,
+.micButton:hover:not(:disabled) {
+  background: #f1f1ed;
+}
+
+.addButton svg,
+.settingsButton svg {
+  width: 19px;
+  height: 19px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.modelControl {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.modelButton {
+  min-height: 24px;
+  padding-inline: 3px !important;
+  border-radius: 5px !important;
+  color: #7d7a76 !important;
+  display: flex !important;
+  align-items: center;
+  font-size: 14px;
+  line-height: 20px;
+  white-space: nowrap;
+}
+
+.modelButton:hover {
+  background: #f1f1ed;
+}
+
+.modelMenu {
+  position: absolute;
+  z-index: 12;
+  right: 0;
+  bottom: calc(100% + 5px);
+  min-width: max-content;
+  padding: 3px;
+  border: 1px solid var(--notion-card-border);
+  border-radius: 7px;
+  background: #fff;
+  box-shadow: 0 6px 18px rgb(30 30 27 / 12%);
+}
+
+.modelMenu > button {
+  min-width: 100%;
+  min-height: 28px;
+  padding: 0 8px;
+  border-radius: 4px;
+  color: #575852;
+  display: block;
+  font-size: 13px;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.modelMenu > button:hover {
+  background: #f1f1ed;
+}
+
+.micButton {
+  width: 28px;
+  height: 28px;
+  border-radius: 50% !important;
+}
+
+.micButton[aria-pressed="true"] {
+  background: #eeeefc;
+  color: #515acf;
+}
+
+.micButton svg,
+.submitButton svg {
+  width: 15px;
+  height: 15px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.submitButton {
+  width: 28px;
+  height: 28px;
+  border-radius: 50% !important;
+  background: rgb(55 53 47 / 8%) !important;
+  color: rgb(55 53 47 / 35%) !important;
+  opacity: 1;
+  transition:
+    background-color 160ms ease-out,
+    color 160ms ease-out,
+    transform 120ms ease-out;
+}
+
+.submitButton:disabled {
+  opacity: 1;
+}
+
+.composer[data-ready="true"] .submitButton {
+  background: var(--notion-blue) !important;
+  color: var(--notion-prompt) !important;
+}
+
+.composer[data-loading="true"] .submitButton {
+  background: #2f2e2b !important;
+  color: #fff !important;
+}
+
+.submitButton:active:not(:disabled) {
+  transform: scale(0.94);
+}
+
+.submitButton > i {
+  width: 8px;
+  height: 8px;
+  border-radius: 1.5px;
+  background: currentColor;
+}
+
+.jumpToBottom {
+  position: absolute;
+  z-index: 8;
+  left: 50%;
+  bottom: 130px;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: #2f2e2b;
+  box-shadow: 0 2px 5px rgb(15 15 15 / 12%);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transform: translateX(-50%);
+}
+
+.jumpToBottom:hover {
+  background: #45433f;
+}
+
+.jumpToBottom:focus-visible {
+  box-shadow:
+    0 2px 5px rgb(15 15 15 / 12%),
+    0 0 0 2px #fff,
+    0 0 0 4px var(--notion-blue);
+}
+
+.jumpToBottom > span {
+  width: 9px;
+  height: 9px;
+  margin: 0;
+  border-right: 2px solid #fff;
+  border-bottom: 2px solid #fff;
+  transform: translateY(-1px) rotate(45deg);
+}
+
+.jumpToBottom[data-motion-state="visible"] {
+  animation: jump-in 150ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.jumpToBottom[data-motion-state="leaving"] {
+  pointer-events: none;
+  animation: jump-out 160ms cubic-bezier(0.4, 0, 1, 1) both;
+}
+
+@keyframes status-shimmer {
+  from {
+    background-position: -116px 0;
+  }
+  to {
+    background-position: 0 0;
+  }
+}
+
+@keyframes tool-shimmer {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: -160% 0;
+  }
+}
+
+@keyframes plan-check {
+  from {
+    opacity: 0;
+    transform: rotate(42deg) scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(42deg) scale(1);
+  }
+}
+
+@keyframes response-chunk-in {
+  from {
+    opacity: 0;
+    filter: blur(1px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+@keyframes jump-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 5px) scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0) scale(1);
+  }
+}
+
+@keyframes jump-out {
+  from {
+    opacity: 1;
+    transform: translate(-50%, 0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translate(-50%, 5px) scale(0.96);
+  }
+}
+
+@container (max-width: 520px) {
+  .startState {
+    padding: var(--notion-chat-start-top, 60px) 18px 0;
+  }
+
+  .startPrompts {
+    padding-bottom: 16px;
+  }
+
+  .startPrompt {
+    width: calc(100% + 8px);
+    grid-template-columns: 17px minmax(0, 1fr) auto;
+  }
+
+  .conversation {
+    padding: var(--notion-chat-conversation-top, 16px) 18px 32px;
+  }
+
+  .userMessage {
+    max-width: 88%;
+  }
+
+  .composerWrap {
+    width: calc(100% - 20px);
+  }
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .startPrompt {
+    min-height: 44px;
+  }
+
+  .feedback button {
+    width: 36px;
+    height: 36px;
+  }
+
+  .addButton,
+  .settingsButton,
+  .micButton {
+    width: 34px;
+    height: 34px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .demo *,
+  .demo *::before,
+  .demo *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.001ms !important;
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+  }
+
+  .brewingCopy,
+  .shimmer {
+    color: var(--notion-tool-ink);
+    background: none;
+  }
+
+  .jumpToBottom {
+    transform: translateX(-50%) !important;
+  }
+
+  .jumpToBottom[data-motion-state="visible"] {
+    opacity: 1 !important;
+  }
+
+  .jumpToBottom[data-motion-state="leaving"] {
+    opacity: 0 !important;
+  }
+}
+
+@media (forced-colors: active) {
+  .composer,
+  .checklist {
+    border-color: CanvasText;
+  }
+
+  .submitButton,
+  .jumpToBottom {
+    border: 1px solid ButtonText;
+  }
+}

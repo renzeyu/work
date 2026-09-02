@@ -40,21 +40,6 @@
       }
     },
     {
-      "slug": "notion-ai-motion-design",
-      "title": "Notion AI Motion Design",
-      "client": "notion",
-      "icon": "notion-ai-motion",
-      "asset": {
-        "kind": "video",
-        "src": "/media/notion-ai-motion-design-cover.mp4",
-        "optimizedSrc": "/media/covers/notion-ai-motion-design.mp4",
-        "poster": "/media/notion-ai-motion-design-cover.jpg",
-        "optimizedPoster": "/media/covers/notion-ai-motion-design.jpg",
-        "width": 960,
-        "height": 540
-      }
-    },
-    {
       "slug": "2024-reel",
       "title": "2025 Reel",
       "client": "datadog",
